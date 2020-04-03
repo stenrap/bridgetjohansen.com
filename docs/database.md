@@ -72,8 +72,27 @@
 
 ---
 
-### `events`
+#### `events`
 
 ```
+ id | name | date_and_time | location | expiration
+----+------+---------------+----------+------------
+```
+
+`id` - integer - populated automatically by a sequence  
+`name` - text - name of the event  
+`date_and_time` - text - free-form date and time of the event (e.g. `Friday April 3rd from 6:00 - 8:00 pm`)   
+`location` - text - location of the event
+
+---
+
+#### `photos`
 
 ```
+ id | url | description
+----+-----+-------------
+```
+
+`id` - integer - populated automatically by a sequence  
+`url` - text - url of the photo in S3  
+`description` - text - description of the photo
