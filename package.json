@@ -7,6 +7,8 @@
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.5.0",
     "@testing-library/user-event": "7.2.1",
+    "db-migrate": "0.11.6",
+    "db-migrate-pg": "1.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "7.2.0",
@@ -39,6 +41,8 @@
     "standard": "14.3.3"
   },
   "standard": {
-    "env": ["jest"]
+    "env": [
+      "jest"
+    ]
   }
 }

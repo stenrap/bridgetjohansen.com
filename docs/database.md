@@ -48,7 +48,7 @@
     
 1. Run migrations:
     
-    `db-migrate up`
+    `npx db-migrate up`
 
 ---
 

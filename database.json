@@ -1,0 +1,11 @@
+{
+  "defaultEnv": {"ENV": "NODE_ENV"},
+  "development": {
+    "driver": "pg",
+    "host": {"ENV": "PIANO_DB_HOST"},
+    "user": {"ENV": "PIANO_DB_USER"},
+    "password": {"ENV": "PIANO_DB_PASSWORD"},
+    "database": {"ENV": "PIANO_DB_NAME"},
+    "schema": "public"
+  }
+}
