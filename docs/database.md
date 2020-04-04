@@ -1,4 +1,58 @@
-## Database
+# Database
+
+## Table of Contents
+* [Creation](#creation)
+* [Migrations](#migrations)
+* [Schema](#schema)
+
+### Creation
+
+1. Launch `pqsl` as the `postgres` user:
+    
+    `psql -U postgres`
+    
+1. Create the database:
+    
+    `CREATE DATABASE <PIANO_DB_NAME>;`
+    
+1. Create the user:
+    
+    `CREATE USER <PIANO_DB_USER> WITH PASSWORD '<PIANO_DB_PASSWORD>';`
+    
+1. Connect to the database:
+    
+    `\c <PIANO_DB_NAME>`
+    
+1. Grant `PIANO_DB_USER` access to all tables with this command:
+    
+    `GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO <PIANO_DB_USER>;`
+    
+1. Quit as the postgres user:
+    
+    `\q`
+    
+1. Connect as `PIANO_DB_USER` (provide the password when prompted):
+    
+    `psql -U <PIANO_DB_USER> <PIANO_DB_NAME>`
+    
+---
+
+### Migrations
+
+*Note: Due to [this db-migrate issue](https://github.com/db-migrate/node-db-migrate/issues/635), you must currently run migrations using node v8.9.4.*
+
+1. Open a shell and change to the root directory of the project.
+1. Switch to Node.js v8.9.4:
+    
+    `nvm use 8.9.4`
+    
+1. Run migrations:
+    
+    `db-migrate up`
+
+---
+
+### Schema
 
 #### `schedule`
 
@@ -11,8 +65,6 @@
 `month` - integer - month when the lesson schedule is in effect (`0` - `11` => Jan - Dec)  
 `date` - integer - date of the month when the lesson schedule is in effect (`1` - `31`)  
 `year` - integer - 4-digit year when the lesson schedule is in effect
-
----
 
 #### `students`
 
@@ -30,8 +82,6 @@
 `lesson_minutes` - integer - minutes of the hour when the lesson starts, in 5-minute increments with a max of 55 (`0` - `55` => 0 - 55)  
 `lesson_duration` - integer - duration of the lesson in minutes (also 5-minute increments, but with no max)
 
----
-
 #### `group_class_dates`
 
 ```
@@ -44,8 +94,6 @@
 `date` - integer - date of the month when the group class occurs (`1` - `31`)    
 `year` - integer - 4-digit year when the group class occurs
 
----
-
 #### `group_class_times`
 
 ```
@@ -56,8 +104,6 @@
 `id` - integer - populated automatically by a sequence  
 `hour` - integer - hour of the day when the group class starts (`0` - `23` => 12:00 am - 11:00 pm)  
 `minutes` - integer - minutes of the hour when the group class starts, in 5-minute increments with a max of 55 (`0` - `55` => 0 - 55)
-
----
 
 #### `group_class_student_times`
 
@@ -70,8 +116,6 @@
 `student_id` - integer - foreign key reference to `students.id`  
 `group_class_time_id` - integer - foreign key reference to `group_class_times.id`
 
----
-
 #### `events`
 
 ```
@@ -83,8 +127,6 @@
 `name` - text - name of the event  
 `date_and_time` - text - free-form date and time of the event (e.g. `Friday April 3rd from 6:00 - 8:00 pm`)   
 `location` - text - location of the event
-
----
 
 #### `photos`
 
