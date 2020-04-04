@@ -6,40 +6,49 @@ const logError = (err) => {
 
 exports.up = async db => {
   try {
-    await db.createTable('schedule', {
+    await db.createTable('students', {
       id: {
         type: 'INTEGER',
         primaryKey: true,
         notNull: true,
         autoIncrement: true
       },
-      month: {
+      name: {
+        type: 'text',
+        notNull: true
+      },
+      parents: {
+        type: 'text',
+        notNull: true
+      },
+      phone: {
+        type: 'text',
+        notNull: true
+      },
+      lesson_day: {
         type: 'INTEGER',
         notNull: true
       },
-      date: {
+      lesson_hour: {
         type: 'INTEGER',
         notNull: true
       },
-      year: {
+      lesson_minutes: {
+        type: 'INTEGER',
+        notNull: true
+      },
+      lesson_duration: {
         type: 'INTEGER',
         notNull: true
       }
     })
-
-    await db.runSql(
-      `INSERT INTO schedule (month, date, year)
-       VALUES (8, 14, 2019)`,
-      [],
-      logError
-    )
   } catch (err) {
     logError(err)
   }
 }
 
 exports.down = async db => {
-  return db.dropTable('schedule')
+  return db.dropTable('students')
 }
 
 exports._meta = {
