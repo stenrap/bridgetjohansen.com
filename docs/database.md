@@ -126,7 +126,8 @@
 `id` - integer - populated automatically by a sequence  
 `name` - text - name of the event  
 `date_and_time` - text - free-form date and time of the event (e.g. `Friday April 3rd from 6:00 - 8:00 pm`)   
-`location` - text - location of the event
+`location` - text - location of the event  
+`expiration` - timestamptz - date when the event expires
 
 #### `photos`
 
