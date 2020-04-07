@@ -18,6 +18,11 @@ $headerRightPadding: $headerLeftPadding - v.$menuBarLeft;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  z-index: 1;
+
+  &:active {
+    opacity: 0.5;
+  }
 }
 
 .titleNameText {

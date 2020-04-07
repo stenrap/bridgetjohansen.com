@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 const Home = lazy(() => import('../../pages/home/Home'))
 const About = lazy(() => import('../../pages/about/About'))
+const Policies = lazy(() => import('../../pages/policies/Policies'))
 
 export default () => {
   // return (
@@ -24,6 +25,7 @@ export default () => {
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/about' component={About} />
+          <Route path='/policies' component={Policies} />
         </Switch>
       </Suspense>
     </Router>
