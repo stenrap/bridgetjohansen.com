@@ -2,15 +2,11 @@ $menuBarHeight: 1px;
 $menuBarWidth: 32px;
 $menuIconSize: 48px;
 
-.nav {
-  list-style-type: none;
-}
-
 .menu {
   height: $menuIconSize;
   opacity: 1;
   position: relative;
-  transition: .5s ease-in-out;
+  transition: 0.375s ease-in-out;
   width: $menuIconSize;
 
   span {
@@ -18,29 +14,30 @@ $menuIconSize: 48px;
     background-color: #fff;
     display: block;
     height: $menuBarHeight;
-    left: 0;
+    left: 8px;
     position: absolute;
     transform: rotate(0deg);
     transform-origin: left center;
-    transition: .25s ease-in-out;
+    transition: 0.1875s ease-in-out;
     width: $menuBarWidth;
 
     &:nth-child(1) {
-
+      top: 14px;
     }
 
     &:nth-child(2) {
-      top: 10px;
+      top: 24px;
     }
 
     &:nth-child(3) {
-      top: 20px;
+      top: 34px;
     }
   }
 
   &.open {
     span {
       &:nth-child(1) {
+        left: 10px;
         transform: rotate(45deg);
       }
 
@@ -50,8 +47,14 @@ $menuIconSize: 48px;
       }
 
       &:nth-child(3) {
+        left: 10px;
+        top: 36px;
         transform: rotate(-45deg);
       }
     }
   }
+}
+
+.nav {
+  list-style-type: none;
 }

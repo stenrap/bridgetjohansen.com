@@ -8,7 +8,7 @@ export default () => {
   const menuClasses = `${styles.menu}${open ? ` ${styles.open}` : ''}`
 
   return (
-    <ul className={styles.nav}>
+    <>
       <div
         className={menuClasses}
         onClick={() => setOpen(!open)}
@@ -17,8 +17,10 @@ export default () => {
         <span />
         <span />
       </div>
-      <li>About</li>
-      <li>Policies</li>
-    </ul>
+      <ul className={styles.nav}>
+        <li>About</li>
+        <li>Policies</li>
+      </ul>
+    </>
   )
 }
