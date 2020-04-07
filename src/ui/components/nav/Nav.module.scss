@@ -1,3 +1,5 @@
+@use '../../styles/variables' as v;
+
 $menuBarHeight: 1px;
 $menuBarWidth: 32px;
 $menuIconSize: 48px;
@@ -14,7 +16,7 @@ $menuIconSize: 48px;
     background-color: #fff;
     display: block;
     height: $menuBarHeight;
-    left: 8px;
+    left: v.$menuBarLeft;
     position: absolute;
     transform: rotate(0deg);
     transform-origin: left center;
@@ -56,5 +58,14 @@ $menuIconSize: 48px;
 }
 
 .nav {
+  background-color: #000;
+  height: calc(100vh - #{v.$headerHeight});
   list-style-type: none;
+  margin-block-end: 0;
+  margin-block-start: 0;
+  padding-inline-start: 0;
+  position: absolute;
+  right: 0;
+  top: v.$headerHeight;
+  width: 100%;
 }

@@ -1,15 +1,23 @@
+@use '../../styles/variables' as v;
+
+$headerLeftPadding: 16px;
+$headerRightPadding: $headerLeftPadding - v.$menuBarLeft;
+
 .header {
+  align-items: center;
   background-color: #000;
   color: #fff;
   display: flex;
-  height: 80px;
+  height: v.$headerHeight;
+  justify-content: space-between;
+  padding: 0 $headerRightPadding 0 $headerLeftPadding;
+  position: relative;
 }
 
 .title {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 20px;
 }
 
 .titleNameText {
