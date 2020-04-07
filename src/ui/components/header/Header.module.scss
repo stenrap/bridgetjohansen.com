@@ -1,0 +1,25 @@
+.header {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  height: 80px;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.titleNameText {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 2px 0;
+}
+
+.titleText {
+  color: #bbb;
+  padding: 2px 0;
+}

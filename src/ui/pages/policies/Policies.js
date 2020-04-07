@@ -6,7 +6,7 @@ export default () => {
   return (
     <>
       <Header />
-      <div>Hello, about!</div>
+      <div>Hello, policies!</div>
     </>
   )
 }

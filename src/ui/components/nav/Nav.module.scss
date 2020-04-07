@@ -1,0 +1,57 @@
+$menuBarHeight: 1px;
+$menuBarWidth: 32px;
+$menuIconSize: 48px;
+
+.nav {
+  list-style-type: none;
+}
+
+.menu {
+  height: $menuIconSize;
+  opacity: 1;
+  position: relative;
+  transition: .5s ease-in-out;
+  width: $menuIconSize;
+
+  span {
+    border-radius: $menuBarHeight;
+    background-color: #fff;
+    display: block;
+    height: $menuBarHeight;
+    left: 0;
+    position: absolute;
+    transform: rotate(0deg);
+    transform-origin: left center;
+    transition: .25s ease-in-out;
+    width: $menuBarWidth;
+
+    &:nth-child(1) {
+
+    }
+
+    &:nth-child(2) {
+      top: 10px;
+    }
+
+    &:nth-child(3) {
+      top: 20px;
+    }
+  }
+
+  &.open {
+    span {
+      &:nth-child(1) {
+        transform: rotate(45deg);
+      }
+
+      &:nth-child(2) {
+        width: 0;
+        opacity: 0;
+      }
+
+      &:nth-child(3) {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+}
