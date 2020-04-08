@@ -56,6 +56,10 @@ $menuIconSize: 48px;
       }
     }
   }
+
+  @media screen and (min-width: v.$horizontalNav) {
+    display: none;
+  }
 }
 
 .nav {
@@ -96,6 +100,25 @@ $menuIconSize: 48px;
 
     &:active {
       opacity: 0.5;
+    }
+  }
+
+  @media screen and (min-width: v.$horizontalNav) {
+    align-items: center;
+    border-top: none;
+    display: flex;
+    height: v.$headerHeight;
+    justify-content: flex-end;
+    top: 0;
+
+    li {
+      border-bottom: none;
+      display: inline-block;
+      min-width: 120px;
+    }
+
+    a {
+      display: inline-block;
     }
   }
 }
