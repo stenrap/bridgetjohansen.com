@@ -21,10 +21,26 @@ export default () => {
       </div>
       <ul className={navClasses}>
         <li>
-          <NavLink to='/about' activeClassName={styles.navSelected}>About</NavLink>
+          <NavLink
+            activeClassName={styles.navSelected}
+            onClick={() => {
+              setOpen(false)
+            }}
+            to='/about'
+          >
+            About
+          </NavLink>
         </li>
         <li>
-          <NavLink to='/policies' activeClassName={styles.navSelected}>Policies</NavLink>
+          <NavLink
+            activeClassName={styles.navSelected}
+            onClick={() => {
+              setOpen(false)
+            }}
+            to='/policies'
+          >
+            Policies
+          </NavLink>
         </li>
       </ul>
     </>

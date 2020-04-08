@@ -6,6 +6,9 @@
 import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
+import Header from '../../components/header/Header'
+import Loading from '../../components/loading/Loading'
+
 const Home = lazy(() => import('../../pages/home/Home'))
 const About = lazy(() => import('../../pages/about/About'))
 const Policies = lazy(() => import('../../pages/policies/Policies'))
@@ -19,9 +22,11 @@ export default () => {
   //     </header>
   //   </div>
   // )
+
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Header />
+      <Suspense fallback={<Loading />}>
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/about' component={About} />

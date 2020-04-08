@@ -68,12 +68,18 @@ $menuIconSize: 48px;
   padding-inline-start: 0;
   position: absolute;
   right: 0;
+  text-align: right;
   top: -100vh;
   transition: 0.3125s ease-in-out;
   width: 100%;
 
   &.open {
     top: v.$headerHeight;
+  }
+
+  a {
+    display: block;
+    padding: 20px;
   }
 }
 
