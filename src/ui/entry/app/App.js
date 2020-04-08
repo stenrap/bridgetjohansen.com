@@ -12,6 +12,9 @@ import Loading from '../../components/loading/Loading'
 const Home = lazy(() => import('../../pages/home/Home'))
 const About = lazy(() => import('../../pages/about/About'))
 const Policies = lazy(() => import('../../pages/policies/Policies'))
+const Schedule = lazy(() => import('../../pages/schedule/Schedule'))
+const Events = lazy(() => import('../../pages/events/Events'))
+const Photos = lazy(() => import('../../pages/photos/Photos'))
 
 export default () => {
   // return (
@@ -31,6 +34,9 @@ export default () => {
           <Route exact path='/' component={Home} />
           <Route path='/about' component={About} />
           <Route path='/policies' component={Policies} />
+          <Route path='/schedule' component={Schedule} />
+          <Route path='/events' component={Events} />
+          <Route path='/photos' component={Photos} />
         </Switch>
       </Suspense>
     </Router>

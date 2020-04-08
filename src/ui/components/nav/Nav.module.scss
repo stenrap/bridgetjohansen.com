@@ -77,12 +77,30 @@ $menuIconSize: 48px;
     top: v.$headerHeight;
   }
 
+  li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3125);
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 20px;
+  }
+
   a {
     display: block;
+    font-size: 18px;
     padding: 20px;
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+
+    &:active {
+      opacity: 0.5;
+    }
   }
 }
 
 .navSelected {
+  color: #fff;
   font-weight: 600;
 }

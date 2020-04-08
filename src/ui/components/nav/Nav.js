@@ -42,6 +42,39 @@ export default () => {
             Policies
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            activeClassName={styles.navSelected}
+            onClick={() => {
+              setOpen(false)
+            }}
+            to='/schedule'
+          >
+            Schedule
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName={styles.navSelected}
+            onClick={() => {
+              setOpen(false)
+            }}
+            to='/events'
+          >
+            Events
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            activeClassName={styles.navSelected}
+            onClick={() => {
+              setOpen(false)
+            }}
+            to='/photos'
+          >
+            Photos
+          </NavLink>
+        </li>
       </ul>
     </>
   )

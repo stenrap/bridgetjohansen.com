@@ -20,6 +20,12 @@ $headerRightPadding: $headerLeftPadding - v.$menuBarLeft;
   justify-content: center;
   z-index: 1;
 
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
   &:active {
     opacity: 0.5;
   }
