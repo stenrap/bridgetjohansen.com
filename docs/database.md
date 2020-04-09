@@ -5,6 +5,8 @@
 * [Migrations](#migrations)
 * [Schema](#schema)
 
+---
+
 ### Creation
 
 1. Launch `pqsl` as the `postgres` user:
@@ -139,3 +141,27 @@
 `id` - integer - populated automatically by a sequence  
 `url` - text - url of the photo in S3  
 `description` - text - description of the photo
+
+#### `users`
+
+```
+ id | email | google_id | token | admin
+----+-------+-----------+-------+-------
+```
+
+`id` - integer - populated automatically by a sequence  
+`email` - text - email of the user  
+`google_id` - text - Google's id for the user  
+`token` - text - token used for authentication status  
+`admin` - boolean - whether the user is an admin
+
+#### `student_user_emails`
+
+```
+ id | student_id | user_id
+----+------------+---------
+```
+
+`id` - integer - populated automatically by a sequence  
+`student_id` - integer - foreign key reference to `students.id`  
+`user_id` - integer - foreign key reference to `users.id`
