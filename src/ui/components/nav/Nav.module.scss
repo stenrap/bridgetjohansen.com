@@ -10,7 +10,7 @@ $menuIconSize: 48px;
   position: relative;
   transition: 0.375s ease-in-out;
   width: $menuIconSize;
-  z-index: 1;
+  z-index: 2;
 
   span {
     border-radius: $menuBarHeight;
@@ -76,6 +76,7 @@ $menuIconSize: 48px;
   top: -100vh;
   transition: 0.3125s ease-in-out;
   width: 100%;
+  z-index: 1;
 
   &.open {
     top: v.$headerHeight;
