@@ -8,13 +8,13 @@ exports.up = async db => {
   try {
     await db.createTable('group_class_student_times', {
       id: {
-        type: 'INTEGER',
+        type: 'integer',
         primaryKey: true,
         notNull: true,
         autoIncrement: true
       },
       student_id: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true,
         foreignKey: {
           name: 'group_class_student_times_student_fk',
@@ -26,7 +26,7 @@ exports.up = async db => {
         }
       },
       group_class_time_id: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true,
         foreignKey: {
           name: 'group_class_student_times_time_fk',

@@ -8,7 +8,7 @@ exports.up = async db => {
   try {
     await db.createTable('students', {
       id: {
-        type: 'INTEGER',
+        type: 'integer',
         primaryKey: true,
         notNull: true,
         autoIncrement: true
@@ -26,19 +26,19 @@ exports.up = async db => {
         notNull: true
       },
       lesson_day: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       },
       lesson_hour: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       },
       lesson_minutes: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       },
       lesson_duration: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       }
     })

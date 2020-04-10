@@ -8,17 +8,17 @@ exports.up = async db => {
   try {
     await db.createTable('group_class_times', {
       id: {
-        type: 'INTEGER',
+        type: 'integer',
         primaryKey: true,
         notNull: true,
         autoIncrement: true
       },
       hour: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       },
       minutes: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       }
     })

@@ -8,21 +8,21 @@ exports.up = async db => {
   try {
     await db.createTable('schedule', {
       id: {
-        type: 'INTEGER',
+        type: 'integer',
         primaryKey: true,
         notNull: true,
         autoIncrement: true
       },
       month: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       },
       date: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       },
       year: {
-        type: 'INTEGER',
+        type: 'integer',
         notNull: true
       }
     })

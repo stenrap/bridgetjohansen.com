@@ -8,7 +8,7 @@ exports.up = async db => {
   try {
     await db.createTable('events', {
       id: {
-        type: 'INTEGER',
+        type: 'integer',
         primaryKey: true,
         notNull: true,
         autoIncrement: true
