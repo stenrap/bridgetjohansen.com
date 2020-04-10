@@ -15,6 +15,7 @@ const Policies = lazy(() => import('../../pages/policies/Policies'))
 const Schedule = lazy(() => import('../../pages/schedule/Schedule'))
 const Events = lazy(() => import('../../pages/events/Events'))
 const Photos = lazy(() => import('../../pages/photos/Photos'))
+const SignIn = lazy(() => import('../../pages/sign-in/SignIn'))
 
 export default () => {
   // return (
@@ -37,6 +38,7 @@ export default () => {
           <Route path='/schedule' component={Schedule} />
           <Route path='/events' component={Events} />
           <Route path='/photos' component={Photos} />
+          <Route path='/sign-in' component={SignIn} />
         </Switch>
       </Suspense>
     </Router>
