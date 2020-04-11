@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import styles from './SignIn.module.scss'
 
 export default () => {
+  const [showSpinner, setShowSpinner] = useState(false)
+
   const buttonBoxId = 'googleButtonBoxId'
 
   useEffect(() => {
@@ -10,6 +12,7 @@ export default () => {
       height: 46,
       longtitle: true,
       onSuccess: googleUser => {
+        setShowSpinner(setShowSpinner => !setShowSpinner)
         console.log(`Logged in as: ${googleUser.getBasicProfile().getEmail()}`)
         console.log(`The id token to send to the back end is: ${googleUser.getAuthResponse().id_token}`)
       },
@@ -18,6 +21,12 @@ export default () => {
       width: 217
     })
   }, [])
+
+  if (showSpinner) {
+    return (
+      <div>Loading...</div>
+    )
+  }
 
   return (
     <div
