@@ -14,6 +14,7 @@ export default () => {
         console.log(`The id token to send to the back end is: ${googleUser.getAuthResponse().id_token}`)
       },
       scope: 'email',
+      theme: 'dark',
       width: 217
     })
   }, [])

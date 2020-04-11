@@ -5,4 +5,8 @@
   display: flex;
   height: calc(100vh - #{v.$headerHeight});
   justify-content: center;
+
+  >:first-child {
+    transform: scale(1.25);
+  }
 }
