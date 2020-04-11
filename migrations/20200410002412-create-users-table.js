@@ -25,6 +25,7 @@ exports.up = async db => {
       },
       admin: {
         type: 'boolean',
+        defaultValue: false,
         notNull: true
       }
     })
@@ -32,6 +33,13 @@ exports.up = async db => {
     await db.addIndex('users', 'users_email_index', ['email'], true, logError)
     await db.addIndex('users', 'users_google_id_index', ['google_id'], false, logError)
     await db.addIndex('users', 'users_token_index', ['token'], false, logError)
+
+    await db.runSql(
+      `INSERT INTO users (email, admin)
+       VALUES
+       ('email@bridgetjohansen.com', true),
+       ('admin@bridgetjohansen.com', true)`
+    )
   } catch (err) {
     logError(err)
   }
