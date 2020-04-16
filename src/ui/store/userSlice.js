@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+import requests from '../Requests'
+
 export const slice = createSlice({
   name: 'user',
   initialState: {
@@ -16,6 +18,12 @@ export const slice = createSlice({
 
 // Actions
 export const { signIn } = slice.actions
+
+// Thunks
+export const authenticate = googleToken => async dispatch => {
+  const response = await requests.authenticate(googleToken)
+  console.log('The response is:', response)
+}
 
 // Selectors
 export const isAdmin = state => state.user.admin

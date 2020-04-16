@@ -69,6 +69,9 @@ function getClientEnvironment (publicUrl) {
         return env
       },
       {
+        API_SERVER: process.env.NODE_ENV === 'production'
+          ? 'https://api.bridgetjohansen.com'
+          : 'http://local-api.bridgetjohansen.com:4000',
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
         NODE_ENV: process.env.NODE_ENV || 'development',

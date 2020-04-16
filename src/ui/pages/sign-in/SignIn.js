@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
+import { authenticate } from '../../store/userSlice'
 import styles from './SignIn.module.scss'
 
 export default () => {
+  const dispatch = useDispatch()
   const [showSpinner, setShowSpinner] = useState(false)
 
   const buttonBoxId = 'googleButtonBoxId'
@@ -13,8 +16,7 @@ export default () => {
       longtitle: true,
       onSuccess: googleUser => {
         setShowSpinner(setShowSpinner => !setShowSpinner)
-        console.log(`Logged in as: ${googleUser.getBasicProfile().getEmail()}`)
-        console.log(`The id token to send to the back end is: ${googleUser.getAuthResponse().id_token}`)
+        dispatch(authenticate(googleUser.getAuthResponse().id_token))
       },
       scope: 'email',
       theme: 'dark',
