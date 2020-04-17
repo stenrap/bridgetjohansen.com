@@ -1,11 +1,25 @@
+const authDao = require('./daos/AuthDao')
+
 const resolvers = {
   Mutation: {
-    authenticate (parent, { googleToken }) {
-      return {
-        admin: true,
-        email: 'admin@bridgetjohansen.com',
-        googleId: 'd4e5f6',
-        id: 2
+    async authenticate (parent, { googleToken }) {
+      try {
+        const result = await authDao.authenticate('admin@bridgetjohansen.com', 'd4e5f6')
+        const {
+          admin,
+          email,
+          googleId,
+          id
+        } = result.rows[0]
+        return {
+          admin,
+          email,
+          googleId,
+          id
+        }
+      } catch (err) {
+        console.log('Error authenticating user:', err)
+        throw err
       }
     }
   },
