@@ -1,13 +1,9 @@
-// import React from 'react'
-// import logo from './logo.svg'
-// import { Counter } from '../../features/counter/Counter'
-// import './App.css'
-
 import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import Header from '../../components/header/Header'
 import Loading from '../../components/loading/Loading'
+// import logo from './logo.svg'
 
 const Home = lazy(() => import('../../pages/home/Home'))
 const About = lazy(() => import('../../pages/about/About'))
@@ -19,12 +15,7 @@ const SignIn = lazy(() => import('../../pages/sign-in/SignIn'))
 
 export default () => {
   // return (
-  //   <div className='App'>
-  //     <header className='App-header'>
-  //       <img src={logo} className='App-logo' alt='logo' />
-  //       <Counter />
-  //     </header>
-  //   </div>
+  //   <img src={logo} className='App-logo' alt='logo' />
   // )
 
   return (

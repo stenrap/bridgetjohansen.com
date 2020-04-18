@@ -22,7 +22,7 @@ export default () => {
       theme: 'dark',
       width: 217
     })
-  }, [])
+  }, [dispatch])
 
   if (showSpinner) {
     return (
