@@ -22,6 +22,16 @@ export const { signIn } = slice.actions
 // Thunks
 export const authenticate = googleToken => async dispatch => {
   const response = await requests.authenticate(googleToken)
+
+  /*
+    TODO: If the response has this shape, you must show the "Sign in with Google" button again:
+
+    {
+      data: null,
+      errors: [{...}]
+    }
+   */
+
   console.log('The response is:', response)
 }
 

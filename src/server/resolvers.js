@@ -1,16 +1,29 @@
+const { OAuth2Client } = require('google-auth-library')
+
 const authDao = require('./daos/AuthDao')
+
+const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 
 const resolvers = {
   Mutation: {
     async authenticate (parent, { googleToken }) {
       try {
-        const result = await authDao.authenticate('admin@bridgetjohansen.com', 'd4e5f6')
+        let payload = await client.verifyIdToken({
+          idToken: googleToken,
+          audience: process.env.PIANO_GOOGLE_CLIENT_ID
+        })
+
+        payload = payload.getPayload()
+
+        const result = await authDao.authenticate(payload.email, payload.sub)
+
         const {
           admin,
           email,
           googleId,
           id
         } = result.rows[0]
+
         return {
           admin,
           email,
