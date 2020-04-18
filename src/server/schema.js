@@ -16,7 +16,7 @@ const schema = gql`
   }
   
   type Mutation {
-    authenticate(googleToken: String!): User!
+    signIn(googleToken: String!): User!
   }
   
   type Query {

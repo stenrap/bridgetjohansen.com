@@ -25,16 +25,16 @@ export const slice = createSlice({
 export const { setUser } = slice.actions
 
 // Thunks
-export const authenticate = googleToken => async dispatch => {
+export const signIn = googleToken => async dispatch => {
   dispatch(setLoading(true))
-  const response = await requests.authenticate(googleToken)
+  const response = await requests.signIn(googleToken)
 
   if (response.errors) {
     window.gapi.auth2.getAuthInstance().signOut()
     window.location.reload()
   }
 
-  dispatch(setUser(response.data.authenticate))
+  dispatch(setUser(response.data.signIn))
   dispatch(setLoading(false))
 }
 

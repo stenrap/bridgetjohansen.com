@@ -32,11 +32,11 @@ class Requests {
     return response
   }
 
-  authenticate (googleToken) {
+  signIn (googleToken) {
     return this.post({
       body: {
-        query: `mutation Authenticate ($googleToken: String!) {
-          authenticate(googleToken: $googleToken) {
+        query: `mutation SignIn ($googleToken: String!) {
+          signIn(googleToken: $googleToken) {
             admin,
             email,
             id

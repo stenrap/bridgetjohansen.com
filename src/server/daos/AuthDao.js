@@ -4,7 +4,7 @@ const BaseDao = require('./BaseDao')
 const tokenLib = require('../../shared/libs/token')
 
 class AuthDao extends BaseDao {
-  async authenticate (email, googleId) {
+  async signIn (email, googleId) {
     let poolClient = null
 
     try {
@@ -35,7 +35,7 @@ class AuthDao extends BaseDao {
       await poolClient.query('COMMIT')
       return { token, user }
     } catch (err) {
-      console.log(`Error authenticating ${email}`)
+      console.log(`Error signing in ${email}`)
       console.log(err)
       throw err
     } finally {

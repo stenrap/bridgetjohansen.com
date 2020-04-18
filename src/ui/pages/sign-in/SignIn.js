@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { authenticate } from '../../store/userSlice'
 import { isLoading } from '../../store/loadingSlice'
 import Loader from '../../components/loading/Loader'
+import { signIn } from '../../store/userSlice'
 import styles from './SignIn.module.scss'
 
 export default () => {
@@ -16,13 +16,13 @@ export default () => {
       height: 46,
       longtitle: true,
       onSuccess: googleUser => {
-        dispatch(authenticate(googleUser.getAuthResponse().id_token))
+        dispatch(signIn(googleUser.getAuthResponse().id_token))
       },
       scope: 'email',
       theme: 'dark',
       width: 217
     })
-  }, [])
+  }, [dispatch])
 
   if (loading) return <Loader />
 
