@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+import { setLoading } from './loadingSlice'
 import requests from '../Requests'
 
 export const slice = createSlice({
@@ -21,6 +22,7 @@ export const { signIn } = slice.actions
 
 // Thunks
 export const authenticate = googleToken => async dispatch => {
+  dispatch(setLoading(true))
   const response = await requests.authenticate(googleToken)
 
   /*

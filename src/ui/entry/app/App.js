@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import Header from '../../components/header/Header'
-import Loading from '../../components/loading/Loading'
+import Loader from '../../components/loading/Loader'
 // import logo from './logo.svg'
 
 const Home = lazy(() => import('../../pages/home/Home'))
@@ -21,7 +21,7 @@ export default () => {
   return (
     <Router>
       <Header />
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loader />}>
         <Switch>
           <Route exact path='/' component={Home} />
           <Route path='/about' component={About} />
