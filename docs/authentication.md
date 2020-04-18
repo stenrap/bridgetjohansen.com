@@ -34,7 +34,7 @@
     
 1. Our sign-in page:
     
-    - Dispatches the `signIn` action to the `userSlice` portion of the redux store.
+    - Dispatches the `setUser` action to the `userSlice` portion of the redux store.
         - The reducer sets `authenticated` to true, and `admin` to whatever boolean value was received in our sign-in response.
     - Redirects the user to the schedule page ([see below](#render)).
 

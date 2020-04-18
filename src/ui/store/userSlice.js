@@ -7,34 +7,35 @@ export const slice = createSlice({
   name: 'user',
   initialState: {
     admin: false,
-    authenticated: false
+    authenticated: false,
+    email: '',
+    id: 0
   },
   reducers: {
-    signIn: (state, action) => {
+    setUser: (state, action) => {
       state.admin = action.payload.admin
       state.authenticated = true
+      state.email = action.payload.email
+      state.id = Number.parseInt(action.payload.id, 10)
     }
   }
 })
 
 // Actions
-export const { signIn } = slice.actions
+export const { setUser } = slice.actions
 
 // Thunks
 export const authenticate = googleToken => async dispatch => {
   dispatch(setLoading(true))
   const response = await requests.authenticate(googleToken)
 
-  /*
-    TODO: If the response has this shape, you must show the "Sign in with Google" button again:
+  if (response.errors) {
+    window.gapi.auth2.getAuthInstance().signOut()
+    window.location.reload()
+  }
 
-    {
-      data: null,
-      errors: [{...}]
-    }
-   */
-
-  console.log('The response is:', response)
+  dispatch(setUser(response.data.authenticate))
+  dispatch(setLoading(false))
 }
 
 // Selectors
