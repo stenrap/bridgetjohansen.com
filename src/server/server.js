@@ -12,7 +12,9 @@ server.use(cookieParser())
 server.use(express.json())
 
 const apollo = new ApolloServer({
-  debug: process.env.NODE_ENV !== 'production',
+  context: ({ res }) => {
+    return { res }
+  },
   resolvers,
   typeDefs
 })

@@ -1,39 +1,26 @@
 const { OAuth2Client } = require('google-auth-library')
 
+const { TOKEN_COOKIE, USER_TOKEN_EXPIRATION } = require('../shared/Constants')
 const authDao = require('./daos/AuthDao')
+const cookieLib = require('../shared/libs/cookie')
 
 const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 
 const resolvers = {
   Mutation: {
-    async authenticate (parent, { googleToken }) {
-      try {
-        let payload = await client.verifyIdToken({
-          idToken: googleToken,
-          audience: process.env.PIANO_GOOGLE_CLIENT_ID
-        })
+    async authenticate (parent, { googleToken }, { res }) {
+      let payload = await client.verifyIdToken({
+        idToken: googleToken,
+        audience: process.env.PIANO_GOOGLE_CLIENT_ID
+      })
 
-        payload = payload.getPayload()
+      payload = payload.getPayload()
 
-        const result = await authDao.authenticate(payload.email, payload.sub)
+      const { token, user } = await authDao.authenticate(payload.email, payload.sub)
 
-        const {
-          admin,
-          email,
-          googleId,
-          id
-        } = result.rows[0]
+      cookieLib.setCookie(res, new Date(Date.now() + (USER_TOKEN_EXPIRATION * 1000)), true, TOKEN_COOKIE, token)
 
-        return {
-          admin,
-          email,
-          googleId,
-          id
-        }
-      } catch (err) {
-        console.log('Error authenticating user:', err)
-        throw err
-      }
+      return user
     }
   },
 

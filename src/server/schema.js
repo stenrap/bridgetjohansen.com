@@ -47,7 +47,6 @@ const schema = gql`
   type User {
     admin: Boolean!
     email: String!
-    googleId: String
     id: ID!
   }
 `
