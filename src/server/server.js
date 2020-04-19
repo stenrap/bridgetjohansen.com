@@ -3,6 +3,7 @@
 const { ApolloServer } = require('apollo-server-express')
 const cookieParser = require('cookie-parser')
 const express = require('express')
+const logger = require('./Logger')
 const resolvers = require('./resolvers')
 const typeDefs = require('./schema')
 
@@ -33,4 +34,4 @@ const port = process.env.PORT || 4000
 
 server.listen(port)
 
-console.log(`api.bridgetjohansen.com listening on ${port}`)
+logger.info(`api.bridgetjohansen.com listening on ${port}`)

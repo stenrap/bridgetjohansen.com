@@ -1,6 +1,7 @@
 'use strict'
 
 const BaseDao = require('./BaseDao')
+const logger = require('../Logger')
 const tokenLib = require('../../shared/libs/token')
 
 class AuthDao extends BaseDao {
@@ -35,8 +36,8 @@ class AuthDao extends BaseDao {
       await poolClient.query('COMMIT')
       return { token, user }
     } catch (err) {
-      console.log(`Error signing in ${email}`)
-      console.log(err)
+      logger.error(`Error signing in ${email}`)
+      logger.error(err)
       throw err
     } finally {
       if (poolClient) poolClient.release()

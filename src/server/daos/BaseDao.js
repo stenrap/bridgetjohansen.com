@@ -3,6 +3,8 @@
 const pg = require('pg')
 const pgCamelCase = require('pg-camelcase')
 
+const logger = require('../Logger')
+
 // Convert field names of query results to camel case. See this if you
 // ever need to revert: https://github.com/hoegaarden/pg-camelcase
 pgCamelCase.inject(pg)
@@ -17,9 +19,8 @@ const pool = new pg.Pool({
 })
 
 pool.on('error', err => {
-  console.log(err)
-  // logger.error('Database write pool error')
-  // logger.error(err.message)
+  logger.error('Database pool error')
+  logger.error(err.message)
 })
 
 class BaseDao {
