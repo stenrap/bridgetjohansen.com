@@ -7,16 +7,16 @@ export const slice = createSlice({
   name: 'user',
   initialState: {
     admin: false,
-    authenticated: false,
     email: '',
-    id: 0
+    id: 0,
+    signedIn: false
   },
   reducers: {
     setUser: (state, action) => {
       state.admin = action.payload.admin
-      state.authenticated = true
       state.email = action.payload.email
       state.id = Number.parseInt(action.payload.id, 10)
+      state.signedIn = true
     }
   }
 })
@@ -39,8 +39,8 @@ export const signIn = googleToken => async dispatch => {
 }
 
 // Selectors
-export const isAdmin = state => state.user.admin
-export const isAuthenticated = state => state.user.authenticated
+export const admin = state => state.user.admin
+export const isSignedIn = state => state.user.signedIn
 
 // Reducer
 export default slice.reducer

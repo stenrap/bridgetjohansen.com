@@ -10,7 +10,7 @@
 ### Auth Check
 
 1. A user attempts to access the schedule page.
-1. The schedule page checks the `isAuthenticated` boolean state in the `userSlice` portion of the redux store:
+1. The schedule page checks the `signedIn` boolean state in the `userSlice` portion of the redux store:
     
     - If the user is not authenticated, they enter the [sign-in flow](#sign-in).
     - If the user is authenticated, the schedule page is [rendered](#render).
@@ -42,8 +42,8 @@
 
 Note: The schedule page is only rendered if the user is authenticated.
 
-1. The schedule page checks the `isAuthenticated` boolean state in the `userSlice` portion of the redux store, and the result is `true`.
+1. The schedule page checks the `signedIn` boolean state in the `userSlice` portion of the redux store, and the result is `true`.
 1. The schedule page fetches the schedule and group classes.
-1. The schedule page renders itself, providing CRUD buttons if the `isAdmin` boolean state in the `userSlice` portion of the redux store is `true`.
+1. The schedule page renders itself, providing CRUD buttons if the `admin` boolean state in the `userSlice` portion of the redux store is `true`.
 
 [1]: ../src/server/schema.js
