@@ -39,7 +39,7 @@ export const signIn = googleToken => async dispatch => {
 }
 
 // Selectors
-export const admin = state => state.user.admin
+export const isAdmin = state => state.user.admin
 export const isSignedIn = state => state.user.signedIn
 
 // Reducer
