@@ -4,7 +4,18 @@ const BaseDao = require('./BaseDao')
 const logger = require('../Logger')
 const tokenLib = require('../../shared/libs/token')
 
-class AuthDao extends BaseDao {
+class UserDao extends BaseDao {
+  async getUser (token) {
+    const result = await this.query({
+      sql: `SELECT *
+            FROM users
+            WHERE token = $1`,
+      params: [token]
+    })
+
+    return result.rows[0]
+  }
+
   async signIn (email, googleId) {
     let poolClient = null
 
@@ -45,4 +56,4 @@ class AuthDao extends BaseDao {
   }
 }
 
-module.exports = new AuthDao()
+module.exports = new UserDao()

@@ -1,8 +1,9 @@
+const { AuthenticationError } = require('apollo-server-express')
 const { OAuth2Client } = require('google-auth-library')
 
 const { TOKEN_COOKIE, USER_TOKEN_EXPIRATION } = require('../shared/Constants')
-const authDao = require('./daos/AuthDao')
 const cookieLib = require('../shared/libs/cookie')
+const userDao = require('./daos/UserDao')
 
 const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 
@@ -16,7 +17,7 @@ const resolvers = {
 
       payload = payload.getPayload()
 
-      const { token, user } = await authDao.signIn(payload.email, payload.sub)
+      const { token, user } = await userDao.signIn(payload.email, payload.sub)
 
       cookieLib.setCookie(res, new Date(Date.now() + (USER_TOKEN_EXPIRATION * 1000)), true, TOKEN_COOKIE, token)
 
@@ -25,7 +26,9 @@ const resolvers = {
   },
 
   Query: {
-    schedule () {
+    schedule (parent, args, { user }) {
+      if (!user) throw new AuthenticationError('Unauthorized')
+
       return {
         date: 14,
         groupClassDates: [
