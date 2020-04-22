@@ -12,7 +12,7 @@ const schema = gql`
     hour: Int!
     id: ID!
     minutes: Int!
-    students: [Student!]!
+    studentIds: [Int!]!
   }
   
   type Mutation {
@@ -32,6 +32,11 @@ const schema = gql`
     year: Int!
   }
   
+  type StudentUser {
+    email: String!
+    id: ID!
+  }
+  
   type Student {
     id: ID!
     lessonDay: Int!
@@ -41,7 +46,7 @@ const schema = gql`
     name: String!
     parents: String!
     phone: String!
-    users: [User!]!
+    users: [StudentUser!]!
   }
   
   type User {

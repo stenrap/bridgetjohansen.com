@@ -107,7 +107,7 @@
 `hour` - integer - hour of the day when the group class starts (`0` - `23` => 12:00 am - 11:00 pm)  
 `minutes` - integer - minutes of the hour when the group class starts, in 5-minute increments with a max of 55 (`0` - `55` => 0 - 55)
 
-#### `group_class_student_times`
+#### `group_class_students`
 
 ```
  id | student_id | group_class_time_id
@@ -155,7 +155,7 @@
 `token` - text - token used for authentication status  
 `admin` - boolean - whether the user is an admin
 
-#### `student_user_emails`
+#### `student_users`
 
 ```
  id | student_id | user_id

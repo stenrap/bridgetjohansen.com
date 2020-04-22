@@ -6,7 +6,7 @@ const logError = (err) => {
 
 exports.up = async db => {
   try {
-    await db.createTable('group_class_student_times', {
+    await db.createTable('student_users', {
       id: {
         type: 'integer',
         primaryKey: true,
@@ -17,7 +17,7 @@ exports.up = async db => {
         type: 'integer',
         notNull: true,
         foreignKey: {
-          name: 'group_class_student_times_student_fk',
+          name: 'student_users_student_fk',
           table: 'students',
           mapping: 'id',
           rules: {
@@ -25,12 +25,12 @@ exports.up = async db => {
           }
         }
       },
-      group_class_time_id: {
+      user_id: {
         type: 'integer',
         notNull: true,
         foreignKey: {
-          name: 'group_class_student_times_time_fk',
-          table: 'group_class_times',
+          name: 'student_users_user_fk',
+          table: 'users',
           mapping: 'id',
           rules: {
             onDelete: 'CASCADE'
@@ -44,7 +44,7 @@ exports.up = async db => {
 }
 
 exports.down = async db => {
-  return db.dropTable('group_class_student_times')
+  return db.dropTable('student_users')
 }
 
 exports._meta = {
