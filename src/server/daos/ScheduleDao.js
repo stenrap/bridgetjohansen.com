@@ -27,12 +27,15 @@ class ScheduleDao extends BaseDao {
       schedule.month = result.rows[0].month
       schedule.year = result.rows[0].year
 
-      // TODO and WYLO 1 .... You should only be looking up group_class_dates that are >= today
+      const today = new Date()
 
       result = await poolClient.query(
         `SELECT *
-         FROM group_class_dates`,
-        []
+         FROM group_class_dates
+         WHERE month >= $1
+         AND date >= $2
+         AND year >= $3`,
+        [today.getMonth(), today.getDate(), today.getFullYear()]
       )
 
       for (const row of result.rows) {
@@ -68,12 +71,12 @@ class ScheduleDao extends BaseDao {
         }
       }
 
-      for (const [groupClassTime] of groupClassTimeMap.values()) {
+      for (const groupClassTime of groupClassTimeMap.values()) {
         schedule.groupClassTimes.push(groupClassTime)
       }
 
       result = await poolClient.query(
-        `SELECT s.id AS student_id, s.name, s.parents, s.phone, s.lesson_day, s.lesson_hour, s.lesson_minutes, s.lesson_duration
+        `SELECT s.id AS student_id, s.name, s.parents, s.phone, s.lesson_day, s.lesson_hour, s.lesson_minutes, s.lesson_duration,
                 u.id AS user_id, u.email
          FROM students AS s
          JOIN student_users AS su
@@ -83,23 +86,39 @@ class ScheduleDao extends BaseDao {
         []
       )
 
+      await poolClient.query('COMMIT')
+
       const studentUserMap = new Map()
 
       for (const row of result.rows) {
         const studentId = row.studentId
+
+        const user = new StudentUser()
+        user.id = row.userId
+        user.email = row.email
+
         if (studentUserMap.has(studentId)) {
-          const user = new StudentUser()
-          user.id = row.userId
-          user.email = row.email
           studentUserMap.get(studentId).users.push(user)
         } else {
           const student = new Student()
-          // TODO and WYLO 2 .... Populate the rest of the student props
+          student.id = studentId
+          student.lessonDay = row.lessonDay
+          student.lessonDuration = row.lessonDuration
+          student.lessonHour = row.lessonHour
+          student.lessonMinutes = row.lessonMinutes
+          student.name = row.name
+          student.parents = row.parents
+          student.phone = row.phone
+          student.users.push(user)
           studentUserMap.set(studentId, student)
         }
       }
 
-      await poolClient.query('COMMIT')
+      for (const student of studentUserMap.values()) {
+        schedule.students.push(student)
+      }
+
+      return schedule
     } catch (err) {
 
     } finally {
