@@ -1,27 +1,16 @@
 import { CLIENT_NETWORK_ERROR } from '../shared/Constants'
 
 class Requests {
-  get (props) {
-    props.method = 'GET'
-    return this.fetch(props)
-  }
-
-  post (props) {
+  async fetch (props) {
+    props.body = JSON.stringify(props.body)
+    props.credentials = 'include'
     props.headers = { 'Content-Type': 'application/json' }
     props.method = 'POST'
-    return this.fetch(props)
-  }
+    props.mode = 'cors'
 
-  async fetch (props) {
     let response = {}
 
-    if (props.body) {
-      props.body = JSON.stringify(props.body)
-    }
-
     try {
-      props.credentials = 'include'
-      props.mode = 'cors'
       response = await window.fetch(`${window.apiServer}/graphql`, props)
       response = await response.json()
     } catch (err) {
@@ -32,8 +21,47 @@ class Requests {
     return response
   }
 
+  getSchedule () {
+    return this.fetch({
+      body: {
+        query: `query GetSchedule {
+          schedule {
+            date,
+            groupClassDates {
+              date,
+              id,
+              month,
+              year
+            },
+            groupClassTimes {
+              hour,
+              id,
+              minutes,
+              studentIds
+            },
+            month,
+            students {
+              id,
+              lessonDay,
+              lessonHour,
+              lessonMinutes,
+              name,
+              parents,
+              phone,
+              users {
+                email,
+                id
+              }
+            },
+            year
+          }
+        }`
+      }
+    })
+  }
+
   signIn (googleToken) {
-    return this.post({
+    return this.fetch({
       body: {
         query: `mutation SignIn ($googleToken: String!) {
           signIn(googleToken: $googleToken) {

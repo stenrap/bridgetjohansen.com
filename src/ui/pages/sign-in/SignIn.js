@@ -3,8 +3,8 @@ import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { isLoading } from '../../store/loadingSlice'
-import Loader from '../../components/loading/Loader'
 import { isSignedIn, signIn } from '../../store/userSlice'
+import Loader from '../../components/loading/Loader'
 import styles from './SignIn.module.scss'
 
 export default () => {
