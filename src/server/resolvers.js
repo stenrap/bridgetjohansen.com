@@ -23,6 +23,10 @@ const resolvers = {
   },
 
   Query: {
+    getUser (parent, args, { user }) {
+      if (!user) throw new AuthenticationError('Unauthorized')
+      return user
+    },
     schedule (parent, args, { user }) {
       if (!user) throw new AuthenticationError('Unauthorized')
       return scheduleDao.getSchedule()

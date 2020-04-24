@@ -60,6 +60,20 @@ class Requests {
     })
   }
 
+  getUser () {
+    return this.fetch({
+      body: {
+        query: `query GetUser {
+          getUser {
+            admin,
+            email,
+            id
+          }
+        }`
+      }
+    })
+  }
+
   signIn (googleToken) {
     return this.fetch({
       body: {

@@ -42,7 +42,14 @@
     <script>
       window.apiServer = '%API_SERVER%'
     </script>
-    <script src="https://apis.google.com/js/platform.js"></script>
+    <script>
+      function onGoogleLoad () {
+        gapi.load('auth2', () => {
+          gapi.auth2.init()
+        })
+      }
+    </script>
+    <script src="https://apis.google.com/js/platform.js?onload=onGoogleLoad"></script>
   </head>
   <body>
     <noscript>JavaScript must be enabled to view this site.</noscript>

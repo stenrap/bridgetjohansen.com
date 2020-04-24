@@ -15,14 +15,6 @@ const schema = gql`
     studentIds: [Int!]!
   }
   
-  type Mutation {
-    signIn(googleToken: String!): User!
-  }
-  
-  type Query {
-    schedule: Schedule!
-  }
-  
   type Schedule {
     date: Int!
     groupClassDates: [GroupClassDate!]!
@@ -30,11 +22,6 @@ const schema = gql`
     month: Int!
     students: [Student!]!
     year: Int!
-  }
-  
-  type StudentUser {
-    email: String!
-    id: ID!
   }
   
   type Student {
@@ -49,10 +36,24 @@ const schema = gql`
     users: [StudentUser!]!
   }
   
+  type StudentUser {
+    email: String!
+    id: ID!
+  }
+  
   type User {
     admin: Boolean!
     email: String!
     id: ID!
+  }
+  
+  type Mutation {
+    signIn(googleToken: String!): User!
+  }
+  
+  type Query {
+    schedule: Schedule!
+    getUser: User
   }
 `
 
