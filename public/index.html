@@ -45,7 +45,9 @@
     <script>
       function onGoogleLoad () {
         gapi.load('auth2', () => {
-          gapi.auth2.init()
+          gapi.auth2.init({
+            client_id: '754590625426-ue3m8duf29407gpno9d10prcuuu6fj7p.apps.googleusercontent.com'
+          })
         })
       }
     </script>

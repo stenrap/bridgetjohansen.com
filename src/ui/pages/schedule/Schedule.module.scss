@@ -1,4 +1,10 @@
 .schedule {
   display: flex;
   flex-direction: column;
+  padding: 24px;
+}
+
+.signOutLinkBox {
+  display: flex;
+  justify-content: flex-end;
 }

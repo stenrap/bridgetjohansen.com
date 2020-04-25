@@ -88,6 +88,18 @@ class Requests {
       }
     })
   }
+
+  signOut () {
+    return this.fetch({
+      body: {
+        query: `mutation SignOut {
+          signOut {
+            success
+          }
+        }`
+      }
+    })
+  }
 }
 
 export default new Requests()

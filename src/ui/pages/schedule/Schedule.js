@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { getSchedule } from '../../store/scheduleSlice'
 import { isSignedIn } from '../../store/userSlice'
+import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
 
 export default () => {
@@ -19,7 +20,9 @@ export default () => {
 
   return (
     <div className={styles.schedule}>
-      Hello, schedule!
+      <div className={styles.signOutLinkBox}>
+        <SignOutLink />
+      </div>
     </div>
   )
 }

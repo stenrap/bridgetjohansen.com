@@ -38,6 +38,21 @@ export const signIn = googleToken => async dispatch => {
   dispatch(setLoading(false))
 }
 
+export const signOut = () => async dispatch => {
+  dispatch(setLoading(true))
+  const response = await requests.signOut()
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error signing out...')
+    console.log(response.errors)
+    return
+  }
+
+  window.gapi.auth2.getAuthInstance().signOut()
+  window.location.reload() // Google sign in gets flaky if you don't reload. ¯\_(ツ)_/¯
+}
+
 // Selectors
 export const isAdmin = state => state.user.admin
 export const isSignedIn = state => state.user.signedIn
