@@ -19,6 +19,12 @@ const resolvers = {
       const { token, user } = await userDao.signIn(payload.email, payload.sub)
       cookieLib.setCookie(res, new Date(Date.now() + (USER_TOKEN_EXPIRATION * 1000)), true, TOKEN_COOKIE, token)
       return user
+    },
+    async signOut (parent, args, { res, user }) {
+      if (!user) throw new AuthenticationError('Unauthorized')
+      await userDao.signOut(user.id)
+      cookieLib.clearCookie(res, new Date(0), true, TOKEN_COOKIE)
+      return { success: true }
     }
   },
 

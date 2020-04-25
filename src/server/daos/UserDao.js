@@ -54,6 +54,15 @@ class UserDao extends BaseDao {
       if (poolClient) poolClient.release()
     }
   }
+
+  signOut (id) {
+    return this.query({
+      sql: `UPDATE users
+            SET token = NULL
+            WHERE id = $1`,
+      params: [id]
+    })
+  }
 }
 
 module.exports = new UserDao()

@@ -24,6 +24,10 @@ const schema = gql`
     year: Int!
   }
   
+  type SimpleResult {
+    success: Boolean
+  }
+  
   type Student {
     id: ID!
     lessonDay: Int!
@@ -49,6 +53,7 @@ const schema = gql`
   
   type Mutation {
     signIn(googleToken: String!): User!
+    signOut: SimpleResult
   }
   
   type Query {
