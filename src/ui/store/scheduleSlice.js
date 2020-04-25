@@ -1,3 +1,4 @@
+import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { setLoading } from './loadingSlice'
@@ -35,8 +36,10 @@ export const getSchedule = () => async dispatch => {
     return
   }
 
-  dispatch(setSchedule(response.data.schedule))
-  dispatch(setLoading(false))
+  batch(() => {
+    dispatch(setSchedule(response.data.schedule))
+    dispatch(setLoading(false))
+  })
 }
 
 // Reducer

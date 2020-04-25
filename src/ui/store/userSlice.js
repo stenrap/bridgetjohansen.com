@@ -1,3 +1,4 @@
+import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { setLoading } from './loadingSlice'
@@ -34,8 +35,10 @@ export const signIn = googleToken => async dispatch => {
     window.location.reload()
   }
 
-  dispatch(setUser(response.data.signIn))
-  dispatch(setLoading(false))
+  batch(() => {
+    dispatch(setUser(response.data.signIn))
+    dispatch(setLoading(false))
+  })
 }
 
 export const signOut = () => async dispatch => {
