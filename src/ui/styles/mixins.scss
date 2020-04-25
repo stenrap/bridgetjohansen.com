@@ -1,0 +1,11 @@
+@mixin link {
+  color: #6d9ec4;
+  cursor: pointer;
+  font-weight: 600;
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -21,10 +21,10 @@ class Requests {
     return response
   }
 
-  getSchedule () {
+  fetchSchedule () {
     return this.fetch({
       body: {
-        query: `query GetSchedule {
+        query: `query FetchSchedule {
           schedule {
             date,
             groupClassDates {
