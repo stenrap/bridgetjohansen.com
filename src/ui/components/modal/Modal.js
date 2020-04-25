@@ -1,0 +1,25 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import styles from './Modal.module.scss'
+
+export default props => {
+  const {
+    children,
+    title
+  } = props
+
+  const modal = (
+    <div className={styles.modalBackground}>
+      <div className={styles.modal}>
+        <div className={styles.modalTitle}>{title}</div>
+        {children}
+      </div>
+    </div>
+  )
+
+  return ReactDOM.createPortal(
+    modal,
+    document.getElementById('modal')
+  )
+}
