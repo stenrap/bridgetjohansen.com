@@ -1,5 +1,3 @@
-'use strict'
-
 const MONTHS = [
   'January',
   'February',

@@ -3,3 +3,37 @@
 .scheduleDateLink {
   @include m.link;
 }
+
+
+// Eventually these should be moved to a separate file since you'll want a generic CalendarModal
+.calendar {
+  border: 1px solid rgba(0, 0, 0, 0.1875);
+  font-family: 'Open Sans', sans-serif;
+
+  abbr[title] {
+    text-decoration: none;
+  }
+
+  button {
+    &:disabled {
+      background-color: #fff;
+      color: rgba(0, 0, 0, 0.375);
+    }
+
+    &:enabled {
+      @media (hover: hover) {
+        &:hover {
+          background-color: #e6e6e6;
+        }
+      }
+
+      &:active {
+        background-color: #e6e6e6;
+      }
+    }
+  }
+}
+
+.calendarDay {
+  height: 48px;
+}
