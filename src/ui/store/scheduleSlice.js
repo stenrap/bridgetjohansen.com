@@ -38,3 +38,6 @@ export const getSchedule = () => async dispatch => {
   dispatch(setSchedule(response.data.schedule))
   dispatch(setLoading(false))
 }
+
+// Reducer
+export default slice.reducer
