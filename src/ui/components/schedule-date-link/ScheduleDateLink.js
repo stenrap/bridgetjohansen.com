@@ -17,6 +17,8 @@ export default ({ date }) => {
 
   const modal = modalOpen && (
     <Modal
+      onCancel={() => setModalOpen(false)}
+      onOk={() => console.log('The new date is:', calendarDate)}
       title='Effective Date'
     >
       <Calendar
@@ -32,9 +34,7 @@ export default ({ date }) => {
         }}
         nextLabel={next}
         next2Label={null}
-        onChange={date => {
-          setCalendarDate(date)
-        }}
+        onChange={date => setCalendarDate(date)}
         prevLabel={prev}
         prev2Label={null}
         showFixedNumberOfWeeks

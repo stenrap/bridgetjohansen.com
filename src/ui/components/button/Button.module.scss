@@ -1,16 +1,48 @@
 .button {
-  background-color: #1c5d99;
   border: none;
-  border-radius: 75px;
+  border-radius: 60px;
   color: #fff;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
   height: 44px;
   outline: none;
-  width: 150px;
+  -webkit-tap-highlight-color: transparent;
+  width: 120px;
 
   &:enabled {
     cursor: pointer;
+  }
+}
+
+.primary {
+  background-color: rgb(28, 93, 153);
+
+  &:enabled {
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgba(28, 93, 153, 0.875);
+      }
+    }
+
+    &:active {
+      background-color: rgba(28, 93, 153, 0.75);
+    }
+  }
+}
+
+.secondary {
+  background-color: rgba(28, 93, 153, 0.75);
+
+  &:enabled {
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgba(28, 93, 153, 0.875);
+      }
+    }
+
+    &:active {
+      background-color: rgba(28, 93, 153, 0.75);
+    }
   }
 }

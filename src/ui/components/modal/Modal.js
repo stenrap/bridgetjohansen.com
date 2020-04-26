@@ -7,6 +7,8 @@ import styles from './Modal.module.scss'
 export default props => {
   const {
     children,
+    onOk,
+    onCancel,
     title
   } = props
 
@@ -16,7 +18,17 @@ export default props => {
         <div className={styles.modalTitle}>{title}</div>
         {children}
         <div className={styles.modalButtons}>
-          <Button>OK</Button>
+          <Button
+            onClick={onOk}
+          >
+            OK
+          </Button>
+          <Button
+            kind='secondary'
+            onClick={onCancel}
+          >
+            Cancel
+          </Button>
         </div>
       </div>
     </div>
