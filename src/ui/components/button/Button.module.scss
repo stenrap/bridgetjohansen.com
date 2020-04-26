@@ -1,0 +1,16 @@
+.button {
+  background-color: #1c5d99;
+  border: none;
+  border-radius: 75px;
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  height: 44px;
+  outline: none;
+  width: 150px;
+
+  &:enabled {
+    cursor: pointer;
+  }
+}

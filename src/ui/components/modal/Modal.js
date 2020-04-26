@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import Button from '../button/Button'
 import styles from './Modal.module.scss'
 
 export default props => {
@@ -15,7 +16,7 @@ export default props => {
         <div className={styles.modalTitle}>{title}</div>
         {children}
         <div className={styles.modalButtons}>
-          <button>OK</button>
+          <Button>OK</Button>
         </div>
       </div>
     </div>

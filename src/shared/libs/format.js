@@ -16,5 +16,9 @@ const MONTHS = [
 module.exports = {
   date (month, date, year) {
     return `${MONTHS[month]} ${date}, ${year}`
+  },
+
+  monthAndYear (date) {
+    return `${MONTHS[date.getMonth()]} ${date.getFullYear()}`
   }
 }

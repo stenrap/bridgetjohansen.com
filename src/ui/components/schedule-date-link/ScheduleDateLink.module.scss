@@ -7,7 +7,7 @@
 
 // Eventually these should be moved to a separate file since you'll want a generic CalendarModal
 .calendar {
-  border: 1px solid rgba(0, 0, 0, 0.1875);
+  border: transparent;
   font-family: 'Open Sans', sans-serif;
 
   abbr[title] {
@@ -15,9 +15,7 @@
   }
 
   button {
-    border-radius: unset;
-    font-weight: unset;
-    width: auto;
+    font-size: 14px;
 
     &:disabled {
       background-color: #fff;
@@ -40,4 +38,16 @@
 
 .calendarDay {
   height: 48px;
+}
+
+.monthAndYear {
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.navButton {
+  opacity: 0.625;
+  position: relative;
+  top: 2px;
 }
