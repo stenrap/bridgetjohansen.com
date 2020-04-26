@@ -14,6 +14,9 @@ export default props => {
       <div className={styles.modal}>
         <div className={styles.modalTitle}>{title}</div>
         {children}
+        <div className={styles.modalButtons}>
+          <button>OK</button>
+        </div>
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
+import './App.scss'
 import { setUser } from '../../store/userSlice'
 import Header from '../../components/header/Header'
 import Loader from '../../components/loading/Loader'

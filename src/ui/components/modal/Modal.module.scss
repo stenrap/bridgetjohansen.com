@@ -16,11 +16,16 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: calc(100% - 40px);
 }
 
 .modalTitle {
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 24px;
+}
+
+.modalButtons {
+  display: flex;
+  margin-top: 24px;
+  justify-content: center;
 }
