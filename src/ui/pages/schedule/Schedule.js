@@ -2,16 +2,14 @@ import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchSchedule, getScheduleDate } from '../../store/scheduleSlice'
-import { isAdmin, isSignedIn } from '../../store/userSlice'
+import { fetchSchedule } from '../../store/scheduleSlice'
+import { isSignedIn } from '../../store/userSlice'
 import ScheduleDate from '../../components/schedule-date/ScheduleDate'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
 
 export default () => {
-  const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
-  const scheduleDate = useSelector(getScheduleDate)
   const signedIn = useSelector(isSignedIn)
 
   useEffect(() => {
@@ -26,7 +24,7 @@ export default () => {
       <div className={styles.scheduleHeader}>
         <div>
           <div className={styles.scheduleTitle}>Lesson Schedule</div>
-          <ScheduleDate date={scheduleDate} isAdmin={admin} />
+          <ScheduleDate />
         </div>
         <SignOutLink />
       </div>

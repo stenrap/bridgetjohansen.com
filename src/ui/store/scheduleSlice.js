@@ -1,28 +1,35 @@
 import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
-import format from '../../shared/libs/format'
 import requests from '../Requests'
 import { setLoading } from './loadingSlice'
 
 export const slice = createSlice({
   name: 'schedule',
   initialState: {
-    date: 0,
-    month: -1,
-    year: 0
+    newScheduleDate: 0,
+    newScheduleMonth: -1,
+    newScheduleYear: 0,
+    scheduleDate: 0,
+    scheduleMonth: -1,
+    scheduleYear: 0
   },
   reducers: {
+    setNewScheduleDate: (state, action) => {
+      state.newScheduleDate = action.payload.date
+      state.newScheduleMonth = action.payload.month
+      state.newScheduleYear = action.payload.year
+    },
     setScheduleDate: (state, action) => {
-      state.date = action.payload.date
-      state.month = action.payload.month
-      state.year = action.payload.year
+      state.scheduleDate = action.payload.date
+      state.scheduleMonth = action.payload.month
+      state.scheduleYear = action.payload.year
     }
   }
 })
 
 // Actions
-export const { setScheduleDate } = slice.actions
+export const { setNewScheduleDate, setScheduleDate } = slice.actions
 
 // Thunks
 export const fetchSchedule = () => async dispatch => {
@@ -38,13 +45,15 @@ export const fetchSchedule = () => async dispatch => {
   }
 
   batch(() => {
+    dispatch(setNewScheduleDate(response.data.schedule))
     dispatch(setScheduleDate(response.data.schedule))
     dispatch(setLoading(false))
   })
 }
 
 // Selectors
-export const getScheduleDate = state => format.date(state.schedule.month, state.schedule.date, state.schedule.year)
+export const getNewScheduleDate = state => { return { date: state.schedule.newScheduleDate, month: state.schedule.newScheduleMonth, year: state.schedule.newScheduleYear } }
+export const getScheduleDate = state => { return { date: state.schedule.scheduleDate, month: state.schedule.scheduleMonth, year: state.schedule.scheduleYear } }
 
 // Reducer
 export default slice.reducer

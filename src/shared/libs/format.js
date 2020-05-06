@@ -14,7 +14,7 @@ const MONTHS = [
 ]
 
 module.exports = {
-  date (month, date, year) {
+  date ({ month, date, year }) {
     return `${MONTHS[month]} ${date}, ${year}`
   },
 
