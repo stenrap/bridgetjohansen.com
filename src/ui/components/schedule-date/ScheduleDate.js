@@ -1,21 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import 'react-calendar/dist/Calendar.css'
 import Calendar from 'react-calendar'
 
-import { getNewScheduleDate, getScheduleDate, setNewScheduleDate } from '../../store/scheduleSlice'
+import {
+  getNewScheduleDate,
+  getScheduleDate,
+  isMutatingScheduleDate,
+  isScheduleDateModalOpen,
+  mutateScheduleDate,
+  setNewScheduleDate,
+  setScheduleDateModalOpen
+} from '../../store/scheduleSlice'
 import { isAdmin } from '../../store/userSlice'
 import format from '../../../shared/libs/format'
+import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
 import Next from '../../svgs/next-black.svg'
 import Prev from '../../svgs/prev-black.svg'
 import styles from './ScheduleDate.module.scss'
 
 export default () => {
-  const [modalOpen, setModalOpen] = useState(false)
-
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
+  const modalOpen = useSelector(isScheduleDateModalOpen)
+  const mutatingScheduleDate = useSelector(isMutatingScheduleDate)
   const newScheduleDateObj = useSelector(getNewScheduleDate)
   const scheduleDate = useSelector(getScheduleDate)
 
@@ -29,8 +38,8 @@ export default () => {
 
   const modal = modalOpen && (
     <Modal
-      onCancel={() => setModalOpen(false)}
-      onOk={() => console.log('The new schedule date is:', newScheduleDateObj)}
+      onCancel={() => dispatch(setScheduleDateModalOpen(false))}
+      onOk={() => dispatch(mutateScheduleDate(newScheduleDateObj))}
       title='Effective Date'
     >
       <Calendar
@@ -57,13 +66,17 @@ export default () => {
     </Modal>
   )
 
+  const loadingModal = mutatingScheduleDate && (
+    <LoadingModal title='Changing effective date...' />
+  )
+
   const date = scheduleDate.date !== 0 && (
     admin
       ? (
         <>
           <span
             className={styles.scheduleDateLink}
-            onClick={() => setModalOpen(true)}
+            onClick={() => dispatch(setScheduleDateModalOpen(true))}
           >
             {format.date(scheduleDate)}
           </span>
@@ -76,6 +89,7 @@ export default () => {
   return (
     <div className={styles.scheduleDate}>
       Effective {date}
+      {loadingModal}
     </div>
   )
 }

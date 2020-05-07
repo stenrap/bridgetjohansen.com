@@ -7,14 +7,19 @@ import { setLoading } from './loadingSlice'
 export const slice = createSlice({
   name: 'schedule',
   initialState: {
+    mutatingScheduleDate: false,
     newScheduleDate: 0,
     newScheduleMonth: -1,
     newScheduleYear: 0,
     scheduleDate: 0,
+    scheduleDateModalOpen: false,
     scheduleMonth: -1,
     scheduleYear: 0
   },
   reducers: {
+    setMutatingScheduleDate: (state, action) => {
+      state.mutatingScheduleDate = action.payload
+    },
     setNewScheduleDate: (state, action) => {
       state.newScheduleDate = action.payload.date
       state.newScheduleMonth = action.payload.month
@@ -24,12 +29,15 @@ export const slice = createSlice({
       state.scheduleDate = action.payload.date
       state.scheduleMonth = action.payload.month
       state.scheduleYear = action.payload.year
+    },
+    setScheduleDateModalOpen: (state, action) => {
+      state.scheduleDateModalOpen = action.payload
     }
   }
 })
 
 // Actions
-export const { setNewScheduleDate, setScheduleDate } = slice.actions
+export const { setMutatingScheduleDate, setNewScheduleDate, setScheduleDate, setScheduleDateModalOpen } = slice.actions
 
 // Thunks
 export const fetchSchedule = () => async dispatch => {
@@ -51,9 +59,20 @@ export const fetchSchedule = () => async dispatch => {
   })
 }
 
+export const mutateScheduleDate = date => async dispatch => {
+  console.log('data is:', date)
+
+  batch(() => {
+    dispatch(setScheduleDateModalOpen(false))
+    dispatch(setMutatingScheduleDate(true))
+  })
+}
+
 // Selectors
 export const getNewScheduleDate = state => { return { date: state.schedule.newScheduleDate, month: state.schedule.newScheduleMonth, year: state.schedule.newScheduleYear } }
 export const getScheduleDate = state => { return { date: state.schedule.scheduleDate, month: state.schedule.scheduleMonth, year: state.schedule.scheduleYear } }
+export const isMutatingScheduleDate = state => state.schedule.mutatingScheduleDate
+export const isScheduleDateModalOpen = state => state.schedule.scheduleDateModalOpen
 
 // Reducer
 export default slice.reducer

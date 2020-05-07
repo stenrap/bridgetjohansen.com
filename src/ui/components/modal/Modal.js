@@ -7,29 +7,37 @@ import styles from './Modal.module.scss'
 export default props => {
   const {
     children,
+    className,
     onOk,
     onCancel,
+    showButtons = true,
     title
   } = props
 
+  const modalClass = `${styles.modal}${className ? ` ${className}` : ''}`
+
+  const buttons = showButtons && (
+    <div className={styles.modalButtons}>
+      <Button
+        onClick={onOk}
+      >
+        OK
+      </Button>
+      <Button
+        kind='secondary'
+        onClick={onCancel}
+      >
+        Cancel
+      </Button>
+    </div>
+  )
+
   const modal = (
     <div className={styles.modalBackground}>
-      <div className={styles.modal}>
+      <div className={modalClass}>
         <div className={styles.modalTitle}>{title}</div>
         {children}
-        <div className={styles.modalButtons}>
-          <Button
-            onClick={onOk}
-          >
-            OK
-          </Button>
-          <Button
-            kind='secondary'
-            onClick={onCancel}
-          >
-            Cancel
-          </Button>
-        </div>
+        {buttons}
       </div>
     </div>
   )
