@@ -7,37 +7,37 @@ import { setLoading } from './loadingSlice'
 export const slice = createSlice({
   name: 'schedule',
   initialState: {
-    mutatingScheduleDate: false,
-    newScheduleDate: 0,
-    newScheduleMonth: -1,
-    newScheduleYear: 0,
-    scheduleDate: 0,
-    scheduleDateModalOpen: false,
-    scheduleMonth: -1,
-    scheduleYear: 0
+    effectiveDate: 0,
+    effectiveDateModalOpen: false,
+    effectiveMonth: -1,
+    effectiveYear: 0,
+    mutatingEffectiveDate: false,
+    newEffectiveDate: 0,
+    newEffectiveMonth: -1,
+    newEffectiveYear: 0
   },
   reducers: {
     setMutatingScheduleDate: (state, action) => {
-      state.mutatingScheduleDate = action.payload
+      state.mutatingEffectiveDate = action.payload
     },
-    setNewScheduleDate: (state, action) => {
-      state.newScheduleDate = action.payload.date
-      state.newScheduleMonth = action.payload.month
-      state.newScheduleYear = action.payload.year
+    setNewEffectiveDate: (state, action) => {
+      state.newEffectiveDate = action.payload.date
+      state.newEffectiveMonth = action.payload.month
+      state.newEffectiveYear = action.payload.year
     },
     setScheduleDate: (state, action) => {
-      state.scheduleDate = action.payload.date
-      state.scheduleMonth = action.payload.month
-      state.scheduleYear = action.payload.year
+      state.effectiveDate = action.payload.date
+      state.effectiveMonth = action.payload.month
+      state.effectiveYear = action.payload.year
     },
-    setScheduleDateModalOpen: (state, action) => {
-      state.scheduleDateModalOpen = action.payload
+    setEffectiveDateModalOpen: (state, action) => {
+      state.effectiveDateModalOpen = action.payload
     }
   }
 })
 
 // Actions
-export const { setMutatingScheduleDate, setNewScheduleDate, setScheduleDate, setScheduleDateModalOpen } = slice.actions
+export const { setMutatingScheduleDate, setNewEffectiveDate, setScheduleDate, setEffectiveDateModalOpen } = slice.actions
 
 // Thunks
 export const fetchSchedule = () => async dispatch => {
@@ -53,15 +53,15 @@ export const fetchSchedule = () => async dispatch => {
   }
 
   batch(() => {
-    dispatch(setNewScheduleDate(response.data.schedule))
+    dispatch(setNewEffectiveDate(response.data.schedule))
     dispatch(setScheduleDate(response.data.schedule))
     dispatch(setLoading(false))
   })
 }
 
-export const mutateScheduleDate = date => async dispatch => {
+export const mutateEffectiveDate = date => async dispatch => {
   batch(() => {
-    dispatch(setScheduleDateModalOpen(false))
+    dispatch(setEffectiveDateModalOpen(false))
     dispatch(setMutatingScheduleDate(true))
   })
 
@@ -81,10 +81,10 @@ export const mutateScheduleDate = date => async dispatch => {
 }
 
 // Selectors
-export const getNewScheduleDate = state => { return { date: state.schedule.newScheduleDate, month: state.schedule.newScheduleMonth, year: state.schedule.newScheduleYear } }
-export const getScheduleDate = state => { return { date: state.schedule.scheduleDate, month: state.schedule.scheduleMonth, year: state.schedule.scheduleYear } }
-export const isMutatingScheduleDate = state => state.schedule.mutatingScheduleDate
-export const isScheduleDateModalOpen = state => state.schedule.scheduleDateModalOpen
+export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
+export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
+export const isEffectiveDateModalOpen = state => state.schedule.effectiveDateModalOpen
+export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
 
 // Reducer
 export default slice.reducer

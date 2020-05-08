@@ -4,13 +4,13 @@ import 'react-calendar/dist/Calendar.css'
 import Calendar from 'react-calendar'
 
 import {
-  getNewScheduleDate,
-  getScheduleDate,
-  isMutatingScheduleDate,
-  isScheduleDateModalOpen,
-  mutateScheduleDate,
-  setNewScheduleDate,
-  setScheduleDateModalOpen
+  getEffectiveDate,
+  getNewEffectiveDate,
+  isEffectiveDateModalOpen,
+  isMutatingEffectiveDate,
+  mutateEffectiveDate,
+  setEffectiveDateModalOpen,
+  setNewEffectiveDate
 } from '../../store/scheduleSlice'
 import { isAdmin } from '../../store/userSlice'
 import format from '../../../shared/libs/format'
@@ -23,10 +23,10 @@ import styles from './EffectiveDate.module.scss'
 export default () => {
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
-  const effectiveDate = useSelector(getScheduleDate)
-  const modalOpen = useSelector(isScheduleDateModalOpen)
-  const mutatingEffectiveDate = useSelector(isMutatingScheduleDate)
-  const newEffectiveDateObj = useSelector(getNewScheduleDate)
+  const effectiveDate = useSelector(getEffectiveDate)
+  const modalOpen = useSelector(isEffectiveDateModalOpen)
+  const mutatingEffectiveDate = useSelector(isMutatingEffectiveDate)
+  const newEffectiveDateObj = useSelector(getNewEffectiveDate)
 
   const newEffectiveDate = new Date()
   newEffectiveDate.setMonth(newEffectiveDateObj.month)
@@ -38,8 +38,8 @@ export default () => {
 
   const modal = modalOpen && (
     <Modal
-      onCancel={() => dispatch(setScheduleDateModalOpen(false))}
-      onOk={() => dispatch(mutateScheduleDate(newEffectiveDateObj))}
+      onCancel={() => dispatch(setEffectiveDateModalOpen(false))}
+      onOk={() => dispatch(mutateEffectiveDate(newEffectiveDateObj))}
       title='Effective Date'
     >
       <Calendar
@@ -55,7 +55,7 @@ export default () => {
         }}
         nextLabel={next}
         next2Label={null}
-        onChange={newDate => dispatch(setNewScheduleDate({ date: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear() }))}
+        onChange={newDate => dispatch(setNewEffectiveDate({ date: newDate.getDate(), month: newDate.getMonth(), year: newDate.getFullYear() }))}
         prevLabel={prev}
         prev2Label={null}
         showFixedNumberOfWeeks
@@ -76,7 +76,7 @@ export default () => {
         <>
           <span
             className={styles.effectiveDateLink}
-            onClick={() => dispatch(setScheduleDateModalOpen(true))}
+            onClick={() => dispatch(setEffectiveDateModalOpen(true))}
           >
             {format.date(effectiveDate)}
           </span>
