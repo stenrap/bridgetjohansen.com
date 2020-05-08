@@ -18,7 +18,7 @@ import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
 import Next from '../../svgs/next-black.svg'
 import Prev from '../../svgs/prev-black.svg'
-import styles from './ScheduleDate.module.scss'
+import styles from './EffectiveDate.module.scss'
 
 export default () => {
   const admin = useSelector(isAdmin)

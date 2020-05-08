@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { fetchSchedule } from '../../store/scheduleSlice'
 import { isSignedIn } from '../../store/userSlice'
-import ScheduleDate from '../../components/schedule-date/ScheduleDate'
+import EffectiveDate from '../../components/effective-date/EffectiveDate'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
 
@@ -24,7 +24,7 @@ export default () => {
       <div className={styles.scheduleHeader}>
         <div>
           <div className={styles.scheduleTitle}>Lesson Schedule</div>
-          <ScheduleDate />
+          <EffectiveDate />
         </div>
         <SignOutLink />
       </div>
