@@ -23,15 +23,15 @@ import styles from './EffectiveDate.module.scss'
 export default () => {
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
+  const effectiveDate = useSelector(getScheduleDate)
   const modalOpen = useSelector(isScheduleDateModalOpen)
-  const mutatingScheduleDate = useSelector(isMutatingScheduleDate)
-  const newScheduleDateObj = useSelector(getNewScheduleDate)
-  const scheduleDate = useSelector(getScheduleDate)
+  const mutatingEffectiveDate = useSelector(isMutatingScheduleDate)
+  const newEffectiveDateObj = useSelector(getNewScheduleDate)
 
-  const newScheduleDate = new Date()
-  newScheduleDate.setMonth(newScheduleDateObj.month)
-  newScheduleDate.setDate(newScheduleDateObj.date)
-  newScheduleDate.setFullYear(newScheduleDateObj.year)
+  const newEffectiveDate = new Date()
+  newEffectiveDate.setMonth(newEffectiveDateObj.month)
+  newEffectiveDate.setDate(newEffectiveDateObj.date)
+  newEffectiveDate.setFullYear(newEffectiveDateObj.year)
 
   const next = <img className={styles.navButton} alt='Next' src={Next} />
   const prev = <img className={styles.navButton} alt='Previous' src={Prev} />
@@ -39,7 +39,7 @@ export default () => {
   const modal = modalOpen && (
     <Modal
       onCancel={() => dispatch(setScheduleDateModalOpen(false))}
-      onOk={() => dispatch(mutateScheduleDate(newScheduleDateObj))}
+      onOk={() => dispatch(mutateScheduleDate(newEffectiveDateObj))}
       title='Effective Date'
     >
       <Calendar
@@ -60,34 +60,34 @@ export default () => {
         prev2Label={null}
         showFixedNumberOfWeeks
         tileClassName={styles.calendarDay}
-        value={newScheduleDate}
+        value={newEffectiveDate}
         view='month'
       />
     </Modal>
   )
 
-  const loadingModal = mutatingScheduleDate && (
+  const loadingModal = mutatingEffectiveDate && (
     <LoadingModal title='Changing effective date...' />
   )
 
-  const date = scheduleDate.date !== 0 && (
+  const date = effectiveDate.date !== 0 && (
     admin
       ? (
         <>
           <span
-            className={styles.scheduleDateLink}
+            className={styles.effectiveDateLink}
             onClick={() => dispatch(setScheduleDateModalOpen(true))}
           >
-            {format.date(scheduleDate)}
+            {format.date(effectiveDate)}
           </span>
           {modal}
         </>
       )
-      : format.date(scheduleDate)
+      : format.date(effectiveDate)
   )
 
   return (
-    <div className={styles.scheduleDate}>
+    <div className={styles.effectiveDate}>
       Effective {date}
       {loadingModal}
     </div>

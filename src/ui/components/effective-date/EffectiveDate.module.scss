@@ -1,11 +1,11 @@
 @use '../../styles/mixins' as m;
 
-.scheduleDate {
+.effectiveDate {
   left: 2px;
   position: relative;
 }
 
-.scheduleDateLink {
+.effectiveDateLink {
   @include m.link;
 }
 
