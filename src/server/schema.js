@@ -52,6 +52,7 @@ const schema = gql`
   }
   
   type Mutation {
+    effectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult
     signIn(googleToken: String!): User!
     signOut: SimpleResult
   }

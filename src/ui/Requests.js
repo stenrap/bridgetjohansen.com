@@ -74,6 +74,19 @@ class Requests {
     })
   }
 
+  mutateEffectiveDate ({ month, date, year }) {
+    return this.fetch({
+      body: {
+        query: `mutation EffectiveDate ($month: Int!, $date: Int!, $year: Int!) {
+          effectiveDate(month: $month, date: $date, year: $year) {
+            success
+          }
+        }`,
+        variables: { month, date, year }
+      }
+    })
+  }
+
   signIn (googleToken) {
     return this.fetch({
       body: {

@@ -125,6 +125,14 @@ class ScheduleDao extends BaseDao {
       if (poolClient) poolClient.release()
     }
   }
+
+  async updateEffectiveDate (month, date, year) {
+    return this.query({
+      sql: `UPDATE schedule
+            SET month = $1, date = $2, year = $3`,
+      params: [month, date, year]
+    })
+  }
 }
 
 module.exports = new ScheduleDao()

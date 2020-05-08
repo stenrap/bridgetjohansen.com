@@ -10,6 +10,11 @@ const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 
 const resolvers = {
   Mutation: {
+    async effectiveDate (parent, { month, date, year }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+      await scheduleDao.updateEffectiveDate(month, date, year)
+      return { success: true }
+    },
     async signIn (parent, { googleToken }, { res }) {
       let payload = await client.verifyIdToken({
         idToken: googleToken,

@@ -60,12 +60,13 @@ export const fetchSchedule = () => async dispatch => {
 }
 
 export const mutateScheduleDate = date => async dispatch => {
-  console.log('data is:', date)
-
   batch(() => {
     dispatch(setScheduleDateModalOpen(false))
     dispatch(setMutatingScheduleDate(true))
   })
+
+  const response = await requests.mutateEffectiveDate(date)
+  console.log('response is:', response)
 }
 
 // Selectors
