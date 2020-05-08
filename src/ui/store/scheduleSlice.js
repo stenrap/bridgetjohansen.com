@@ -66,7 +66,18 @@ export const mutateScheduleDate = date => async dispatch => {
   })
 
   const response = await requests.mutateEffectiveDate(date)
-  console.log('response is:', response)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error mutating effective date...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    dispatch(setScheduleDate(date))
+    dispatch(setMutatingScheduleDate(false))
+  })
 }
 
 // Selectors
