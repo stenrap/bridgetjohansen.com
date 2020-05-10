@@ -6,10 +6,10 @@ import Calendar from 'react-calendar'
 import {
   getEffectiveDate,
   getNewEffectiveDate,
-  isEffectiveDateModalOpen,
+  isEditingEffectiveDate,
   isMutatingEffectiveDate,
   mutateEffectiveDate,
-  setEffectiveDateModalOpen,
+  setEditingEffectiveDate,
   setNewEffectiveDate
 } from '../../store/scheduleSlice'
 import { isAdmin } from '../../store/userSlice'
@@ -23,8 +23,8 @@ import styles from './EffectiveDate.module.scss'
 export default () => {
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
+  const editingEffectiveDate = useSelector(isEditingEffectiveDate)
   const effectiveDate = useSelector(getEffectiveDate)
-  const modalOpen = useSelector(isEffectiveDateModalOpen)
   const mutatingEffectiveDate = useSelector(isMutatingEffectiveDate)
   const newEffectiveDateObj = useSelector(getNewEffectiveDate)
 
@@ -36,9 +36,9 @@ export default () => {
   const next = <img className={styles.navButton} alt='Next' src={Next} />
   const prev = <img className={styles.navButton} alt='Previous' src={Prev} />
 
-  const modal = modalOpen && (
+  const modal = editingEffectiveDate && (
     <Modal
-      onCancel={() => dispatch(setEffectiveDateModalOpen(false))}
+      onCancel={() => dispatch(setEditingEffectiveDate(false))}
       onOk={() => dispatch(mutateEffectiveDate(newEffectiveDateObj))}
       title='Effective Date'
     >
@@ -76,7 +76,7 @@ export default () => {
         <>
           <span
             className={styles.effectiveDateLink}
-            onClick={() => dispatch(setEffectiveDateModalOpen(true))}
+            onClick={() => dispatch(setEditingEffectiveDate(true))}
           >
             {format.date(effectiveDate)}
           </span>
