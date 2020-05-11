@@ -1,7 +1,24 @@
+.studentModal {
+  width: 390px;
+}
+
 .inputRow {
   margin-bottom: 16px;
 }
 
+.lessonSelects {
+  display: flex;
+}
+
 .lessonDay {
   width: 112px;
+}
+
+.lessonHour {
+  margin-left: 12px;
+  width: 50px;
+}
+
+.lessonMinutes {
+  width: 50px;
 }
