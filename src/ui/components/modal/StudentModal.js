@@ -9,10 +9,10 @@ export default props => {
   const {
     student = {}
   } = props
-  // const [emails, setEmails] = useState(student.emails || [])
+  const [emails, setEmails] = useState(student.emails || '')
   const [lessonAmPm, setLessonAmPm] = useState(student.lessonAmPm || 'pm')
   const [lessonDay, setLessonDay] = useState(student.lessonDay || TUESDAY)
-  // const [lessonDuration, setLessonDuration] = useState(student.lessonDuration || '')
+  const [lessonDuration, setLessonDuration] = useState(student.lessonDuration || 30)
   const [lessonHour, setLessonHour] = useState(student.lessonHour || 2)
   const [lessonMinutes, setLessonMinutes] = useState(student.lessonMinutes || 0)
   const [name, setName] = useState(student.name || '')
@@ -22,7 +22,9 @@ export default props => {
   return (
     <Modal
       {...props}
-      className={styles.studentModal}
+      onOk={() => {
+        console.log('TODO: Add validation in a shared lib...')
+      }}
       title={`${student.id ? 'Edit' : 'Add'} Student`}
     >
       <div className={styles.inputRow}>
@@ -50,21 +52,24 @@ export default props => {
         />
       </div>
       <div className={styles.inputRow}>
-        <label>Lesson</label>
+        <label>Lesson Day</label>
+        <select
+          className={styles.lessonDay}
+          onChange={event => setLessonDay(event.target.value)}
+          value={lessonDay}
+        >
+          <option value={SUNDAY}>Sunday</option>
+          <option value={MONDAY}>Monday</option>
+          <option value={TUESDAY}>Tuesday</option>
+          <option value={WEDNESDAY}>Wednesday</option>
+          <option value={THURSDAY}>Thursday</option>
+          <option value={FRIDAY}>Friday</option>
+          <option value={SATURDAY}>Saturday</option>
+        </select>
+      </div>
+      <div className={styles.inputRow}>
+        <label>Lesson Time</label>
         <div className={styles.lessonSelects}>
-          <select
-            className={styles.lessonDay}
-            onChange={event => setLessonDay(event.target.value)}
-            value={lessonDay}
-          >
-            <option value={SUNDAY}>Sunday</option>
-            <option value={MONDAY}>Monday</option>
-            <option value={TUESDAY}>Tuesday</option>
-            <option value={WEDNESDAY}>Wednesday</option>
-            <option value={THURSDAY}>Thursday</option>
-            <option value={FRIDAY}>Friday</option>
-            <option value={SATURDAY}>Saturday</option>
-          </select>
           <select
             className={styles.lessonHour}
             onChange={event => setLessonHour(event.target.value)}
@@ -110,6 +115,26 @@ export default props => {
             <option value='pm'>PM</option>
           </select>
         </div>
+      </div>
+      <div className={styles.inputRow}>
+        <label>Lesson Duration</label>
+        <select
+          className={styles.lessonDuration}
+          onChange={event => setLessonDuration(event.target.value)}
+          value={lessonDuration}
+        >
+          <option value={30}>30 minutes</option>
+          <option value={45}>45 minutes</option>
+          <option value={60}>60 minutes</option>
+        </select>
+      </div>
+      <div className={styles.inputRow}>
+        <label>Google Sign-In Emails</label>
+        <textarea
+          onChange={event => setEmails(event.target.value)}
+          placeholder='One per line...'
+          value={emails}
+        />
       </div>
     </Modal>
   )
