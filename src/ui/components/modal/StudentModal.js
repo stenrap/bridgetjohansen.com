@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
+import { isValidEmail, isValidString } from '../../../shared/libs/validation'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
 import Modal from '../modal/Modal'
 import styles from './StudentModal.module.scss'
-import validation from '../../../shared/libs/validation'
 
 export default props => {
   const {
@@ -28,16 +28,16 @@ export default props => {
     <Modal
       {...props}
       onOk={() => {
-        if (!validation.isValidString(name)) setNameError(true)
-        if (!validation.isValidString(parents)) setParentsError(true)
-        if (!validation.isValidString(phone)) setPhoneError(true)
+        if (!isValidString(name)) setNameError(true)
+        if (!isValidString(parents)) setParentsError(true)
+        if (!isValidString(phone)) setPhoneError(true)
 
-        const allEmails = emails.split('\n').filter(email => validation.isValidString(email))
+        const allEmails = emails.split('\n').filter(email => isValidString(email))
 
         if (allEmails.length === 0) return setEmailsError(true)
 
         for (const email of allEmails) {
-          if (!validation.isValidEmail(email)) return setEmailSyntaxError(true)
+          if (!isValidEmail(email)) return setEmailSyntaxError(true)
         }
         // TODO .... Dispatch a mutation that either creates or changes the student
       }}

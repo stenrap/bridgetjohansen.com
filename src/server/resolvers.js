@@ -1,6 +1,7 @@
-const { AuthenticationError } = require('apollo-server-express')
+const { AuthenticationError, UserInputError } = require('apollo-server-express')
 const { OAuth2Client } = require('google-auth-library')
 
+const { isValidEmailList, isValidLessonDay, isValidString } = require('../shared/libs/validation')
 const { TOKEN_COOKIE, USER_TOKEN_EXPIRATION } = require('../shared/Constants')
 const cookieLib = require('../shared/libs/cookie')
 const scheduleDao = require('./daos/ScheduleDao')
@@ -35,7 +36,14 @@ const resolvers = {
     async student (parent, { targetStudent }, { user }) {
       if (!user) throw new AuthenticationError('Unauthorized')
 
-      // TODO .... Validate the student
+      const validStudent = targetStudent &&
+        isValidString(targetStudent.name) &&
+        isValidString(targetStudent.parents) &&
+        isValidString(targetStudent.phone) &&
+        isValidLessonDay(targetStudent.lessonDay) &&
+        isValidEmailList(targetStudent.users.map(user => user.email))
+
+      if (!validStudent) throw new UserInputError('Invalid data')
 
       if (!targetStudent.id) {
         return studentDao.insertStudent(targetStudent)
