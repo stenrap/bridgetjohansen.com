@@ -1,4 +1,9 @@
 module.exports = Object.freeze({
+  /* ----------- */
+  /* Constraints */
+  /* ----------- */
+  MAX_STRING_LENGTH: 255,
+
   /* ------------ */
   /* Cookie Names */
   /* ------------ */

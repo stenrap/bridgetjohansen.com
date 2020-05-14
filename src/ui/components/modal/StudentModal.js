@@ -1,36 +1,56 @@
 import React, { useState } from 'react'
 
-import Modal from '../modal/Modal'
-
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
+import Modal from '../modal/Modal'
 import styles from './StudentModal.module.scss'
+import validation from '../../../shared/libs/validation'
 
 export default props => {
   const {
     student = {}
   } = props
   const [emails, setEmails] = useState(student.emails || '')
+  const [emailsError, setEmailsError] = useState(false)
+  const [emailSyntaxError, setEmailSyntaxError] = useState(false)
   const [lessonAmPm, setLessonAmPm] = useState(student.lessonAmPm || 'pm')
   const [lessonDay, setLessonDay] = useState(student.lessonDay || TUESDAY)
   const [lessonDuration, setLessonDuration] = useState(student.lessonDuration || 30)
   const [lessonHour, setLessonHour] = useState(student.lessonHour || 2)
   const [lessonMinutes, setLessonMinutes] = useState(student.lessonMinutes || 0)
   const [name, setName] = useState(student.name || '')
+  const [nameError, setNameError] = useState(false)
   const [parents, setParents] = useState(student.parents || '')
+  const [parentsError, setParentsError] = useState(false)
   const [phone, setPhone] = useState(student.phone || '')
+  const [phoneError, setPhoneError] = useState(false)
 
   return (
     <Modal
       {...props}
       onOk={() => {
-        console.log('TODO: Add validation in a shared lib...')
+        if (!validation.isValidString(name)) setNameError(true)
+        if (!validation.isValidString(parents)) setParentsError(true)
+        if (!validation.isValidString(phone)) setPhoneError(true)
+
+        const allEmails = emails.split('\n').filter(email => validation.isValidString(email))
+
+        if (allEmails.length === 0) return setEmailsError(true)
+
+        for (const email of allEmails) {
+          if (!validation.isValidEmail(email)) return setEmailSyntaxError(true)
+        }
+        // TODO .... Dispatch a mutation that either creates or changes the student
       }}
       title={`${student.id ? 'Edit' : 'Add'} Student`}
     >
       <div className={styles.inputRow}>
         <label>Name</label>
         <input
-          onChange={event => setName(event.target.value)}
+          className={nameError ? 'error' : undefined}
+          onChange={event => {
+            setName(event.target.value)
+            setNameError(false)
+          }}
           type='text'
           value={name}
         />
@@ -38,7 +58,11 @@ export default props => {
       <div className={styles.inputRow}>
         <label>Parents</label>
         <input
-          onChange={event => setParents(event.target.value)}
+          className={parentsError ? 'error' : undefined}
+          onChange={event => {
+            setParents(event.target.value)
+            setParentsError(false)
+          }}
           type='text'
           value={parents}
         />
@@ -46,7 +70,11 @@ export default props => {
       <div className={styles.inputRow}>
         <label>Phone</label>
         <input
-          onChange={event => setPhone(event.target.value)}
+          className={phoneError ? 'error' : undefined}
+          onChange={event => {
+            setPhone(event.target.value)
+            setPhoneError(false)
+          }}
           type='tel'
           value={phone}
         />
@@ -129,9 +157,14 @@ export default props => {
         </select>
       </div>
       <div className={styles.inputRow}>
-        <label>Google Sign-In Emails</label>
+        <label>Google Sign-In Emails<span className='errorText'>{emailSyntaxError ? ' (invalid syntax)' : ''}</span></label>
         <textarea
-          onChange={event => setEmails(event.target.value)}
+          className={emailsError || emailSyntaxError ? 'error' : undefined}
+          onChange={event => {
+            setEmails(event.target.value)
+            setEmailsError(false)
+            setEmailSyntaxError(false)
+          }}
           placeholder='One per line...'
           value={emails}
         />
