@@ -3,12 +3,13 @@
 const BaseDao = require('./BaseDao')
 const GroupClassDate = require('../../shared/models/GroupClassDate')
 const GroupClassTime = require('../../shared/models/GroupClassTime')
+const logger = require('../Logger')
 const Schedule = require('../../shared/models/Schedule')
 const Student = require('../../shared/models/Student')
 const StudentUser = require('../../shared/models/StudentUser')
 
 class ScheduleDao extends BaseDao {
-  async getSchedule () {
+  async selectSchedule () {
     const schedule = new Schedule()
 
     let poolClient = null
@@ -120,13 +121,14 @@ class ScheduleDao extends BaseDao {
 
       return schedule
     } catch (err) {
-
+      logger.error('Error getting schedule')
+      logger.error(err)
     } finally {
       if (poolClient) poolClient.release()
     }
   }
 
-  async updateEffectiveDate (month, date, year) {
+  updateEffectiveDate (month, date, year) {
     return this.query({
       sql: `UPDATE schedule
             SET month = $1, date = $2, year = $3`,

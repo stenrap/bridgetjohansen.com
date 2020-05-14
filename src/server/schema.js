@@ -40,6 +40,11 @@ const schema = gql`
     users: [StudentUser!]!
   }
   
+  type StudentResult {
+    id: ID!
+    users: [UserResult!]!
+  }
+  
   type StudentUser {
     email: String!
     id: ID!
@@ -51,10 +56,16 @@ const schema = gql`
     id: ID!
   }
   
+  type UserResult {
+    email: String!
+    id: ID!
+  }
+  
   type Mutation {
     effectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult
     signIn(googleToken: String!): User!
     signOut: SimpleResult
+    student(targetStudent: Student!): StudentResult!
   }
   
   type Query {

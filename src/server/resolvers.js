@@ -4,6 +4,7 @@ const { OAuth2Client } = require('google-auth-library')
 const { TOKEN_COOKIE, USER_TOKEN_EXPIRATION } = require('../shared/Constants')
 const cookieLib = require('../shared/libs/cookie')
 const scheduleDao = require('./daos/ScheduleDao')
+const studentDao = require('./daos/StudentDao')
 const userDao = require('./daos/UserDao')
 
 const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
@@ -30,6 +31,15 @@ const resolvers = {
       await userDao.signOut(user.id)
       cookieLib.clearCookie(res, new Date(0), true, TOKEN_COOKIE)
       return { success: true }
+    },
+    async student (parent, { targetStudent }, { user }) {
+      if (!user) throw new AuthenticationError('Unauthorized')
+
+      // TODO .... Validate the student
+
+      if (!targetStudent.id) {
+        return studentDao.insertStudent(targetStudent)
+      }
     }
   },
 
@@ -40,7 +50,7 @@ const resolvers = {
     },
     schedule (parent, args, { user }) {
       if (!user) throw new AuthenticationError('Unauthorized')
-      return scheduleDao.getSchedule()
+      return scheduleDao.selectSchedule()
     }
   }
 }
