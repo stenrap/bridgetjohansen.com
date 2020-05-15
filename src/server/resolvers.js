@@ -1,7 +1,14 @@
 const { AuthenticationError, UserInputError } = require('apollo-server-express')
 const { OAuth2Client } = require('google-auth-library')
 
-const { isValidEmailList, isValidLessonDay, isValidString } = require('../shared/libs/validation')
+const {
+  isValidEmailList,
+  isValidLessonDay,
+  isValidLessonHour,
+  isValidLessonMinutes,
+  isValidLessonDuration,
+  isValidString
+} = require('../shared/libs/validation')
 const { TOKEN_COOKIE, USER_TOKEN_EXPIRATION } = require('../shared/Constants')
 const cookieLib = require('../shared/libs/cookie')
 const scheduleDao = require('./daos/ScheduleDao')
@@ -41,12 +48,17 @@ const resolvers = {
         isValidString(targetStudent.parents) &&
         isValidString(targetStudent.phone) &&
         isValidLessonDay(targetStudent.lessonDay) &&
+        isValidLessonHour(targetStudent.lessonHour) &&
+        isValidLessonMinutes(targetStudent.lessonMinutes) &&
+        isValidLessonDuration(targetStudent.lessonDuration) &&
         isValidEmailList(targetStudent.users.map(user => user.email))
 
       if (!validStudent) throw new UserInputError('Invalid data')
 
       if (!targetStudent.id) {
         return studentDao.insertStudent(targetStudent)
+      } else {
+        // Validate the id...then updateStudent()...
       }
     }
   },

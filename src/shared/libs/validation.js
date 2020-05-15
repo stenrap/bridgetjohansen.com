@@ -19,6 +19,18 @@ export function isValidLessonDay (day) {
   return day >= SUNDAY && day <= SATURDAY
 }
 
+export function isValidLessonDuration (duration) {
+  return duration === 30 || duration === 60 || duration === 90
+}
+
+export function isValidLessonHour (hour) {
+  return hour >= 1 && hour <= 12
+}
+
+export function isValidLessonMinutes (minutes) {
+  return minutes >= 0 && minutes <= 55 && minutes % 5 === 0
+}
+
 export function isValidString (string) {
   if (!string) return false
   const trimmed = string.trim()
