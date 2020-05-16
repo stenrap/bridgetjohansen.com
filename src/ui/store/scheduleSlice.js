@@ -13,6 +13,7 @@ export const slice = createSlice({
     effectiveMonth: -1,
     effectiveYear: 0,
     mutatingEffectiveDate: false,
+    mutatingStudent: false,
     newEffectiveDate: 0,
     newEffectiveMonth: -1,
     newEffectiveYear: 0
@@ -32,6 +33,9 @@ export const slice = createSlice({
     setMutatingEffectiveDate: (state, action) => {
       state.mutatingEffectiveDate = action.payload
     },
+    setMutatingStudent: (state, action) => {
+      state.mutatingStudent = action.payload
+    },
     setNewEffectiveDate: (state, action) => {
       state.newEffectiveDate = action.payload.date
       state.newEffectiveMonth = action.payload.month
@@ -46,6 +50,7 @@ export const {
   setEditingEffectiveDate,
   setEffectiveDate,
   setMutatingEffectiveDate,
+  setMutatingStudent,
   setNewEffectiveDate
 } = slice.actions
 
@@ -91,8 +96,23 @@ export const mutateEffectiveDate = date => async dispatch => {
 }
 
 export const mutateStudent = student => async dispatch => {
+  dispatch(setMutatingStudent(true))
+
   const response = await requests.mutateStudent(student)
-  console.log('response is:', response)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error mutating student...')
+    console.log(response.errors)
+    return
+  }
+
+  // TODO .... Add the student to the store
+
+  batch(() => {
+    dispatch(setAddingStudent(false))
+    dispatch(setMutatingStudent(false))
+  })
 }
 
 // Selectors
@@ -101,6 +121,7 @@ export const getNewEffectiveDate = state => { return { date: state.schedule.newE
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
+export const isMutatingStudent = state => state.schedule.mutatingStudent
 
 // Reducer
 export default slice.reducer
