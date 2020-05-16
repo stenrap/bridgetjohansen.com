@@ -74,10 +74,10 @@ const schema = gql`
   }
   
   type Mutation {
+    createStudent(student: StudentInput!): Student!
     effectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult
     signIn(googleToken: String!): User!
     signOut: SimpleResult
-    student(targetStudent: StudentInput!): StudentResult!
   }
   
   type Query {

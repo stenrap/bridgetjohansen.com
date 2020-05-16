@@ -92,8 +92,8 @@ class Requests {
 
     return this.fetch({
       body: {
-        query: `mutation Student ($targetStudent: StudentInput!) {
-          student(targetStudent: $targetStudent) {
+        query: `mutation CreateStudent ($student: StudentInput!) {
+          createStudent(student: $student) {
             id,
             users {
               email,
@@ -101,7 +101,7 @@ class Requests {
             }
           }
         }`,
-        variables: { targetStudent: student }
+        variables: { student }
       }
     })
   }

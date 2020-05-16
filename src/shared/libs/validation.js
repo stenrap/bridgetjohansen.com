@@ -31,6 +31,10 @@ exports.isValidLessonMinutes = minutes => {
   return minutes >= 0 && minutes <= 55 && minutes % 5 === 0
 }
 
+exports.isValidLessonMeridiem = meridiem => {
+  return meridiem === 'am' || meridiem === 'pm'
+}
+
 exports.isValidString = string => {
   if (!string) return false
   const trimmed = string.trim()

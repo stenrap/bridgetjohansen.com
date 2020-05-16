@@ -17,10 +17,10 @@ export default props => {
   const [emails, setEmails] = useState(student.emails || '')
   const [emailsError, setEmailsError] = useState(false)
   const [emailSyntaxError, setEmailSyntaxError] = useState(false)
-  const [lessonAmPm, setLessonAmPm] = useState(student.lessonAmPm || 'pm')
   const [lessonDay, setLessonDay] = useState(student.lessonDay || TUESDAY)
   const [lessonDuration, setLessonDuration] = useState(student.lessonDuration || 30)
   const [lessonHour, setLessonHour] = useState(student.lessonHour || 2)
+  const [lessonMeridiem, setLessonMeridiem] = useState(student.lessonMeridiem || 'pm')
   const [lessonMinutes, setLessonMinutes] = useState(student.lessonMinutes || 0)
   const [name, setName] = useState(student.name || '')
   const [nameError, setNameError] = useState(false)
@@ -42,14 +42,15 @@ export default props => {
         if (!isValidEmailList(allEmails)) return setEmailSyntaxError(true)
 
         dispatch(mutateStudent({
+          emails: allEmails,
           lessonDay,
           lessonDuration,
           lessonHour,
+          lessonMeridiem,
           lessonMinutes,
           name,
           parents,
-          phone,
-          emails: allEmails
+          phone
         }))
       }}
       title={`${student.id ? 'Edit' : 'Add'} Student`}
@@ -147,8 +148,8 @@ export default props => {
           </select>
           <select
             className={styles.lessonMinutes}
-            onChange={event => setLessonAmPm(event.target.value)}
-            value={lessonAmPm}
+            onChange={event => setLessonMeridiem(event.target.value)}
+            value={lessonMeridiem}
           >
             <option value='am'>AM</option>
             <option value='pm'>PM</option>

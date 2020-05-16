@@ -5,6 +5,7 @@ const {
   isValidEmailList,
   isValidLessonDay,
   isValidLessonHour,
+  isValidLessonMeridiem,
   isValidLessonMinutes,
   isValidLessonDuration,
   isValidString
@@ -19,6 +20,24 @@ const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 
 const resolvers = {
   Mutation: {
+    async createStudent (parent, { student }, { user }) {
+      if (!user) throw new AuthenticationError('Unauthorized')
+
+      const validStudent = student &&
+        isValidString(student.name) &&
+        isValidString(student.parents) &&
+        isValidString(student.phone) &&
+        isValidLessonDay(student.lessonDay) &&
+        isValidLessonHour(student.lessonHour) &&
+        isValidLessonMinutes(student.lessonMinutes) &&
+        isValidLessonMeridiem(student.lessonMeridiem) &&
+        isValidLessonDuration(student.lessonDuration) &&
+        isValidEmailList(student.emails)
+
+      if (!validStudent) throw new UserInputError('Invalid data')
+
+      return studentDao.insertStudent(student)
+    },
     async effectiveDate (parent, { month, date, year }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
       await scheduleDao.updateEffectiveDate(month, date, year)
@@ -39,27 +58,6 @@ const resolvers = {
       await userDao.signOut(user.id)
       cookieLib.clearCookie(res, new Date(0), true, TOKEN_COOKIE)
       return { success: true }
-    },
-    async student (parent, { targetStudent }, { user }) {
-      if (!user) throw new AuthenticationError('Unauthorized')
-
-      const validStudent = targetStudent &&
-        isValidString(targetStudent.name) &&
-        isValidString(targetStudent.parents) &&
-        isValidString(targetStudent.phone) &&
-        isValidLessonDay(targetStudent.lessonDay) &&
-        isValidLessonHour(targetStudent.lessonHour) &&
-        isValidLessonMinutes(targetStudent.lessonMinutes) &&
-        isValidLessonDuration(targetStudent.lessonDuration) &&
-        isValidEmailList(targetStudent.emails)
-
-      if (!validStudent) throw new UserInputError('Invalid data')
-
-      if (targetStudent.id === 0) {
-        return studentDao.insertStudent(targetStudent)
-      } else {
-        // Validate the id...then updateStudent()...
-      }
     }
   },
 

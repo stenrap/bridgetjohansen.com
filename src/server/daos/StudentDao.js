@@ -13,25 +13,25 @@ class StudentDao extends BaseDao {
       await poolClient.query('BEGIN')
 
       let result = await poolClient.query(
-        `INSERT INTO students (name, parents, phone, lesson_day, lesson_hour, lesson_minutes, lesson_duration)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)
+        `INSERT INTO students (name, parents, phone, lesson_day, lesson_hour, lesson_minutes, lesson_meridiem, lesson_duration)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
          RETURNING id`,
-        [student.name, student.parents, student.phone, student.lessonDay, student.lessonHour, student.lessonMinutes, student.lessonDuration]
+        [student.name, student.parents, student.phone, student.lessonDay, student.lessonHour, student.lessonMinutes, student.lessonMeridiem, student.lessonDuration]
       )
 
-      const studentId = result.rows[0].id
+      const studentId = parseInt(result.rows[0].id)
 
       result = await poolClient.query(pgFormat(
         `INSERT INTO users (email)
          VALUES %L
          RETURNING id, email`,
-        student.users
+        [student.emails]
       ))
 
       const studentUsers = []
 
       for (const user of result.rows) {
-        studentUsers.push([studentId, user.id])
+        studentUsers.push([studentId, parseInt(user.id, 10)])
       }
 
       await poolClient.query(pgFormat(
@@ -49,6 +49,7 @@ class StudentDao extends BaseDao {
     } catch (err) {
       logger.error('Error inserting student')
       logger.error(err)
+      await poolClient.query('ROLLBACK')
     } finally {
       if (poolClient) poolClient.release()
     }

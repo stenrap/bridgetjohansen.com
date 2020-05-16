@@ -37,6 +37,10 @@ exports.up = async db => {
         type: 'integer',
         notNull: true
       },
+      lesson_meridiem: {
+        type: 'text',
+        notNull: true
+      },
       lesson_duration: {
         type: 'integer',
         notNull: true
