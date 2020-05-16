@@ -21,11 +21,17 @@ class StudentDao extends BaseDao {
 
       const studentId = parseInt(result.rows[0].id)
 
+      const emails = []
+
+      for (const email of student.emails) {
+        emails.push([email])
+      }
+
       result = await poolClient.query(pgFormat(
         `INSERT INTO users (email)
          VALUES %L
          RETURNING id, email`,
-        [student.emails]
+        emails
       ))
 
       const studentUsers = []
