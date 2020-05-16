@@ -1,11 +1,11 @@
 const { MAX_STRING_LENGTH, SATURDAY, SUNDAY } = require('../Constants')
 
-export function isValidEmail (email) {
+const isValidEmail = email => {
   return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/.test(email) &&
     email.length <= MAX_STRING_LENGTH
 }
 
-export function isValidEmailList (emails) {
+exports.isValidEmailList = emails => {
   if (!Array.isArray(emails) || emails.length === 0) return false
 
   for (const email of emails) {
@@ -15,23 +15,23 @@ export function isValidEmailList (emails) {
   return true
 }
 
-export function isValidLessonDay (day) {
+exports.isValidLessonDay = day => {
   return day >= SUNDAY && day <= SATURDAY
 }
 
-export function isValidLessonDuration (duration) {
+exports.isValidLessonDuration = duration => {
   return duration === 30 || duration === 60 || duration === 90
 }
 
-export function isValidLessonHour (hour) {
+exports.isValidLessonHour = hour => {
   return hour >= 1 && hour <= 12
 }
 
-export function isValidLessonMinutes (minutes) {
+exports.isValidLessonMinutes = minutes => {
   return minutes >= 0 && minutes <= 55 && minutes % 5 === 0
 }
 
-export function isValidString (string) {
+exports.isValidString = string => {
   if (!string) return false
   const trimmed = string.trim()
   return trimmed.length > 0 && trimmed.length <= MAX_STRING_LENGTH

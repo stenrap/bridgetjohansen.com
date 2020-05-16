@@ -51,11 +51,11 @@ const resolvers = {
         isValidLessonHour(targetStudent.lessonHour) &&
         isValidLessonMinutes(targetStudent.lessonMinutes) &&
         isValidLessonDuration(targetStudent.lessonDuration) &&
-        isValidEmailList(targetStudent.users.map(user => user.email))
+        isValidEmailList(targetStudent.emails)
 
       if (!validStudent) throw new UserInputError('Invalid data')
 
-      if (!targetStudent.id) {
+      if (targetStudent.id === 0) {
         return studentDao.insertStudent(targetStudent)
       } else {
         // Validate the id...then updateStudent()...

@@ -90,6 +90,11 @@ export const mutateEffectiveDate = date => async dispatch => {
   })
 }
 
+export const mutateStudent = student => async dispatch => {
+  const response = await requests.mutateStudent(student)
+  console.log('response is:', response)
+}
+
 // Selectors
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
 export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }

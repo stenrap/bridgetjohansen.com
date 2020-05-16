@@ -1,14 +1,19 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
-import { isValidEmail, isValidString } from '../../../shared/libs/validation'
+import { isValidEmailList, isValidString } from '../../../shared/libs/validation'
+import { mutateStudent } from '../../store/scheduleSlice'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
 import Modal from '../modal/Modal'
 import styles from './StudentModal.module.scss'
 
 export default props => {
+  const dispatch = useDispatch()
+
   const {
     student = {}
   } = props
+
   const [emails, setEmails] = useState(student.emails || '')
   const [emailsError, setEmailsError] = useState(false)
   const [emailSyntaxError, setEmailSyntaxError] = useState(false)
@@ -33,13 +38,19 @@ export default props => {
         if (!isValidString(phone)) setPhoneError(true)
 
         const allEmails = emails.split('\n').filter(email => isValidString(email))
-
         if (allEmails.length === 0) return setEmailsError(true)
+        if (!isValidEmailList(allEmails)) return setEmailSyntaxError(true)
 
-        for (const email of allEmails) {
-          if (!isValidEmail(email)) return setEmailSyntaxError(true)
-        }
-        // TODO .... Dispatch a mutation that either creates or changes the student
+        dispatch(mutateStudent({
+          lessonDay,
+          lessonDuration,
+          lessonHour,
+          lessonMinutes,
+          name,
+          parents,
+          phone,
+          emails: allEmails
+        }))
       }}
       title={`${student.id ? 'Edit' : 'Add'} Student`}
     >

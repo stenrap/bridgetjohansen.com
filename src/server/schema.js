@@ -40,6 +40,18 @@ const schema = gql`
     users: [StudentUser!]!
   }
   
+  input StudentInput {
+    lessonDay: Int!
+    lessonDuration: Int!
+    lessonHour: Int!
+    lessonMeridiem: String!
+    lessonMinutes: Int!
+    name: String!
+    parents: String!
+    phone: String!
+    emails: [String!]!
+  }
+  
   type StudentResult {
     id: ID!
     users: [UserResult!]!
@@ -65,7 +77,7 @@ const schema = gql`
     effectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult
     signIn(googleToken: String!): User!
     signOut: SimpleResult
-    student(targetStudent: Student!): StudentResult!
+    student(targetStudent: StudentInput!): StudentResult!
   }
   
   type Query {

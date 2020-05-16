@@ -87,6 +87,25 @@ class Requests {
     })
   }
 
+  mutateStudent (student) {
+    console.log('student is:', student)
+
+    return this.fetch({
+      body: {
+        query: `mutation Student ($targetStudent: StudentInput!) {
+          student(targetStudent: $targetStudent) {
+            id,
+            users {
+              email,
+              id
+            }
+          }
+        }`,
+        variables: { targetStudent: student }
+      }
+    })
+  }
+
   signIn (googleToken) {
     return this.fetch({
       body: {
