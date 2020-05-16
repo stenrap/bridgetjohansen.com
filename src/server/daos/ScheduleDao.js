@@ -123,6 +123,7 @@ class ScheduleDao extends BaseDao {
     } catch (err) {
       logger.error('Error getting schedule')
       logger.error(err)
+      await poolClient.query('ROLLBACK')
     } finally {
       if (poolClient) poolClient.release()
     }

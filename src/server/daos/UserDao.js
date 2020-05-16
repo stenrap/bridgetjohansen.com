@@ -49,6 +49,7 @@ class UserDao extends BaseDao {
     } catch (err) {
       logger.error(`Error signing in ${email}`)
       logger.error(err)
+      await poolClient.query('ROLLBACK')
       throw err
     } finally {
       if (poolClient) poolClient.release()
