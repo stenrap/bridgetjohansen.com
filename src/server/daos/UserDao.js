@@ -28,7 +28,7 @@ class UserDao extends BaseDao {
          FROM users
          WHERE email = $1
          OR google_id = $2`,
-        [email, googleId]
+        [email.toLowerCase(), googleId]
       )
 
       const user = result.rows[0]
@@ -41,7 +41,7 @@ class UserDao extends BaseDao {
         `UPDATE users
          SET email = $1, google_id = $2, token = $3
          WHERE id = $4`,
-        [email, googleId, token, user.id]
+        [email.toLowerCase(), googleId, token, user.id]
       )
 
       await poolClient.query('COMMIT')

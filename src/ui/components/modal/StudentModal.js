@@ -117,7 +117,7 @@ export default props => {
           <div className={styles.lessonSelects}>
             <select
               className={styles.lessonHour}
-              onChange={event => setLessonHour(event.target.value)}
+              onChange={event => setLessonHour(Number(event.target.value))}
               value={lessonHour}
             >
               <option value={1}>1</option>
@@ -135,7 +135,7 @@ export default props => {
             </select>
             <select
               className={styles.lessonMinutes}
-              onChange={event => setLessonMinutes(event.target.value)}
+              onChange={event => setLessonMinutes(Number(event.target.value))}
               value={lessonMinutes}
             >
               <option value={0}>00</option>
@@ -165,7 +165,7 @@ export default props => {
           <label>Lesson Duration</label>
           <select
             className={styles.lessonDuration}
-            onChange={event => setLessonDuration(event.target.value)}
+            onChange={event => setLessonDuration(Number(event.target.value))}
             value={lessonDuration}
           >
             <option value={30}>30 minutes</option>

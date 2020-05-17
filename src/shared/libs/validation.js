@@ -20,7 +20,7 @@ exports.isValidLessonDay = day => {
 }
 
 exports.isValidLessonDuration = duration => {
-  return duration === 30 || duration === 60 || duration === 90
+  return duration === 30 || duration === 45 || duration === 60
 }
 
 exports.isValidLessonHour = hour => {

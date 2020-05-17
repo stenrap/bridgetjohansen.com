@@ -24,7 +24,7 @@ class StudentDao extends BaseDao {
       const emails = []
 
       for (const email of student.emails) {
-        emails.push([email])
+        emails.push([email.toLowerCase()])
       }
 
       result = await poolClient.query(pgFormat(
