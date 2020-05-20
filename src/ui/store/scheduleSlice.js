@@ -1,8 +1,9 @@
 import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
-import requests from '../Requests'
 import { setLoading } from './loadingSlice'
+import { sortStudents } from '../../shared/libs/student'
+import requests from '../Requests'
 
 export const slice = createSlice({
   name: 'schedule',
@@ -16,7 +17,8 @@ export const slice = createSlice({
     mutatingStudent: false,
     newEffectiveDate: 0,
     newEffectiveMonth: -1,
-    newEffectiveYear: 0
+    newEffectiveYear: 0,
+    students: []
   },
   reducers: {
     setAddingStudent: (state, action) => {
@@ -40,6 +42,9 @@ export const slice = createSlice({
       state.newEffectiveDate = action.payload.date
       state.newEffectiveMonth = action.payload.month
       state.newEffectiveYear = action.payload.year
+    },
+    setStudents: (state, action) => {
+      state.students = sortStudents(action.payload.students)
     }
   }
 })
@@ -51,7 +56,8 @@ export const {
   setEffectiveDate,
   setMutatingEffectiveDate,
   setMutatingStudent,
-  setNewEffectiveDate
+  setNewEffectiveDate,
+  setStudents
 } = slice.actions
 
 // Thunks
@@ -68,8 +74,9 @@ export const fetchSchedule = () => async dispatch => {
   }
 
   batch(() => {
-    dispatch(setNewEffectiveDate(response.data.schedule))
     dispatch(setEffectiveDate(response.data.schedule))
+    dispatch(setNewEffectiveDate(response.data.schedule))
+    dispatch(setStudents(response.data.schedule))
     dispatch(setLoading(false))
   })
 }
@@ -118,6 +125,7 @@ export const mutateStudent = student => async dispatch => {
 // Selectors
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
 export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
+export const getStudents = state => state.schedule.students
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate

@@ -3,8 +3,10 @@ import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import AddStudent from '../../components/add-student/AddStudent'
+import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
-import { fetchSchedule } from '../../store/scheduleSlice'
+import { fetchSchedule, getStudents } from '../../store/scheduleSlice'
+import { getDay } from '../../../shared/libs/student'
 import { isAdmin, isSignedIn } from '../../store/userSlice'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
@@ -13,6 +15,7 @@ export default () => {
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
   const signedIn = useSelector(isSignedIn)
+  const students = useSelector(getStudents)
 
   useEffect(() => {
     if (!signedIn) return
@@ -27,6 +30,23 @@ export default () => {
     </div>
   )
 
+  const days = []
+
+  if (students.length > 0) {
+    let day = { name: getDay(students[0].lessonDay), students: [] }
+    for (const student of students) {
+      if (getDay(student.lessonDay) === day.name) {
+        day.students.push(student)
+      } else {
+        days.push(<Day {...day} key={day.name} />)
+        day = { name: getDay(student.lessonDay), students: [] }
+      }
+    }
+    // This may look like an unnecessary extra call to days.push(), but the else block
+    // is never executed for the last day (or the first day if there's only one day).
+    days.push(<Day {...day} key={day.name} />)
+  }
+
   return (
     <div className={styles.schedule}>
       <div className={styles.scheduleHeader}>
@@ -37,6 +57,7 @@ export default () => {
         <SignOutLink />
       </div>
       {addStudentRow}
+      <div className={styles.days}>{days}</div>
     </div>
   )
 }

@@ -100,7 +100,7 @@ export default props => {
           <label>Lesson Day</label>
           <select
             className={styles.lessonDay}
-            onChange={event => setLessonDay(event.target.value)}
+            onChange={event => setLessonDay(Number(event.target.value))}
             value={lessonDay}
           >
             <option value={SUNDAY}>Sunday</option>

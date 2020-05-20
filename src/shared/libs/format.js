@@ -18,6 +18,11 @@ module.exports = {
     return `${MONTHS[month]} ${date}, ${year}`
   },
 
+  minutes (minutes) {
+    if (minutes < 10) return `0${minutes}`
+    return minutes
+  },
+
   monthAndYear (date) {
     return `${MONTHS[date.getMonth()]} ${date.getFullYear()}`
   }
