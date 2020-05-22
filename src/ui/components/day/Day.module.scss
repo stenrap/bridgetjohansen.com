@@ -1,5 +1,6 @@
 .day {
   display: inline-block;
+  margin: 0 6px 0;
   width: 300px;
 }
 
@@ -10,9 +11,14 @@ $nameHeight: 48px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   color: #fff;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 600;
   height: $nameHeight;
   line-height: $nameHeight;
   text-align: center;
+}
+
+.students {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
 }

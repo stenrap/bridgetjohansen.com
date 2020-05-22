@@ -77,7 +77,8 @@ class ScheduleDao extends BaseDao {
       }
 
       result = await poolClient.query(
-        `SELECT s.id AS student_id, s.name, s.parents, s.phone, s.lesson_day, s.lesson_hour, s.lesson_minutes, s.lesson_duration,
+        `SELECT s.id AS student_id, s.name, s.parents, s.phone, s.lesson_day, s.lesson_hour,
+                s.lesson_minutes, s.lesson_meridiem, s.lesson_duration,
                 u.id AS user_id, u.email
          FROM students AS s
          JOIN student_users AS su
@@ -106,6 +107,7 @@ class ScheduleDao extends BaseDao {
           student.lessonDay = row.lessonDay
           student.lessonDuration = row.lessonDuration
           student.lessonHour = row.lessonHour
+          student.lessonMeridiem = row.lessonMeridiem
           student.lessonMinutes = row.lessonMinutes
           student.name = row.name
           student.parents = row.parents

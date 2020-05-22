@@ -43,7 +43,9 @@ class Requests {
             students {
               id,
               lessonDay,
+              lessonDuration,
               lessonHour,
+              lessonMeridiem,
               lessonMinutes,
               name,
               parents,

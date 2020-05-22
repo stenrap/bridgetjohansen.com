@@ -34,6 +34,7 @@ const schema = gql`
     lessonDuration: Int!
     lessonHour: Int!
     lessonMinutes: Int!
+    lessonMeridiem: String!
     name: String!
     parents: String!
     phone: String!

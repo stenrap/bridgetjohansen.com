@@ -13,6 +13,11 @@ a {
   text-decoration: none;
 }
 
+a[href^='tel:']:before {
+  content: '\1F4DE';
+  margin-right: 2px;
+}
+
 input,
 textarea {
   border: 1px solid #ccc;
