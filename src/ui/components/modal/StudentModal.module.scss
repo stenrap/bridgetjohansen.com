@@ -1,3 +1,7 @@
+.studentModal {
+  width: 356px;
+}
+
 .inputRow {
   margin-bottom: 16px;
 }
@@ -6,16 +10,20 @@
   display: flex;
 }
 
-.lessonDay,
-.lessonDuration {
-  width: 112px;
+.lessonDay {
+  width: 60px;
 }
 
 .lessonHour {
+  margin-left: 8px;
   width: 50px;
 }
 
 .lessonMinutes {
   margin-right: 8px;
   width: 50px;
+}
+
+.lessonDuration {
+  width: 74px;
 }
