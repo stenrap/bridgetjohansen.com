@@ -90,8 +90,6 @@ class Requests {
   }
 
   mutateStudent (student) {
-    console.log('student is:', student)
-
     return this.fetch({
       body: {
         query: `mutation CreateStudent ($student: StudentInput!) {

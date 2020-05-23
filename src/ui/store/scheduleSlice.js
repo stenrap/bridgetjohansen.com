@@ -21,6 +21,9 @@ export const slice = createSlice({
     students: []
   },
   reducers: {
+    addStudent: (state, action) => {
+      state.students = sortStudents([...state.students, action.payload.student])
+    },
     setAddingStudent: (state, action) => {
       state.addingStudent = action.payload
     },
@@ -51,6 +54,7 @@ export const slice = createSlice({
 
 // Actions
 export const {
+  addStudent,
   setAddingStudent,
   setEditingEffectiveDate,
   setEffectiveDate,
@@ -114,9 +118,17 @@ export const mutateStudent = student => async dispatch => {
     return
   }
 
-  // TODO .... Add the student to the store
+  const adding = !student.id
+
+  if (adding) {
+    student.id = response.data.createStudent.id
+    student.users = response.data.createStudent.users
+  }
 
   batch(() => {
+    if (adding) {
+      dispatch(addStudent({ student }))
+    }
     dispatch(setAddingStudent(false))
     dispatch(setMutatingStudent(false))
   })
