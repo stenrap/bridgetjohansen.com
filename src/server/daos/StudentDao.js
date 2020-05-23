@@ -30,6 +30,8 @@ class StudentDao extends BaseDao {
       result = await poolClient.query(pgFormat(
         `INSERT INTO users (email)
          VALUES %L
+         ON CONFLICT (email) DO UPDATE
+         SET email = EXCLUDED.email
          RETURNING id, email`,
         emails
       ))
