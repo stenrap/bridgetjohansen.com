@@ -62,13 +62,13 @@ const resolvers = {
   },
 
   Query: {
-    getUser (parent, args, { user }) {
-      if (!user) throw new AuthenticationError('Unauthorized')
-      return user
-    },
-    schedule (parent, args, { user }) {
+    fetchSchedule (parent, args, { user }) {
       if (!user) throw new AuthenticationError('Unauthorized')
       return scheduleDao.selectSchedule()
+    },
+    fetchUser (parent, args, { user }) {
+      if (!user) throw new AuthenticationError('Unauthorized')
+      return user
     }
   }
 }

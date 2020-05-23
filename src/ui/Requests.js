@@ -25,7 +25,7 @@ class Requests {
     return this.fetch({
       body: {
         query: `query FetchSchedule {
-          schedule {
+          fetchSchedule {
             date,
             groupClassDates {
               date,
@@ -62,11 +62,11 @@ class Requests {
     })
   }
 
-  getUser () {
+  fetchUser () {
     return this.fetch({
       body: {
-        query: `query GetUser {
-          getUser {
+        query: `query FetchUser {
+          fetchUser {
             admin,
             email,
             id

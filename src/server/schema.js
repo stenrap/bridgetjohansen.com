@@ -82,8 +82,8 @@ const schema = gql`
   }
   
   type Query {
-    schedule: Schedule!
-    getUser: User
+    fetchSchedule: Schedule!
+    fetchUser: User
   }
 `
 

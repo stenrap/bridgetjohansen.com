@@ -74,9 +74,9 @@ export const fetchSchedule = () => async dispatch => {
   }
 
   batch(() => {
-    dispatch(setEffectiveDate(response.data.schedule))
-    dispatch(setNewEffectiveDate(response.data.schedule))
-    dispatch(setStudents(response.data.schedule))
+    dispatch(setEffectiveDate(response.data.fetchSchedule))
+    dispatch(setNewEffectiveDate(response.data.fetchSchedule))
+    dispatch(setStudents(response.data.fetchSchedule))
     dispatch(setLoading(false))
   })
 }

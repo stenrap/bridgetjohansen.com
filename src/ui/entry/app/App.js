@@ -25,8 +25,8 @@ export default () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await requests.getUser()
-        if (response.data) dispatch(setUser(response.data.getUser))
+        const response = await requests.fetchUser()
+        if (response.data) dispatch(setUser(response.data.fetchUser))
       } catch (err) {
         // The try block is a best effort to get the current user. If it fails, we still
         // want to render the site as normally as possible.
