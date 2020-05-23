@@ -9,6 +9,8 @@ export const slice = createSlice({
   name: 'schedule',
   initialState: {
     addingStudent: false,
+    confirmingDeleteStudentId: 0,
+    deletingStudentId: 0,
     editingEffectiveDate: false,
     effectiveDate: 0,
     effectiveMonth: -1,
@@ -26,6 +28,12 @@ export const slice = createSlice({
     },
     setAddingStudent: (state, action) => {
       state.addingStudent = action.payload
+    },
+    setConfirmingDeleteStudentId: (state, action) => {
+      state.confirmingDeleteStudentId = action.payload
+    },
+    setDeletingStudentId: (state, action) => {
+      state.deletingStudentId = action.payload
     },
     setEditingEffectiveDate: (state, action) => {
       state.editingEffectiveDate = action.payload
@@ -56,6 +64,8 @@ export const slice = createSlice({
 export const {
   addStudent,
   setAddingStudent,
+  setConfirmingDeleteStudentId,
+  setDeletingStudentId,
   setEditingEffectiveDate,
   setEffectiveDate,
   setMutatingEffectiveDate,
@@ -65,6 +75,10 @@ export const {
 } = slice.actions
 
 // Thunks
+export const deleteStudent = () => async dispatch => {
+
+}
+
 export const fetchSchedule = () => async dispatch => {
   dispatch(setLoading(true))
 
@@ -135,6 +149,8 @@ export const mutateStudent = student => async dispatch => {
 }
 
 // Selectors
+export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
+export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
 export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
 export const getStudents = state => state.schedule.students

@@ -1,22 +1,57 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { isAdmin } from '../../store/userSlice'
+import {
+  isConfirmingDeleteStudentId,
+  isDeletingStudentId,
+  setConfirmingDeleteStudentId,
+  setDeletingStudentId
+} from '../../store/scheduleSlice'
 import Button from '../button/Button'
 import deleteIcon from '../../images/delete.svg'
 import edit from '../../images/edit.svg'
 import format from '../../../shared/libs/format'
+import LoadingModal from '../loading/LoadingModal'
+import Modal from '../modal/Modal'
 import styles from './Student.module.scss'
 
 export default student => {
   const admin = useSelector(isAdmin)
-  // const dispatch = useDispatch()
+  const confirmingDeleteStudentId = useSelector(isConfirmingDeleteStudentId)
+  const deletingStudentId = useSelector(isDeletingStudentId)
+  const dispatch = useDispatch()
 
   const adminButtons = admin && (
     <div className={styles.adminButtons}>
       <Button><img alt='Edit' src={edit} /></Button>
-      <Button><img alt='Delete' src={deleteIcon} /></Button>
+      <Button
+        onClick={() => dispatch(setConfirmingDeleteStudentId(student.id))}
+      >
+        <img alt='Delete' src={deleteIcon} />
+      </Button>
     </div>
+  )
+
+  const confirmingDeleteStudent = confirmingDeleteStudentId !== 0 && confirmingDeleteStudentId === student.id
+  const deletingStudent = deletingStudentId !== 0 && deletingStudentId === student.id
+
+  const deleteModal = (confirmingDeleteStudent || deletingStudent) && (
+    deletingStudent
+      ? (
+        <LoadingModal title={`Deleting ${student.name}...`} />
+      )
+      : (
+        <Modal
+          cancelLabel='No'
+          okLabel='Yes'
+          onCancel={() => dispatch(setConfirmingDeleteStudentId(0))}
+          onOk={() => dispatch(setDeletingStudentId(student.id))}
+          title='Delete Student'
+        >
+          Are you sure you want to delete {student.name}?
+        </Modal>
+      )
   )
 
   return (
@@ -32,6 +67,7 @@ export default student => {
         <a href={`tel:${student.phone}`}>{student.phone}</a>
       </div>
       {adminButtons}
+      {deleteModal}
     </div>
   )
 }

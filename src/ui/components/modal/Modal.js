@@ -6,8 +6,10 @@ import styles from './Modal.module.scss'
 
 export default props => {
   const {
+    cancelLabel = 'Cancel',
     children,
     className,
+    okLabel = 'OK',
     onOk,
     onCancel,
     showButtons = true,
@@ -21,13 +23,13 @@ export default props => {
       <Button
         onClick={onOk}
       >
-        OK
+        {okLabel}
       </Button>
       <Button
         kind='secondary'
         onClick={onCancel}
       >
-        Cancel
+        {cancelLabel}
       </Button>
     </div>
   )
