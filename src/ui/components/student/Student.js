@@ -2,6 +2,9 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import { isAdmin } from '../../store/userSlice'
+import Button from '../button/Button'
+import deleteIcon from '../../images/delete.svg'
+import edit from '../../images/edit.svg'
 import format from '../../../shared/libs/format'
 import styles from './Student.module.scss'
 
@@ -10,7 +13,10 @@ export default student => {
   // const dispatch = useDispatch()
 
   const adminButtons = admin && (
-    <div>Hello, admin buttons</div>
+    <div className={styles.adminButtons}>
+      <Button><img alt='Edit' src={edit} /></Button>
+      <Button><img alt='Delete' src={deleteIcon} /></Button>
+    </div>
   )
 
   return (

@@ -1,17 +1,18 @@
 .day {
   display: inline-block;
-  margin: 0 6px 0;
-  width: 300px;
+  margin: 0 7px 24px;
+  text-align: center;
+  width: 275px;
 }
 
-$nameHeight: 48px;
+$nameHeight: 44px;
 
 .name {
   background-color: #000;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   color: #fff;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 600;
   height: $nameHeight;
   line-height: $nameHeight;

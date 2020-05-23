@@ -39,7 +39,7 @@ export default () => {
         day.students.push(student)
       } else {
         days.push(<Day {...day} key={day.name} />)
-        day = { name: getDay(student.lessonDay), students: [] }
+        day = { name: getDay(student.lessonDay), students: [student] }
       }
     }
     // This may look like an unnecessary extra call to days.push(), but the else block

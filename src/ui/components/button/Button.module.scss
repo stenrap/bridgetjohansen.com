@@ -1,3 +1,5 @@
+@use '../../styles/variables' as v;
+
 .button {
   border: none;
   border-radius: 60px;
@@ -12,6 +14,11 @@
 
   &:enabled {
     cursor: pointer;
+  }
+
+  @media screen and (min-width: v.$horizontalNav) {
+    height: 32px;
+    width: 100px;
   }
 }
 
