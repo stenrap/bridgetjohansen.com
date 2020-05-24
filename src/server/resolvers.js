@@ -21,7 +21,7 @@ const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 const resolvers = {
   Mutation: {
     async createStudent (parent, { student }, { user }) {
-      if (!user) throw new AuthenticationError('Unauthorized')
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 
       const validStudent = student &&
         isValidString(student.name) &&
@@ -37,6 +37,11 @@ const resolvers = {
       if (!validStudent) throw new UserInputError('Invalid data')
 
       return studentDao.insertStudent(student)
+    },
+    async deleteStudent (parent, { id }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+      await studentDao.deleteStudent(id)
+      return { success: true }
     },
     async effectiveDate (parent, { month, date, year }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')

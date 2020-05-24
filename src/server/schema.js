@@ -76,6 +76,7 @@ const schema = gql`
   
   type Mutation {
     createStudent(student: StudentInput!): Student!
+    deleteStudent(id: ID!): SimpleResult!
     effectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult
     signIn(googleToken: String!): User!
     signOut: SimpleResult
