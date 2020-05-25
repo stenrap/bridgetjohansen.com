@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import AddStudent from '../../components/add-student/AddStudent'
+import AddStudentLink from '../../components/add-student-link/AddStudentLink'
 import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
 import { fetchSchedule, getStudents } from '../../store/scheduleSlice'
@@ -26,7 +26,7 @@ export default () => {
 
   const addStudentRow = admin && (
     <div className={styles.addStudentRow}>
-      <AddStudent />
+      <AddStudentLink />
     </div>
   )
 

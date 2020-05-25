@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { isAddingStudent, setAddingStudent } from '../../store/scheduleSlice'
 import StudentModal from '../modal/StudentModal'
-import styles from './AddStudent.module.scss'
+import styles from './AddStudentLink.module.scss'
 
 export default () => {
   const addingStudent = useSelector(isAddingStudent)
