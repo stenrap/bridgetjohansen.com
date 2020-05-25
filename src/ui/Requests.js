@@ -21,6 +21,19 @@ class Requests {
     return response
   }
 
+  deleteStudent (id) {
+    return this.fetch({
+      body: {
+        query: `mutation DeleteStudent ($id: ID!) {
+          deleteStudent(id: $id) {
+            success
+          }
+        }`,
+        variables: { id }
+      }
+    })
+  }
+
   fetchSchedule () {
     return this.fetch({
       body: {

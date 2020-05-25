@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { isAdmin } from '../../store/userSlice'
 import {
+  deleteStudent,
   isConfirmingDeleteStudentId,
   isDeletingStudentId,
-  setConfirmingDeleteStudentId,
-  setDeletingStudentId
+  setConfirmingDeleteStudentId
 } from '../../store/scheduleSlice'
 import Button from '../button/Button'
 import deleteIcon from '../../images/delete.svg'
@@ -46,7 +46,7 @@ export default student => {
           cancelLabel='No'
           okLabel='Yes'
           onCancel={() => dispatch(setConfirmingDeleteStudentId(0))}
-          onOk={() => dispatch(setDeletingStudentId(student.id))}
+          onOk={() => dispatch(deleteStudent(student.id))}
           title='Delete Student'
         >
           Are you sure you want to delete {student.name}?

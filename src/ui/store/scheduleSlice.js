@@ -23,8 +23,17 @@ export const slice = createSlice({
     students: []
   },
   reducers: {
-    addStudent: (state, action) => {
+    addLocalStudent: (state, action) => {
       state.students = sortStudents([...state.students, action.payload.student])
+    },
+    deleteLocalStudent: (state, action) => {
+      const students = []
+      for (const student of state.students) {
+        if (student.id !== action.payload.id) {
+          students.push(student)
+        }
+      }
+      state.students = sortStudents(students)
     },
     setAddingStudent: (state, action) => {
       state.addingStudent = action.payload
@@ -62,7 +71,8 @@ export const slice = createSlice({
 
 // Actions
 export const {
-  addStudent,
+  addLocalStudent,
+  deleteLocalStudent,
   setAddingStudent,
   setConfirmingDeleteStudentId,
   setDeletingStudentId,
@@ -75,8 +85,23 @@ export const {
 } = slice.actions
 
 // Thunks
-export const deleteStudent = () => async dispatch => {
+export const deleteStudent = id => async dispatch => {
+  dispatch(setDeletingStudentId(id))
 
+  const response = await requests.deleteStudent(id)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error deleting student...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    dispatch(deleteLocalStudent({ id }))
+    dispatch(setDeletingStudentId(0))
+    dispatch(setConfirmingDeleteStudentId(0))
+  })
 }
 
 export const fetchSchedule = () => async dispatch => {
@@ -141,7 +166,7 @@ export const mutateStudent = student => async dispatch => {
 
   batch(() => {
     if (adding) {
-      dispatch(addStudent({ student }))
+      dispatch(addLocalStudent({ student }))
     }
     dispatch(setAddingStudent(false))
     dispatch(setMutatingStudent(false))
