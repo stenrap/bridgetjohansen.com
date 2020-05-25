@@ -8,6 +8,7 @@ import requests from '../Requests'
 export const slice = createSlice({
   name: 'schedule',
   initialState: {
+    addingParent: false,
     addingStudent: false,
     confirmingDeleteStudentId: 0,
     deletingStudentId: 0,
@@ -34,6 +35,9 @@ export const slice = createSlice({
         }
       }
       state.students = sortStudents(students)
+    },
+    setAddingParent: (state, action) => {
+      state.addingParent = action.payload
     },
     setAddingStudent: (state, action) => {
       state.addingStudent = action.payload
@@ -73,6 +77,7 @@ export const slice = createSlice({
 export const {
   addLocalStudent,
   deleteLocalStudent,
+  setAddingParent,
   setAddingStudent,
   setConfirmingDeleteStudentId,
   setDeletingStudentId,
@@ -179,6 +184,7 @@ export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
 export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
 export const getStudents = state => state.schedule.students
+export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate

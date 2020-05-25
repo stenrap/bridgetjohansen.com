@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
+import AddParentLink from '../../components/add-parent-link/AddParentLink'
 import AddStudentLink from '../../components/add-student-link/AddStudentLink'
 import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
@@ -26,7 +27,7 @@ export default () => {
 
   const addStudentRow = admin && (
     <div className={styles.addStudentRow}>
-      <AddStudentLink />
+      <AddParentLink /> <AddStudentLink />
     </div>
   )
 
