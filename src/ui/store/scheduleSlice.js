@@ -151,6 +151,10 @@ export const mutateEffectiveDate = date => async dispatch => {
   })
 }
 
+export const mutateParent = parent => async dispatch => {
+
+}
+
 export const mutateStudent = student => async dispatch => {
   dispatch(setMutatingStudent(true))
 

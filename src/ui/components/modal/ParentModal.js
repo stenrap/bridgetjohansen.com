@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { isMutatingParent } from '../../store/scheduleSlice'
+import { isMutatingParent, mutateParent } from '../../store/scheduleSlice'
+import { isValidEmailList, isValidString } from '../../../shared/libs/validation'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from './Modal'
 import styles from './ParentModal.module.scss'
 
 export default props => {
+  const dispatch = useDispatch()
   const mutatingParent = useSelector(isMutatingParent)
 
   const {
@@ -27,6 +29,20 @@ export default props => {
     return (
       <Modal
         className={styles.parentModal}
+        onOk={() => {
+          if (!isValidString(name)) setNameError(true)
+          if (!isValidString(phone)) setPhoneError(true)
+
+          const allEmails = emails.split('\n').filter(email => isValidString(email))
+          if (allEmails.length === 0) return setEmailsError(true)
+          if (!isValidEmailList(allEmails)) return setEmailSyntaxError(true)
+
+          dispatch(mutateParent({
+            emails: allEmails,
+            name,
+            phone
+          }))
+        }}
         title={`${parent.id ? 'Edit' : 'Add'} Parent(s)`}
         {...props}
       >

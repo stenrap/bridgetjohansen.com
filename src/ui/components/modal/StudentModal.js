@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { isValidEmailList, isValidString } from '../../../shared/libs/validation'
 import { isMutatingStudent, mutateStudent } from '../../store/scheduleSlice'
+import { isValidString } from '../../../shared/libs/validation'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
@@ -16,9 +16,6 @@ export default props => {
     student = {}
   } = props
 
-  const [emails, setEmails] = useState(student.emails || '')
-  const [emailsError, setEmailsError] = useState(false)
-  const [emailSyntaxError, setEmailSyntaxError] = useState(false)
   const [lessonDay, setLessonDay] = useState(student.lessonDay || TUESDAY)
   const [lessonDuration, setLessonDuration] = useState(student.lessonDuration || 30)
   const [lessonHour, setLessonHour] = useState(student.lessonHour || 2)
@@ -26,10 +23,6 @@ export default props => {
   const [lessonMinutes, setLessonMinutes] = useState(student.lessonMinutes || 0)
   const [name, setName] = useState(student.name || '')
   const [nameError, setNameError] = useState(false)
-  const [parents, setParents] = useState(student.parents || '')
-  const [parentsError, setParentsError] = useState(false)
-  const [phone, setPhone] = useState(student.phone || '')
-  const [phoneError, setPhoneError] = useState(false)
 
   if (mutatingStudent) {
     return <LoadingModal title={`${student.id ? 'Editing' : 'Adding'} student...`} />
@@ -39,23 +32,14 @@ export default props => {
         className={styles.studentModal}
         onOk={() => {
           if (!isValidString(name)) setNameError(true)
-          if (!isValidString(parents)) setParentsError(true)
-          if (!isValidString(phone)) setPhoneError(true)
-
-          const allEmails = emails.split('\n').filter(email => isValidString(email))
-          if (allEmails.length === 0) return setEmailsError(true)
-          if (!isValidEmailList(allEmails)) return setEmailSyntaxError(true)
 
           dispatch(mutateStudent({
-            emails: allEmails,
             lessonDay,
             lessonDuration,
             lessonHour,
             lessonMeridiem,
             lessonMinutes,
-            name,
-            parents,
-            phone
+            name
           }))
         }}
         title={`${student.id ? 'Edit' : 'Add'} Student`}
@@ -71,30 +55,6 @@ export default props => {
             }}
             type='text'
             value={name}
-          />
-        </div>
-        <div className='inputRow'>
-          <label>Parents</label>
-          <input
-            className={parentsError ? 'error' : undefined}
-            onChange={event => {
-              setParents(event.target.value)
-              setParentsError(false)
-            }}
-            type='text'
-            value={parents}
-          />
-        </div>
-        <div className='inputRow'>
-          <label>Phone</label>
-          <input
-            className={phoneError ? 'error' : undefined}
-            onChange={event => {
-              setPhone(event.target.value)
-              setPhoneError(false)
-            }}
-            type='tel'
-            value={phone}
           />
         </div>
         <div className='inputRow'>
@@ -165,19 +125,6 @@ export default props => {
             <option value={45}>45 min</option>
             <option value={60}>60 min</option>
           </select>
-        </div>
-        <div className='inputRow'>
-          <label>Google Sign-In Emails<span className='errorText'>{emailSyntaxError ? ' (invalid syntax)' : ''}</span></label>
-          <textarea
-            className={emailsError || emailSyntaxError ? 'error' : undefined}
-            onChange={event => {
-              setEmails(event.target.value)
-              setEmailsError(false)
-              setEmailSyntaxError(false)
-            }}
-            placeholder='One per line...'
-            value={emails}
-          />
         </div>
       </Modal>
     )
