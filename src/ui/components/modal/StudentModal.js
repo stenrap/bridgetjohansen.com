@@ -37,7 +37,6 @@ export default props => {
     return (
       <Modal
         className={styles.studentModal}
-        {...props}
         onOk={() => {
           if (!isValidString(name)) setNameError(true)
           if (!isValidString(parents)) setParentsError(true)
@@ -60,8 +59,9 @@ export default props => {
           }))
         }}
         title={`${student.id ? 'Edit' : 'Add'} Student`}
+        {...props}
       >
-        <div className={styles.inputRow}>
+        <div className='inputRow'>
           <label>Name</label>
           <input
             className={nameError ? 'error' : undefined}
@@ -73,7 +73,7 @@ export default props => {
             value={name}
           />
         </div>
-        <div className={styles.inputRow}>
+        <div className='inputRow'>
           <label>Parents</label>
           <input
             className={parentsError ? 'error' : undefined}
@@ -85,7 +85,7 @@ export default props => {
             value={parents}
           />
         </div>
-        <div className={styles.inputRow}>
+        <div className='inputRow'>
           <label>Phone</label>
           <input
             className={phoneError ? 'error' : undefined}
@@ -97,7 +97,7 @@ export default props => {
             value={phone}
           />
         </div>
-        <div className={styles.inputRow}>
+        <div className='inputRow'>
           <label>Lesson</label>
           <select
             className={styles.lessonDay}
@@ -166,7 +166,7 @@ export default props => {
             <option value={60}>60 min</option>
           </select>
         </div>
-        <div className={styles.inputRow}>
+        <div className='inputRow'>
           <label>Google Sign-In Emails<span className='errorText'>{emailSyntaxError ? ' (invalid syntax)' : ''}</span></label>
           <textarea
             className={emailsError || emailSyntaxError ? 'error' : undefined}

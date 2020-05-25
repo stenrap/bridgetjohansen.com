@@ -17,6 +17,7 @@ export const slice = createSlice({
     effectiveMonth: -1,
     effectiveYear: 0,
     mutatingEffectiveDate: false,
+    mutatingParent: false,
     mutatingStudent: false,
     newEffectiveDate: 0,
     newEffectiveMonth: -1,
@@ -188,6 +189,7 @@ export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
+export const isMutatingParent = state => state.schedule.mutatingParent
 export const isMutatingStudent = state => state.schedule.mutatingStudent
 
 // Reducer

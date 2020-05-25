@@ -2,16 +2,18 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { isAddingParent, setAddingParent } from '../../store/scheduleSlice'
-
+import ParentModal from '../modal/ParentModal'
 import styles from './AddParentLink.module.scss'
 
 export default () => {
   const addingParent = useSelector(isAddingParent)
   const dispatch = useDispatch()
 
-  if (addingParent) {
-
-  }
+  const modal = addingParent && (
+    <ParentModal
+      onCancel={() => dispatch(setAddingParent(false))}
+    />
+  )
 
   return (
     <>
@@ -21,6 +23,7 @@ export default () => {
       >
         Add Parent(s)
       </span>
+      {modal}
     </>
   )
 }
