@@ -8,9 +8,9 @@ import {
   getNewEffectiveDate,
   isEditingEffectiveDate,
   isMutatingEffectiveDate,
-  mutateEffectiveDate,
   setEditingEffectiveDate,
-  setNewEffectiveDate
+  setNewEffectiveDate,
+  updateEffectiveDate
 } from '../../store/scheduleSlice'
 import { isAdmin } from '../../store/userSlice'
 import format from '../../../shared/libs/format'
@@ -39,7 +39,7 @@ export default () => {
   const modal = editingEffectiveDate && (
     <Modal
       onCancel={() => dispatch(setEditingEffectiveDate(false))}
-      onOk={() => dispatch(mutateEffectiveDate(newEffectiveDateObj))}
+      onOk={() => dispatch(updateEffectiveDate(newEffectiveDateObj))}
       title='Effective Date'
     >
       <Calendar

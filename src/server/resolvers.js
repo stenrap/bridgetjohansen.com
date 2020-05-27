@@ -43,11 +43,6 @@ const resolvers = {
       await studentDao.deleteStudent(id)
       return { success: true }
     },
-    async effectiveDate (parent, { month, date, year }, { user }) {
-      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
-      await scheduleDao.updateEffectiveDate(month, date, year)
-      return { success: true }
-    },
     async signIn (parent, { googleToken }, { res }) {
       let payload = await client.verifyIdToken({
         idToken: googleToken,
@@ -62,6 +57,11 @@ const resolvers = {
       if (!user) throw new AuthenticationError('Unauthorized')
       await userDao.signOut(user.id)
       cookieLib.clearCookie(res, new Date(0), true, TOKEN_COOKIE)
+      return { success: true }
+    },
+    async updateEffectiveDate (parent, { month, date, year }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+      await scheduleDao.updateEffectiveDate(month, date, year)
       return { success: true }
     }
   },

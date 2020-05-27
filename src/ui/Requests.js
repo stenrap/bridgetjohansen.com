@@ -89,20 +89,7 @@ class Requests {
     })
   }
 
-  mutateEffectiveDate ({ month, date, year }) {
-    return this.fetch({
-      body: {
-        query: `mutation EffectiveDate ($month: Int!, $date: Int!, $year: Int!) {
-          effectiveDate(month: $month, date: $date, year: $year) {
-            success
-          }
-        }`,
-        variables: { month, date, year }
-      }
-    })
-  }
-
-  mutateStudent (student) {
+  createStudent (student) {
     return this.fetch({
       body: {
         query: `mutation CreateStudent ($student: StudentInput!) {
@@ -142,6 +129,19 @@ class Requests {
             success
           }
         }`
+      }
+    })
+  }
+
+  updateEffectiveDate ({ month, date, year }) {
+    return this.fetch({
+      body: {
+        query: `mutation UpdateEffectiveDate ($month: Int!, $date: Int!, $year: Int!) {
+          updateEffectiveDate(month: $month, date: $date, year: $year) {
+            success
+          }
+        }`,
+        variables: { month, date, year }
       }
     })
   }

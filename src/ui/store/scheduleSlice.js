@@ -130,13 +130,13 @@ export const fetchSchedule = () => async dispatch => {
   })
 }
 
-export const mutateEffectiveDate = date => async dispatch => {
+export const updateEffectiveDate = date => async dispatch => {
   batch(() => {
     dispatch(setEditingEffectiveDate(false))
     dispatch(setMutatingEffectiveDate(true))
   })
 
-  const response = await requests.mutateEffectiveDate(date)
+  const response = await requests.updateEffectiveDate(date)
 
   if (response.errors) {
     // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
@@ -155,10 +155,10 @@ export const mutateParent = parent => async dispatch => {
 
 }
 
-export const mutateStudent = student => async dispatch => {
+export const createStudent = student => async dispatch => {
   dispatch(setMutatingStudent(true))
 
-  const response = await requests.mutateStudent(student)
+  const response = await requests.createStudent(student)
 
   if (response.errors) {
     // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20

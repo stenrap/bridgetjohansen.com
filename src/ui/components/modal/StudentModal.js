@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { isMutatingStudent, mutateStudent } from '../../store/scheduleSlice'
+import { createStudent, isMutatingStudent } from '../../store/scheduleSlice'
 import { isValidString } from '../../../shared/libs/validation'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
 import LoadingModal from '../loading/LoadingModal'
@@ -33,7 +33,7 @@ export default props => {
         onOk={() => {
           if (!isValidString(name)) setNameError(true)
 
-          dispatch(mutateStudent({
+          dispatch(createStudent({
             lessonDay,
             lessonDuration,
             lessonHour,
