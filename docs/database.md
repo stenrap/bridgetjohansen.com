@@ -56,7 +56,7 @@
 
 ### Schema
 
-#### `schedule`
+#### `effective_date`
 
 ```
  id | month | date | year
@@ -71,18 +71,63 @@
 #### `students`
 
 ```
- id | name | parents | phone | lesson_day | lesson_hour | lesson_minutes | lesson_duration
-----+------+---------+-------+------------+-------------+----------------+-----------------
+ id | name | lesson_day | lesson_hour | lesson_minutes | lesson_meridiem | lesson_duration
+----+------+------------+-------------+----------------+-----------------+-----------------
 ```
 
 `id` - integer - populated automatically by a sequence  
 `name` - text - name of student  
-`parents` - text - name(s) of student's parent(s)  
-`phone` - text - phone number of student/parent(s)  
 `lesson_day` - integer - day of the week on which the lesson occurs (`0` - `6` => Sun - Sat)  
 `lesson_hour` - integer - hour of the day when the lesson starts (`0` - `23` => 12:00 am - 11:00 pm)  
 `lesson_minutes` - integer - minutes of the hour when the lesson starts, in 5-minute increments with a max of 55 (`0` - `55` => 0 - 55)  
+`lesson_meridiem` - text - meridiem of the lesson time (`am` or `pm`)  
 `lesson_duration` - integer - duration of the lesson in minutes (also 5-minute increments, but with no max)
+
+#### `parents`
+
+```
+ id | name | phone
+----+------+-------
+```
+
+`id` - integer - populated automatically by a sequence  
+`name` - text - name of parent(s)  
+`phone` - text - phone number of parent(s)
+
+#### `student_parents`
+
+```
+ id | student_id | parent_id
+----+------------+-----------
+```
+
+`id` - integer - populated automatically by a sequence  
+`student_id` - integer - foreign key reference to `students.id`  
+`parent_id` - integer - foreign key reference to `parents.id`
+
+#### `users`
+
+```
+ id | email | google_id | token | admin
+----+-------+-----------+-------+-------
+```
+
+`id` - integer - populated automatically by a sequence  
+`email` - text - email of the user  
+`google_id` - text - Google's id for the user  
+`token` - text - token used for authentication status  
+`admin` - boolean - whether the user is an admin
+
+#### `parent_users`
+
+```
+ id | parent_id | user_id
+----+-----------+---------
+```
+
+`id` - integer - populated automatically by a sequence  
+`parent_id` - integer - foreign key reference to `parents.id`  
+`user_id` - integer - foreign key reference to `users.id`
 
 #### `group_class_dates`
 
@@ -141,27 +186,3 @@
 `id` - integer - populated automatically by a sequence  
 `url` - text - url of the photo in S3  
 `description` - text - description of the photo
-
-#### `users`
-
-```
- id | email | google_id | token | admin
-----+-------+-----------+-------+-------
-```
-
-`id` - integer - populated automatically by a sequence  
-`email` - text - email of the user  
-`google_id` - text - Google's id for the user  
-`token` - text - token used for authentication status  
-`admin` - boolean - whether the user is an admin
-
-#### `student_users`
-
-```
- id | student_id | user_id
-----+------------+---------
-```
-
-`id` - integer - populated automatically by a sequence  
-`student_id` - integer - foreign key reference to `students.id`  
-`user_id` - integer - foreign key reference to `users.id`

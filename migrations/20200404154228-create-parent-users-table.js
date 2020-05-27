@@ -6,19 +6,19 @@ const logError = (err) => {
 
 exports.up = async db => {
   try {
-    await db.createTable('student_users', {
+    await db.createTable('parent_users', {
       id: {
         type: 'integer',
         primaryKey: true,
         notNull: true,
         autoIncrement: true
       },
-      student_id: {
+      parent_id: {
         type: 'integer',
         notNull: true,
         foreignKey: {
-          name: 'student_users_student_fk',
-          table: 'students',
+          name: 'parent_users_parent_fk',
+          table: 'parents',
           mapping: 'id',
           rules: {
             onDelete: 'CASCADE'
@@ -29,7 +29,7 @@ exports.up = async db => {
         type: 'integer',
         notNull: true,
         foreignKey: {
-          name: 'student_users_user_fk',
+          name: 'parent_users_user_fk',
           table: 'users',
           mapping: 'id',
           rules: {
@@ -44,7 +44,7 @@ exports.up = async db => {
 }
 
 exports.down = async db => {
-  return db.dropTable('student_users')
+  return db.dropTable('parent_users')
 }
 
 exports._meta = {

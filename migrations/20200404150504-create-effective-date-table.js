@@ -6,7 +6,7 @@ const logError = (err) => {
 
 exports.up = async db => {
   try {
-    await db.createTable('schedule', {
+    await db.createTable('effective_date', {
       id: {
         type: 'integer',
         primaryKey: true,
@@ -28,8 +28,8 @@ exports.up = async db => {
     })
 
     await db.runSql(
-      `INSERT INTO schedule (month, date, year)
-       VALUES (8, 14, 2019)`,
+      `INSERT INTO effective_date (month, date, year)
+       VALUES (5, 2, 2020)`,
       [],
       logError
     )
@@ -39,7 +39,7 @@ exports.up = async db => {
 }
 
 exports.down = async db => {
-  return db.dropTable('schedule')
+  return db.dropTable('effective_date')
 }
 
 exports._meta = {

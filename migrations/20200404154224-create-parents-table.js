@@ -6,7 +6,7 @@ const logError = (err) => {
 
 exports.up = async db => {
   try {
-    await db.createTable('students', {
+    await db.createTable('parents', {
       id: {
         type: 'integer',
         primaryKey: true,
@@ -17,24 +17,8 @@ exports.up = async db => {
         type: 'text',
         notNull: true
       },
-      lesson_day: {
-        type: 'integer',
-        notNull: true
-      },
-      lesson_hour: {
-        type: 'integer',
-        notNull: true
-      },
-      lesson_minutes: {
-        type: 'integer',
-        notNull: true
-      },
-      lesson_meridiem: {
+      phone: {
         type: 'text',
-        notNull: true
-      },
-      lesson_duration: {
-        type: 'integer',
         notNull: true
       }
     })
@@ -44,7 +28,7 @@ exports.up = async db => {
 }
 
 exports.down = async db => {
-  return db.dropTable('students')
+  return db.dropTable('parents')
 }
 
 exports._meta = {
