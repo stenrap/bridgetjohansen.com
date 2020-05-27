@@ -20,7 +20,7 @@ class ScheduleDao extends BaseDao {
 
       let result = await poolClient.query(
         `SELECT month, date, year
-         FROM schedule`,
+         FROM effective_date`,
         []
       )
 
@@ -75,6 +75,8 @@ class ScheduleDao extends BaseDao {
       for (const groupClassTime of groupClassTimeMap.values()) {
         schedule.groupClassTimes.push(groupClassTime)
       }
+
+      // TODO and WYLO .... Figure out how to update this query to retrieve the right data from the new schema:
 
       result = await poolClient.query(
         `SELECT s.id AS student_id, s.name, s.parents, s.phone, s.lesson_day, s.lesson_hour,
