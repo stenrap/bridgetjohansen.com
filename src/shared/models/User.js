@@ -1,10 +1,10 @@
 'use strict'
 
-class StudentUser {
+class User {
   constructor () {
     this.email = ''
     this.id = 0
   }
 }
 
-module.exports = StudentUser
+module.exports = User
