@@ -15,12 +15,21 @@ const schema = gql`
     studentIds: [Int!]!
   }
   
+  type Parent {
+    id: ID!
+    name: String!
+    phone: String!
+    users: [ParentUser!]!
+  }
+  
   type Schedule {
     date: Int!
     groupClassDates: [GroupClassDate!]!
     groupClassTimes: [GroupClassTime!]!
     month: Int!
+    // TODO and WYLO 1 .... Add the parents here (and update the definition of Parent)
     students: [Student!]!
+    // TODO and WYLO 2 .... Add the users here (and update the definition of ParentUser)
     year: Int!
   }
   
@@ -33,12 +42,10 @@ const schema = gql`
     lessonDay: Int!
     lessonDuration: Int!
     lessonHour: Int!
-    lessonMinutes: Int!
     lessonMeridiem: String!
+    lessonMinutes: Int!
     name: String!
-    parents: String!
-    phone: String!
-    users: [StudentUser!]!
+    users: [Parent!]!
   }
   
   input StudentInput {
@@ -58,7 +65,7 @@ const schema = gql`
     users: [UserResult!]!
   }
   
-  type StudentUser {
+  type ParentUser {
     email: String!
     id: ID!
   }

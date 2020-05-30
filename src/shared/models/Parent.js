@@ -5,7 +5,7 @@ class Parent {
     this.id = 0
     this.name = ''
     this.phone = ''
-    this.users = []
+    this.studentId = 0
   }
 }
 

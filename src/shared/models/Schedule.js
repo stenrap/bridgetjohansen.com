@@ -6,7 +6,9 @@ class Schedule {
     this.groupClassDates = []
     this.groupClassTimes = []
     this.month = -1
+    this.parents = []
     this.students = []
+    this.users = []
     this.year = 0
   }
 }

@@ -9,7 +9,6 @@ class Student {
     this.lessonMeridiem = ''
     this.lessonMinutes = -1
     this.name = ''
-    this.parents = []
   }
 }
 
