@@ -6,7 +6,6 @@ import { isValidString } from '../../../shared/libs/validation'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
-import ParentSelector from '../parent-selector/ParentSelector'
 import styles from './StudentModal.module.scss'
 
 export default props => {
@@ -25,6 +24,8 @@ export default props => {
   const [lessonMinutes, setLessonMinutes] = useState(student.lessonMinutes || 0)
   const [name, setName] = useState(student.name || '')
   const [nameError, setNameError] = useState(false)
+  const [selectedParents, setSelectedParents] = useState([])
+  const [selectedParentsError, setSelectedParentsError] = useState(false)
 
   if (mutatingStudent) {
     return <LoadingModal title={`${student.id ? 'Editing' : 'Adding'} student...`} />
@@ -33,7 +34,8 @@ export default props => {
       <Modal
         className={styles.studentModal}
         onOk={() => {
-          if (!isValidString(name)) setNameError(true)
+          if (!isValidString(name)) return setNameError(true)
+          if (selectedParents.length === 0) return setSelectedParentsError(true)
 
           dispatch(createStudent({
             lessonDay,
@@ -130,16 +132,38 @@ export default props => {
         </div>
         <div>
           <label>Parent(s)</label>
-          <div className={styles.parents}>
-            {
-              parents.map(parent => (
-                <ParentSelector
-                  id={parent.id}
-                  key={parent.id}
-                  name={parent.name}
-                />
-              ))
-            }
+          <div className={`${styles.parents}${selectedParentsError ? ` ${styles.parentsError}` : ''}`}>
+            {parents.map(parent => {
+              const idAttribute = `parentSelector${parent.id}`
+              return (
+                <div key={`parent-${parent.id}`}>
+                  <input
+                    checked={selectedParents.includes(parent.id)}
+                    id={idAttribute}
+                    onChange={event => {
+                      if (event.target.checked) {
+                        setSelectedParentsError(false)
+                        setSelectedParents(selectedParents.concat(parent.id))
+                      } else {
+                        const newSelectedParents = []
+                        for (const id of selectedParents) {
+                          if (id !== parent.id) {
+                            newSelectedParents.push(id)
+                          }
+                        }
+                        setSelectedParents(newSelectedParents)
+                      }
+                    }}
+                    type='checkbox'
+                  />
+                  <label
+                    htmlFor={idAttribute}
+                  >
+                    {parent.name}
+                  </label>
+                </div>
+              )
+            })}
           </div>
         </div>
       </Modal>

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   getParents,
   isAddingStudent,
-  resetSelectedParents,
   setAddingParent,
   setAddingStudent
 } from '../../store/scheduleSlice'
@@ -39,10 +38,7 @@ export default () => {
       )
       : (
         <StudentModal
-          onCancel={() => {
-            dispatch(setAddingStudent(false))
-            dispatch(resetSelectedParents())
-          }}
+          onCancel={() => dispatch(setAddingStudent(false))}
         />
       )
   )
