@@ -27,7 +27,7 @@ export default () => {
         >
           <p className={styles.noParentsText}>
             Adding a student requires selecting parents from a list,
-            but you have no parents. Please add at least one parent.
+            but you have no parents. Please add a parent first.
           </p>
         </Modal>
       )
