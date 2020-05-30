@@ -47,12 +47,8 @@ export const slice = createSlice({
       }
       state.students = sortStudents(students)
     },
-    toggleParent: (state, action) => {
-      if (action.payload.checked) {
-        state.selectedParents.push(action.payload.id)
-      } else {
-        state.selectedParents.splice(state.selectedParents.findIndex(id => id === action.payload.id), 1)
-      }
+    resetSelectedParents: (state, action) => {
+      state.selectedParents = []
     },
     setAddingParent: (state, action) => {
       state.addingParent = action.payload
@@ -93,6 +89,13 @@ export const slice = createSlice({
     },
     setStudents: (state, action) => {
       state.students = sortStudents(action.payload.students)
+    },
+    toggleParent: (state, action) => {
+      if (action.payload.checked) {
+        state.selectedParents.push(action.payload.id)
+      } else {
+        state.selectedParents.splice(state.selectedParents.findIndex(id => id === action.payload.id), 1)
+      }
     }
   }
 })
@@ -103,6 +106,7 @@ export const {
   addLocalStudent,
   addLocalUsers,
   deleteLocalStudent,
+  resetSelectedParents,
   setAddingParent,
   setAddingStudent,
   setConfirmingDeleteStudentId,
@@ -247,6 +251,7 @@ export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
 export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
 export const getParents = state => state.schedule.parents
+export const getSelectedParents = state => state.schedule.selectedParents
 export const getStudents = state => state.schedule.students
 export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent

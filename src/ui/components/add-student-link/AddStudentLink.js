@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getParents, isAddingStudent, setAddingParent, setAddingStudent } from '../../store/scheduleSlice'
+import {
+  getParents,
+  isAddingStudent,
+  resetSelectedParents,
+  setAddingParent,
+  setAddingStudent
+} from '../../store/scheduleSlice'
 import Modal from '../modal/Modal'
 import StudentModal from '../modal/StudentModal'
 import styles from './AddStudentLink.module.scss'
@@ -33,7 +39,10 @@ export default () => {
       )
       : (
         <StudentModal
-          onCancel={() => dispatch(setAddingStudent(false))}
+          onCancel={() => {
+            dispatch(setAddingStudent(false))
+            dispatch(resetSelectedParents())
+          }}
         />
       )
   )
