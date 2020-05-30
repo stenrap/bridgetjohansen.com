@@ -29,6 +29,9 @@ class ScheduleDao extends BaseDao {
 
       // Students
 
+      // TODO .... Since the association between student and parent(s) is made by creating and/or editing
+      //           a student, the student objects returned by this method must have a `parentIds` array.
+
       result = await poolClient.query(
         `SELECT *
          FROM students`,
@@ -40,10 +43,8 @@ class ScheduleDao extends BaseDao {
       // Parents
 
       result = await poolClient.query(
-        `SELECT p.id, p.name, p.phone, sp.student_id
-         FROM parents AS p
-         JOIN student_parents AS sp
-         ON sp.parent_id = p.id`,
+        `SELECT id, name, phone
+         FROM parents`,
         []
       )
 

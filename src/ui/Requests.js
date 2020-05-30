@@ -21,6 +21,40 @@ class Requests {
     return response
   }
 
+  createParent (parent) {
+    return this.fetch({
+      body: {
+        query: `mutation CreateParent ($parent: ParentInput!) {
+          createParent(parent: $parent) {
+            id,
+            users {
+              email,
+              id
+            }
+          }
+        }`,
+        variables: { parent }
+      }
+    })
+  }
+
+  createStudent (student) {
+    return this.fetch({
+      body: {
+        query: `mutation CreateStudent ($student: StudentInput!) {
+          createStudent(student: $student) {
+            id,
+            users {
+              email,
+              id
+            }
+          }
+        }`,
+        variables: { student }
+      }
+    })
+  }
+
   deleteStudent (id) {
     return this.fetch({
       body: {
@@ -56,8 +90,7 @@ class Requests {
             parents {
               id,
               name,
-              phone,
-              studentId
+              phone
             },
             students {
               id,
@@ -90,23 +123,6 @@ class Requests {
             id
           }
         }`
-      }
-    })
-  }
-
-  createStudent (student) {
-    return this.fetch({
-      body: {
-        query: `mutation CreateStudent ($student: StudentInput!) {
-          createStudent(student: $student) {
-            id,
-            users {
-              email,
-              id
-            }
-          }
-        }`,
-        variables: { student }
       }
     })
   }

@@ -39,6 +39,7 @@ export default props => {
 
           dispatch(mutateParent({
             emails: allEmails,
+            id: parent.id,
             name,
             phone
           }))

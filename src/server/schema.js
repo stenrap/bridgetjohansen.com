@@ -19,7 +19,17 @@ const schema = gql`
     id: ID!
     name: String!
     phone: String!
-    studentId: ID!
+  }
+  
+  input ParentInput {
+    name: String!
+    phone: String!
+    emails: [String!]!
+  }
+  
+  type ParentResult {
+    id: ID!
+    users: [UserResult]!
   }
 
   type ParentUser {
@@ -82,6 +92,7 @@ const schema = gql`
   }
   
   type Mutation {
+    createParent(parent: ParentInput!): ParentResult!
     createStudent(student: StudentInput!): Student!
     deleteStudent(id: ID!): SimpleResult!
     signIn(googleToken: String!): User!

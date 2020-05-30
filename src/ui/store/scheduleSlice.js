@@ -23,11 +23,18 @@ export const slice = createSlice({
     newEffectiveMonth: -1,
     newEffectiveYear: 0,
     parents: [],
-    students: []
+    students: [],
+    users: []
   },
   reducers: {
+    addLocalParent: (state, action) => {
+      state.parents.push(action.payload.parent)
+    },
     addLocalStudent: (state, action) => {
       state.students = sortStudents([...state.students, action.payload.student])
+    },
+    addLocalUsers: (state, action) => {
+      state.users.push(...action.payload.users)
     },
     deleteLocalStudent: (state, action) => {
       const students = []
@@ -61,6 +68,9 @@ export const slice = createSlice({
     setMutatingEffectiveDate: (state, action) => {
       state.mutatingEffectiveDate = action.payload
     },
+    setMutatingParent: (state, action) => {
+      state.mutatingParent = action.payload
+    },
     setMutatingStudent: (state, action) => {
       state.mutatingStudent = action.payload
     },
@@ -80,7 +90,9 @@ export const slice = createSlice({
 
 // Actions
 export const {
+  addLocalParent,
   addLocalStudent,
+  addLocalUsers,
   deleteLocalStudent,
   setAddingParent,
   setAddingStudent,
@@ -89,6 +101,7 @@ export const {
   setEditingEffectiveDate,
   setEffectiveDate,
   setMutatingEffectiveDate,
+  setMutatingParent,
   setMutatingStudent,
   setNewEffectiveDate,
   setParents,
@@ -96,7 +109,7 @@ export const {
 } = slice.actions
 
 // Thunks
-export const createStudent = student => async dispatch => {
+export const createStudent = student => async dispatch => { // TODO .... Rename this thunk back to `mutateStudent` since creating and updating have so much in common.
   dispatch(setMutatingStudent(true))
 
   const response = await requests.createStudent(student)
@@ -165,7 +178,36 @@ export const fetchSchedule = () => async dispatch => {
 }
 
 export const mutateParent = parent => async dispatch => {
+  dispatch(setMutatingParent(true))
 
+  const adding = !parent.id
+
+  const response = await requests.createParent(parent)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error creating parent...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    if (adding) {
+      parent.id = Number(response.data.createParent.id)
+
+      const users = response.data.createParent.users
+
+      for (const user of users) {
+        user.id = Number(user.id)
+        user.parentId = parent.id
+      }
+
+      dispatch(addLocalParent({ parent }))
+      dispatch(addLocalUsers({ users }))
+    }
+    dispatch(setAddingParent(false))
+    dispatch(setMutatingParent(false))
+  })
 }
 
 export const updateEffectiveDate = date => async dispatch => {
