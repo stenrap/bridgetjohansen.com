@@ -21,7 +21,7 @@ export default () => {
         className={styles.addParentLink}
         onClick={() => dispatch(setAddingParent(true))}
       >
-        Add Parent(s)
+        Add Parent
       </span>
       {modal}
     </>

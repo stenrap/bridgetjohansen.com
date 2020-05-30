@@ -43,7 +43,7 @@ export default props => {
             phone
           }))
         }}
-        title={`${parent.id ? 'Edit' : 'Add'} Parent(s)`}
+        title={`${parent.id ? 'Edit' : 'Add'} Parent`}
         {...props}
       >
         <div className='inputRow'>
