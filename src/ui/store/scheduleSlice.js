@@ -96,6 +96,34 @@ export const {
 } = slice.actions
 
 // Thunks
+export const createStudent = student => async dispatch => {
+  dispatch(setMutatingStudent(true))
+
+  const response = await requests.createStudent(student)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error mutating student...')
+    console.log(response.errors)
+    return
+  }
+
+  const adding = !student.id
+
+  if (adding) {
+    student.id = response.data.createStudent.id
+    student.users = response.data.createStudent.users
+  }
+
+  batch(() => {
+    if (adding) {
+      dispatch(addLocalStudent({ student }))
+    }
+    dispatch(setAddingStudent(false))
+    dispatch(setMutatingStudent(false))
+  })
+}
+
 export const deleteStudent = id => async dispatch => {
   dispatch(setDeletingStudentId(id))
 
@@ -136,6 +164,10 @@ export const fetchSchedule = () => async dispatch => {
   })
 }
 
+export const mutateParent = parent => async dispatch => {
+
+}
+
 export const updateEffectiveDate = date => async dispatch => {
   batch(() => {
     dispatch(setEditingEffectiveDate(false))
@@ -154,38 +186,6 @@ export const updateEffectiveDate = date => async dispatch => {
   batch(() => {
     dispatch(setEffectiveDate(date))
     dispatch(setMutatingEffectiveDate(false))
-  })
-}
-
-export const mutateParent = parent => async dispatch => {
-
-}
-
-export const createStudent = student => async dispatch => {
-  dispatch(setMutatingStudent(true))
-
-  const response = await requests.createStudent(student)
-
-  if (response.errors) {
-    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
-    console.log('Error mutating student...')
-    console.log(response.errors)
-    return
-  }
-
-  const adding = !student.id
-
-  if (adding) {
-    student.id = response.data.createStudent.id
-    student.users = response.data.createStudent.users
-  }
-
-  batch(() => {
-    if (adding) {
-      dispatch(addLocalStudent({ student }))
-    }
-    dispatch(setAddingStudent(false))
-    dispatch(setMutatingStudent(false))
   })
 }
 
