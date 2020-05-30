@@ -3,3 +3,11 @@
 .addStudentLink {
   @include m.link;
 }
+
+.noParentsModal {
+  width: 375px;
+}
+
+.noParentsText {
+  line-height: 22px;
+}

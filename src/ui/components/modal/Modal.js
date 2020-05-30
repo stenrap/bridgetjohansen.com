@@ -13,6 +13,7 @@ export default props => {
     onOk,
     onCancel,
     showButtons = true,
+    showCancel = true,
     title
   } = props
 
@@ -25,12 +26,14 @@ export default props => {
       >
         {okLabel}
       </Button>
-      <Button
-        kind='secondary'
-        onClick={onCancel}
-      >
-        {cancelLabel}
-      </Button>
+      {showCancel && (
+        <Button
+          kind='secondary'
+          onClick={onCancel}
+        >
+          {cancelLabel}
+        </Button>
+      )}
     </div>
   )
 

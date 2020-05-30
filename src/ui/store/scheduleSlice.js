@@ -22,6 +22,7 @@ export const slice = createSlice({
     newEffectiveDate: 0,
     newEffectiveMonth: -1,
     newEffectiveYear: 0,
+    parents: [],
     students: []
   },
   reducers: {
@@ -68,6 +69,9 @@ export const slice = createSlice({
       state.newEffectiveMonth = action.payload.month
       state.newEffectiveYear = action.payload.year
     },
+    setParents: (state, action) => {
+      state.parents = action.payload.parents
+    },
     setStudents: (state, action) => {
       state.students = sortStudents(action.payload.students)
     }
@@ -87,6 +91,7 @@ export const {
   setMutatingEffectiveDate,
   setMutatingStudent,
   setNewEffectiveDate,
+  setParents,
   setStudents
 } = slice.actions
 
@@ -125,6 +130,7 @@ export const fetchSchedule = () => async dispatch => {
   batch(() => {
     dispatch(setEffectiveDate(response.data.fetchSchedule))
     dispatch(setNewEffectiveDate(response.data.fetchSchedule))
+    dispatch(setParents(response.data.fetchSchedule))
     dispatch(setStudents(response.data.fetchSchedule))
     dispatch(setLoading(false))
   })
@@ -188,6 +194,7 @@ export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDel
 export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
 export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
+export const getParents = state => state.schedule.parents
 export const getStudents = state => state.schedule.students
 export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
