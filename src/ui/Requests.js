@@ -53,6 +53,12 @@ class Requests {
               studentIds
             },
             month,
+            parents {
+              id,
+              name,
+              phone,
+              studentId
+            },
             students {
               id,
               lessonDay,
@@ -60,13 +66,12 @@ class Requests {
               lessonHour,
               lessonMeridiem,
               lessonMinutes,
-              name,
-              parents,
-              phone,
-              users {
-                email,
-                id
-              }
+              name
+            },
+            users {
+              email,
+              id,
+              parentId
             },
             year
           }

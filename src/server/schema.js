@@ -19,7 +19,13 @@ const schema = gql`
     id: ID!
     name: String!
     phone: String!
-    users: [ParentUser!]!
+    studentId: ID!
+  }
+
+  type ParentUser {
+    email: String!
+    id: ID!
+    parentId: ID!
   }
   
   type Schedule {
@@ -27,9 +33,9 @@ const schema = gql`
     groupClassDates: [GroupClassDate!]!
     groupClassTimes: [GroupClassTime!]!
     month: Int!
-    // TODO and WYLO 1 .... Add the parents here (and update the definition of Parent)
+    parents: [Parent!]!
     students: [Student!]!
-    // TODO and WYLO 2 .... Add the users here (and update the definition of ParentUser)
+    users: [ParentUser!]!
     year: Int!
   }
   
@@ -45,7 +51,6 @@ const schema = gql`
     lessonMeridiem: String!
     lessonMinutes: Int!
     name: String!
-    users: [Parent!]!
   }
   
   input StudentInput {
@@ -63,11 +68,6 @@ const schema = gql`
   type StudentResult {
     id: ID!
     users: [UserResult!]!
-  }
-  
-  type ParentUser {
-    email: String!
-    id: ID!
   }
   
   type User {
