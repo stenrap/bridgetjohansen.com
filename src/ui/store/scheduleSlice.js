@@ -2,6 +2,7 @@ import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { setLoading } from './loadingSlice'
+import { sortParents } from '../../shared/libs/parent'
 import { sortStudents } from '../../shared/libs/student'
 import requests from '../Requests'
 
@@ -23,12 +24,13 @@ export const slice = createSlice({
     newEffectiveMonth: -1,
     newEffectiveYear: 0,
     parents: [],
+    selectedParents: [],
     students: [],
     users: []
   },
   reducers: {
     addLocalParent: (state, action) => {
-      state.parents.push(action.payload.parent)
+      state.parents = sortParents([...state.parents, action.payload.parent])
     },
     addLocalStudent: (state, action) => {
       state.students = sortStudents([...state.students, action.payload.student])
@@ -44,6 +46,13 @@ export const slice = createSlice({
         }
       }
       state.students = sortStudents(students)
+    },
+    toggleParent: (state, action) => {
+      if (action.payload.checked) {
+        state.selectedParents.push(action.payload.id)
+      } else {
+        state.selectedParents.splice(state.selectedParents.findIndex(id => id === action.payload.id), 1)
+      }
     },
     setAddingParent: (state, action) => {
       state.addingParent = action.payload
@@ -80,7 +89,7 @@ export const slice = createSlice({
       state.newEffectiveYear = action.payload.year
     },
     setParents: (state, action) => {
-      state.parents = action.payload.parents
+      state.parents = sortParents(action.payload.parents)
     },
     setStudents: (state, action) => {
       state.students = sortStudents(action.payload.students)
@@ -105,7 +114,8 @@ export const {
   setMutatingStudent,
   setNewEffectiveDate,
   setParents,
-  setStudents
+  setStudents,
+  toggleParent
 } = slice.actions
 
 // Thunks

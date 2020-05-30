@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { createStudent, isMutatingStudent } from '../../store/scheduleSlice'
+import { createStudent, getParents, isMutatingStudent } from '../../store/scheduleSlice'
 import { isValidString } from '../../../shared/libs/validation'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
+import ParentSelector from '../parent-selector/ParentSelector'
 import styles from './StudentModal.module.scss'
 
 export default props => {
   const dispatch = useDispatch()
   const mutatingStudent = useSelector(isMutatingStudent)
+  const parents = useSelector(getParents)
 
   const {
     student = {}
@@ -125,6 +127,20 @@ export default props => {
             <option value={45}>45 min</option>
             <option value={60}>60 min</option>
           </select>
+        </div>
+        <div>
+          <label>Parent(s)</label>
+          <div className={styles.parents}>
+            {
+              parents.map(parent => (
+                <ParentSelector
+                  id={parent.id}
+                  key={parent.id}
+                  name={parent.name}
+                />
+              ))
+            }
+          </div>
         </div>
       </Modal>
     )
