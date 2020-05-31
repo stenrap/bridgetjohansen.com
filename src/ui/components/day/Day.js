@@ -8,7 +8,7 @@ export default props => {
 
   for (const student of props.students) {
     students.push(
-      <Student key={student.id} {...student} />
+      <Student key={`student-${student.id}`} {...student} />
     )
   }
 

@@ -61,6 +61,7 @@ const schema = gql`
     lessonMeridiem: String!
     lessonMinutes: Int!
     name: String!
+    parentIds: [ID!]!
   }
   
   input StudentInput {

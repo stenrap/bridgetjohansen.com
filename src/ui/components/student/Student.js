@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { isAdmin } from '../../store/userSlice'
 import {
   deleteStudent,
+  getParents,
   isConfirmingDeleteStudentId,
   isDeletingStudentId,
   setConfirmingDeleteStudentId
@@ -21,6 +22,7 @@ export default student => {
   const confirmingDeleteStudentId = useSelector(isConfirmingDeleteStudentId)
   const deletingStudentId = useSelector(isDeletingStudentId)
   const dispatch = useDispatch()
+  const parents = useSelector(getParents)
 
   const adminButtons = admin && (
     <div className={styles.adminButtons}>
@@ -60,12 +62,19 @@ export default student => {
       <div className={styles.time}>
         {student.lessonHour}:{format.minutes(student.lessonMinutes)} {student.lessonMeridiem} ({student.lessonDuration} minutes)
       </div>
-      <div className={styles.parents}>
-        {student.parents}
-      </div>
-      <div className={styles.phone}>
-        <a href={`tel:${student.phone}`}>{student.phone}</a>
-      </div>
+      {student.parentIds && student.parentIds.map(id => {
+        const parent = parents.find(parent => parent.id === id)
+        return (
+          <div key={`student-parent-${id}`}>
+            <div className={styles.parents}>
+              {parent.name}
+            </div>
+            <div className={styles.phone}>
+              <a href={`tel:${parent.phone}`}>{parent.phone}</a>
+            </div>
+          </div>
+        )
+      })}
       {adminButtons}
       {deleteModal}
     </div>

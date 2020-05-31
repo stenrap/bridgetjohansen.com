@@ -95,7 +95,8 @@ class Requests {
               lessonHour,
               lessonMeridiem,
               lessonMinutes,
-              name
+              name,
+              parentIds
             },
             users {
               email,

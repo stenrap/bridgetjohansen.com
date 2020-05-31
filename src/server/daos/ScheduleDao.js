@@ -4,6 +4,7 @@ const BaseDao = require('./BaseDao')
 const GroupClassTime = require('../../shared/models/GroupClassTime')
 const logger = require('../Logger')
 const Schedule = require('../../shared/models/Schedule')
+const Student = require('../../shared/models/Student')
 
 class ScheduleDao extends BaseDao {
   async selectSchedule () {
@@ -29,16 +30,35 @@ class ScheduleDao extends BaseDao {
 
       // Students
 
-      // TODO .... Since the association between student and parent(s) is made by creating and/or editing
-      //           a student, the student objects returned by this method must have a `parentIds` array.
-
       result = await poolClient.query(
-        `SELECT *
-         FROM students`,
+        `SELECT s.id, s.name, s.lesson_day, s.lesson_hour, s.lesson_minutes, s.lesson_meridiem, s.lesson_duration,
+                sp.parent_id
+         FROM students AS s
+         JOIN student_parents AS sp
+         ON sp.student_id = s.id`,
         []
       )
 
-      schedule.students = result.rows
+      const studentParentMap = new Map()
+
+      for (const row of result.rows) {
+        const student = studentParentMap.get(row.id) || new Student()
+
+        if (!student.id) {
+          student.id = row.id
+          student.name = row.name
+          student.lessonDay = row.lessonDay
+          student.lessonHour = row.lessonHour
+          student.lessonMinutes = row.lessonMinutes
+          student.lessonMeridiem = row.lessonMeridiem
+          student.lessonDuration = row.lessonDuration
+          studentParentMap.set(student.id, student)
+        }
+
+        student.parentIds.push(row.parentId)
+      }
+
+      schedule.students = Array.from(studentParentMap.values())
 
       // Parents
 
