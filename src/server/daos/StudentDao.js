@@ -6,6 +6,17 @@ const pgFormat = require('pg-format')
 
 class StudentDao extends BaseDao {
   async deleteStudent (id) {
+    /*
+      TODO and WYLO ....
+
+        1. Update this method to support the new schema. You'll have to return something other than { success: true }
+           from the resolver (e.g. { deletedParentIds: [1, 2] }) so the front end knows when to delete local parents
+           and users.
+
+        2. Update the redux store to properly delete local parents and users when appropriate. Remember that the
+           response will be { deletedParentIds: [] } when a student with active siblings is deleted.
+     */
+
     let poolClient = null
 
     try {
