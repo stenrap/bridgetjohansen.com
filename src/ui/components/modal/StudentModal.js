@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { createStudent, getParents, isMutatingStudent } from '../../store/scheduleSlice'
+import { getParents, isMutatingStudent, mutateStudent } from '../../store/scheduleSlice'
 import { isValidString } from '../../../shared/libs/validation'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
 import LoadingModal from '../loading/LoadingModal'
@@ -24,8 +24,8 @@ export default props => {
   const [lessonMinutes, setLessonMinutes] = useState(student.lessonMinutes || 0)
   const [name, setName] = useState(student.name || '')
   const [nameError, setNameError] = useState(false)
-  const [selectedParents, setSelectedParents] = useState([])
-  const [selectedParentsError, setSelectedParentsError] = useState(false)
+  const [parentIds, setParentIds] = useState([])
+  const [parentIdsError, setParentIdsError] = useState(false)
 
   if (mutatingStudent) {
     return <LoadingModal title={`${student.id ? 'Editing' : 'Adding'} student...`} />
@@ -35,15 +35,17 @@ export default props => {
         className={styles.studentModal}
         onOk={() => {
           if (!isValidString(name)) return setNameError(true)
-          if (selectedParents.length === 0) return setSelectedParentsError(true)
+          if (parentIds.length === 0) return setParentIdsError(true)
 
-          dispatch(createStudent({
+          dispatch(mutateStudent({
+            id: student.id,
             lessonDay,
             lessonDuration,
             lessonHour,
             lessonMeridiem,
             lessonMinutes,
-            name
+            name,
+            parentIds
           }))
         }}
         title={`${student.id ? 'Edit' : 'Add'} Student`}
@@ -132,26 +134,26 @@ export default props => {
         </div>
         <div>
           <label>Parent(s)</label>
-          <div className={`${styles.parents}${selectedParentsError ? ` ${styles.parentsError}` : ''}`}>
+          <div className={`${styles.parents}${parentIdsError ? ` ${styles.parentsError}` : ''}`}>
             {parents.map(parent => {
               const idAttribute = `parentSelector${parent.id}`
               return (
                 <div key={`parent-${parent.id}`}>
                   <input
-                    checked={selectedParents.includes(parent.id)}
+                    checked={parentIds.includes(parent.id)}
                     id={idAttribute}
                     onChange={event => {
                       if (event.target.checked) {
-                        setSelectedParentsError(false)
-                        setSelectedParents(selectedParents.concat(parent.id))
+                        setParentIdsError(false)
+                        setParentIds(parentIds.concat(parent.id))
                       } else {
-                        const newSelectedParents = []
-                        for (const id of selectedParents) {
+                        const newParentIds = []
+                        for (const id of parentIds) {
                           if (id !== parent.id) {
-                            newSelectedParents.push(id)
+                            newParentIds.push(id)
                           }
                         }
-                        setSelectedParents(newSelectedParents)
+                        setParentIds(newParentIds)
                       }
                     }}
                     type='checkbox'

@@ -110,34 +110,6 @@ export const {
 } = slice.actions
 
 // Thunks
-export const createStudent = student => async dispatch => { // TODO .... Rename this thunk back to `mutateStudent` since creating and updating have so much in common.
-  dispatch(setMutatingStudent(true))
-
-  const response = await requests.createStudent(student)
-
-  if (response.errors) {
-    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
-    console.log('Error mutating student...')
-    console.log(response.errors)
-    return
-  }
-
-  const adding = !student.id
-
-  if (adding) {
-    student.id = response.data.createStudent.id
-    student.users = response.data.createStudent.users
-  }
-
-  batch(() => {
-    if (adding) {
-      dispatch(addLocalStudent({ student }))
-    }
-    dispatch(setAddingStudent(false))
-    dispatch(setMutatingStudent(false))
-  })
-}
-
 export const deleteStudent = id => async dispatch => {
   dispatch(setDeletingStudentId(id))
 
@@ -208,6 +180,30 @@ export const mutateParent = parent => async dispatch => {
     }
     dispatch(setAddingParent(false))
     dispatch(setMutatingParent(false))
+  })
+}
+
+export const mutateStudent = student => async dispatch => {
+  dispatch(setMutatingStudent(true))
+
+  const adding = !student.id
+
+  const response = await requests.createStudent(student)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error mutating student...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    if (adding) {
+      student.id = response.data.createStudent.id
+      dispatch(addLocalStudent({ student }))
+    }
+    dispatch(setAddingStudent(false))
+    dispatch(setMutatingStudent(false))
   })
 }
 

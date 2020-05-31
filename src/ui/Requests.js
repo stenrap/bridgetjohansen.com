@@ -43,11 +43,7 @@ class Requests {
       body: {
         query: `mutation CreateStudent ($student: StudentInput!) {
           createStudent(student: $student) {
-            id,
-            users {
-              email,
-              id
-            }
+            id
           }
         }`,
         variables: { student }

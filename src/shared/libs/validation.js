@@ -35,6 +35,14 @@ exports.isValidLessonMeridiem = meridiem => {
   return meridiem === 'am' || meridiem === 'pm'
 }
 
+exports.isValidParentIds = parentIds => {
+  if (!Array.isArray(parentIds) || parentIds.length === 0) return false
+  for (const id of parentIds) {
+    if (!/^\d+$/.test(id)) return false
+  }
+  return true
+}
+
 exports.isValidString = string => {
   if (!string) return false
   const trimmed = string.trim()

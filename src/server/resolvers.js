@@ -8,6 +8,7 @@ const {
   isValidLessonMeridiem,
   isValidLessonMinutes,
   isValidLessonDuration,
+  isValidParentIds,
   isValidString
 } = require('../shared/libs/validation')
 const { TOKEN_COOKIE, USER_TOKEN_EXPIRATION } = require('../shared/Constants')
@@ -38,14 +39,12 @@ const resolvers = {
 
       const validStudent = student &&
         isValidString(student.name) &&
-        isValidString(student.parents) &&
-        isValidString(student.phone) &&
         isValidLessonDay(student.lessonDay) &&
         isValidLessonHour(student.lessonHour) &&
         isValidLessonMinutes(student.lessonMinutes) &&
         isValidLessonMeridiem(student.lessonMeridiem) &&
         isValidLessonDuration(student.lessonDuration) &&
-        isValidEmailList(student.emails)
+        isValidParentIds(student.parentIds)
 
       if (!validStudent) throw new UserInputError('Invalid data')
 

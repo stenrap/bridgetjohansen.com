@@ -86,48 +86,24 @@ class StudentDao extends BaseDao {
       poolClient = await this.getPoolClient()
       await poolClient.query('BEGIN')
 
-      let result = await poolClient.query(
-        `INSERT INTO students (name, parents, phone, lesson_day, lesson_hour, lesson_minutes, lesson_meridiem, lesson_duration)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      const result = await poolClient.query(
+        `INSERT INTO students (name, lesson_day, lesson_hour, lesson_minutes, lesson_meridiem, lesson_duration)
+         VALUES ($1, $2, $3, $4, $5, $6)
          RETURNING id`,
-        [student.name, student.parents, student.phone, student.lessonDay, student.lessonHour, student.lessonMinutes, student.lessonMeridiem, student.lessonDuration]
+        [student.name, student.lessonDay, student.lessonHour, student.lessonMinutes, student.lessonMeridiem, student.lessonDuration]
       )
 
       const studentId = parseInt(result.rows[0].id)
 
-      const emails = []
-
-      for (const email of student.emails) {
-        emails.push([email.toLowerCase()])
-      }
-
-      result = await poolClient.query(pgFormat(
-        `INSERT INTO users (email)
-         VALUES %L
-         ON CONFLICT (email) DO UPDATE
-         SET email = EXCLUDED.email
-         RETURNING id, email`,
-        emails
-      ))
-
-      const studentUsers = []
-
-      for (const user of result.rows) {
-        studentUsers.push([studentId, parseInt(user.id, 10)])
-      }
-
       await poolClient.query(pgFormat(
-        `INSERT INTO student_users (student_id, user_id)
+        `INSERT INTO student_parents (student_id, parent_id)
          VALUES %L`,
-        studentUsers
+        student.parentIds.map(parentId => [studentId, parentId]) // Create an array of arrays for %L.
       ))
 
       await poolClient.query('COMMIT')
 
-      return {
-        id: studentId,
-        users: result.rows
-      }
+      return { id: studentId }
     } catch (err) {
       logger.error('Error inserting student')
       logger.error(err)
