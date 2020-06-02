@@ -1,6 +1,10 @@
 const { gql } = require('apollo-server-express')
 
 const schema = gql`
+  type DeleteStudentResult {
+    deletedParentIds: [ID!]!
+  }
+  
   type GroupClassDate {
     date: Int!
     id: ID!
@@ -92,7 +96,7 @@ const schema = gql`
   type Mutation {
     createParent(parent: ParentInput!): ParentResult!
     createStudent(student: StudentInput!): StudentResult!
-    deleteStudent(id: ID!): SimpleResult!
+    deleteStudent(id: ID!): DeleteStudentResult!
     signIn(googleToken: String!): User!
     signOut: SimpleResult
     updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult

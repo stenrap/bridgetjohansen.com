@@ -6,17 +6,6 @@ const pgFormat = require('pg-format')
 
 class StudentDao extends BaseDao {
   async deleteStudent (id) {
-    /*
-      TODO and WYLO ....
-
-        1. Update this method to support the new schema. You'll have to return something other than { success: true }
-           from the resolver (e.g. { deletedParentIds: [1, 2] }) so the front end knows when to delete local parents
-           and users.
-
-        2. Update the redux store to properly delete local parents and users when appropriate. Remember that the
-           response will be { deletedParentIds: [] } when a student with active siblings is deleted.
-     */
-
     let poolClient = null
 
     try {
@@ -24,53 +13,63 @@ class StudentDao extends BaseDao {
       await poolClient.query('BEGIN')
 
       /*
-        We look up student_users first so we can determine whether the user associated
-        with the student being deleted is also associated with another student (e.g. a
-        sibling). If we get a result that looks something like this...
+        We look up student_parents first so we can determine whether the parent(s)
+        associated with the student being deleted is(are) also associated with
+        other students (i.e. siblings). If the result looks something like this...
 
-           student_id | user_id
-          ------------+---------
-                    8 |      13  <-- The student being deleted and the user id of his dad
-                    8 |      14  <-- The student being deleted and the user id of his mom
-                   11 |      13  <-- Different student, same dad
-                   11 |      14  <-- Different student, same mom
+           student_id | parent_id
+          ------------+-----------
+                    8 |        13  <-- The student being deleted and the parent id of her dad
+                    8 |        14  <-- The student being deleted and the parent id of her mom
+                   11 |        13  <-- Different student, same dad
+                   11 |        14  <-- Different student, same mom
 
-        ...then we know we can't delete users with id 13 and 14.
+        ...then we know we can't delete parents with id 13 and 14.
        */
 
       const result = await poolClient.query(
-        `SELECT student_id, user_id
-         FROM student_users
-         WHERE user_id IN (
-           SELECT user_id
-           FROM student_users WHERE student_id = $1
+        `SELECT student_id, parent_id
+         FROM student_parents
+         WHERE parent_id IN (
+           SELECT parent_id
+           FROM student_parents WHERE student_id = $1
          )`,
         [id]
       )
 
-      const userIdCountMap = new Map()
+      const parentIdCountMap = new Map()
 
-      for (const studentUser of result.rows) {
-        if (!userIdCountMap.has(studentUser.userId)) {
-          userIdCountMap.set(studentUser.userId, 1)
+      for (const studentParent of result.rows) {
+        if (!parentIdCountMap.has(studentParent.parentId)) {
+          parentIdCountMap.set(studentParent.parentId, 1)
         } else {
-          userIdCountMap.set(studentUser.userId, userIdCountMap.get(studentUser.userId) + 1)
+          parentIdCountMap.set(studentParent.parentId, parentIdCountMap.get(studentParent.parentId) + 1)
         }
       }
 
-      const userIds = []
+      const parentIds = []
 
-      for (const [id, count] of userIdCountMap) {
+      for (const [id, count] of parentIdCountMap) {
         if (count === 1) {
-          userIds.push(id)
+          parentIds.push(id)
         }
       }
 
-      if (userIds.length > 0) {
+      if (parentIds.length > 0) {
         await poolClient.query(pgFormat(
           `DELETE FROM users
+           WHERE id IN (
+             SELECT user_id
+             FROM parent_users
+             WHERE parent_id IN (%L)
+           )`,
+          parentIds
+        ))
+
+        await poolClient.query(pgFormat(
+          `DELETE FROM parents
            WHERE id IN (%L)`,
-          userIds
+          parentIds
         ))
       }
 
@@ -81,6 +80,8 @@ class StudentDao extends BaseDao {
       )
 
       await poolClient.query('COMMIT')
+
+      return { deletedParentIds: parentIds }
     } catch (err) {
       logger.error('Error deleting student')
       logger.error(err)

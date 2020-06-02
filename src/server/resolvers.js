@@ -52,8 +52,7 @@ const resolvers = {
     },
     async deleteStudent (previousResolver, { id }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
-      await studentDao.deleteStudent(id)
-      return { success: true }
+      return studentDao.deleteStudent(id)
     },
     async signIn (previousResolver, { googleToken }, { res }) {
       let payload = await client.verifyIdToken({

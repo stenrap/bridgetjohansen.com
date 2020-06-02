@@ -39,12 +39,30 @@ export const slice = createSlice({
     },
     deleteLocalStudent: (state, action) => {
       const students = []
+      const parents = []
+      const users = []
+
       for (const student of state.students) {
         if (student.id !== action.payload.id) {
           students.push(student)
         }
       }
+
+      for (const parent of state.parents) {
+        if (!action.payload.deletedParentIds.includes(parent.id)) {
+          parents.push(parent)
+        }
+      }
+
+      for (const user of state.users) {
+        if (!action.payload.deletedParentIds.includes(user.parentId)) {
+          users.push(user)
+        }
+      }
+
       state.students = sortStudents(students)
+      state.parents = sortParents(parents)
+      state.users = users
     },
     setAddingParent: (state, action) => {
       state.addingParent = action.payload
@@ -123,7 +141,7 @@ export const deleteStudent = id => async dispatch => {
   }
 
   batch(() => {
-    dispatch(deleteLocalStudent({ id }))
+    dispatch(deleteLocalStudent({ id, deletedParentIds: response.data.deleteStudent.deletedParentIds }))
     dispatch(setDeletingStudentId(0))
     dispatch(setConfirmingDeleteStudentId(0))
   })
@@ -146,6 +164,7 @@ export const fetchSchedule = () => async dispatch => {
     dispatch(setNewEffectiveDate(response.data.fetchSchedule))
     dispatch(setParents(response.data.fetchSchedule))
     dispatch(setStudents(response.data.fetchSchedule))
+    dispatch(addLocalUsers(response.data.fetchSchedule))
     dispatch(setLoading(false))
   })
 }

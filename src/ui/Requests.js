@@ -56,7 +56,7 @@ class Requests {
       body: {
         query: `mutation DeleteStudent ($id: ID!) {
           deleteStudent(id: $id) {
-            success
+            deletedParentIds
           }
         }`,
         variables: { id }
