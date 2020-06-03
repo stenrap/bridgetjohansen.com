@@ -15,7 +15,11 @@ a {
 }
 
 a[href^='tel:'] {
-  @include m.link;
+  cursor: default;
+
+  @media screen and (max-width: v.$horizontalNav) {
+    @include m.link;
+  }
 }
 
 input,

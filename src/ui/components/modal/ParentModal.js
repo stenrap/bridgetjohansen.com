@@ -15,7 +15,7 @@ export default props => {
     parent = {}
   } = props
 
-  const [emails, setEmails] = useState(parent.emails || '')
+  const [emails, setEmails] = useState(props.emails || '')
   const [emailsError, setEmailsError] = useState(false)
   const [emailSyntaxError, setEmailSyntaxError] = useState(false)
   const [name, setName] = useState(parent.name || '')

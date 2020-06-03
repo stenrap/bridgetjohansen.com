@@ -15,6 +15,7 @@ import edit from '../../images/edit.svg'
 import format from '../../../shared/libs/format'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
+import ParentName from '../parent-name/ParentName'
 import styles from './Student.module.scss'
 
 export default student => {
@@ -66,9 +67,7 @@ export default student => {
         const parent = parents.find(parent => parent.id === id)
         return (
           <div key={`student-parent-${id}`}>
-            <div className={styles.parents}>
-              {parent.name}
-            </div>
+            <ParentName {...parent} />
             <div className={styles.phone}>
               <a href={`tel:${parent.phone}`}>{parent.phone}</a>
             </div>

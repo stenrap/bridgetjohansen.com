@@ -14,6 +14,7 @@ export const slice = createSlice({
     confirmingDeleteStudentId: 0,
     deletingStudentId: 0,
     editingEffectiveDate: false,
+    editingParent: false,
     effectiveDate: 0,
     effectiveMonth: -1,
     effectiveYear: 0,
@@ -79,6 +80,9 @@ export const slice = createSlice({
     setEditingEffectiveDate: (state, action) => {
       state.editingEffectiveDate = action.payload
     },
+    setEditingParent: (state, action) => {
+      state.editingParent = action.payload
+    },
     setEffectiveDate: (state, action) => {
       state.effectiveDate = action.payload.date
       state.effectiveMonth = action.payload.month
@@ -118,6 +122,7 @@ export const {
   setConfirmingDeleteStudentId,
   setDeletingStudentId,
   setEditingEffectiveDate,
+  setEditingParent,
   setEffectiveDate,
   setMutatingEffectiveDate,
   setMutatingParent,
@@ -254,9 +259,11 @@ export const getEffectiveDate = state => { return { date: state.schedule.effecti
 export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
 export const getParents = state => state.schedule.parents
 export const getStudents = state => state.schedule.students
+export const getUsers = state => state.schedule.users
 export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
+export const isEditingParent = state => state.schedule.editingParent
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
 export const isMutatingParent = state => state.schedule.mutatingParent
 export const isMutatingStudent = state => state.schedule.mutatingStudent
