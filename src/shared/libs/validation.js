@@ -15,6 +15,10 @@ exports.isValidEmailList = emails => {
   return true
 }
 
+exports.isValidId = id => {
+  return /^\d+$/.test(id) && id > 0
+}
+
 exports.isValidLessonDay = day => {
   return day >= SUNDAY && day <= SATURDAY
 }

@@ -3,6 +3,7 @@ const { OAuth2Client } = require('google-auth-library')
 
 const {
   isValidEmailList,
+  isValidId,
   isValidLessonDay,
   isValidLessonHour,
   isValidLessonMeridiem,
@@ -74,6 +75,19 @@ const resolvers = {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
       await scheduleDao.updateEffectiveDate(month, date, year)
       return { success: true }
+    },
+    async updateParent (previousResolver, { parent }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const validParent = parent &&
+        isValidId(parent.id) &&
+        isValidString(parent.name) &&
+        isValidString(parent.phone) &&
+        isValidEmailList(parent.emails)
+
+      if (!validParent) throw new UserInputError('Invalid data')
+
+      return parentDao.updateParent(parent)
     }
   },
 

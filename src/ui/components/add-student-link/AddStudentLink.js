@@ -28,7 +28,7 @@ export default () => {
             dispatch(setAddingParent(true))
           }}
           showCancel={false}
-          title='No Parents'
+          title='Need Parents'
         >
           <p className={styles.noParentsText}>
             Adding a student requires selecting parents from a list,

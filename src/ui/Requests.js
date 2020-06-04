@@ -24,7 +24,7 @@ class Requests {
   createParent (parent) {
     return this.fetch({
       body: {
-        query: `mutation CreateParent ($parent: ParentInput!) {
+        query: `mutation CreateParent ($parent: CreateParentInput!) {
           createParent(parent: $parent) {
             id,
             users {
@@ -160,6 +160,22 @@ class Requests {
           }
         }`,
         variables: { month, date, year }
+      }
+    })
+  }
+
+  updateParent (parent) {
+    return this.fetch({
+      body: {
+        query: `mutation UpdateParent ($parent: UpdateParentInput!) {
+          updateParent(parent: $parent) {
+            users {
+              email,
+              id
+            }
+          }
+        }`,
+        variables: { parent }
       }
     })
   }

@@ -1,6 +1,12 @@
 const { gql } = require('apollo-server-express')
 
 const schema = gql`
+  input CreateParentInput {
+    name: String!
+    phone: String!
+    emails: [String!]!
+  }
+  
   type DeleteStudentResult {
     deletedParentIds: [ID!]!
   }
@@ -23,12 +29,6 @@ const schema = gql`
     id: ID!
     name: String!
     phone: String!
-  }
-  
-  input ParentInput {
-    name: String!
-    phone: String!
-    emails: [String!]!
   }
   
   type ParentResult {
@@ -82,6 +82,13 @@ const schema = gql`
     id: ID!
   }
   
+  input UpdateParentInput {
+    id: ID!
+    name: String!
+    phone: String!
+    emails: [String!]!
+  }
+  
   type User {
     admin: Boolean!
     email: String!
@@ -94,12 +101,13 @@ const schema = gql`
   }
   
   type Mutation {
-    createParent(parent: ParentInput!): ParentResult!
+    createParent(parent: CreateParentInput!): ParentResult!
     createStudent(student: StudentInput!): StudentResult!
     deleteStudent(id: ID!): DeleteStudentResult!
     signIn(googleToken: String!): User!
     signOut: SimpleResult
     updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult
+    updateParent(parent: UpdateParentInput): ParentResult!
   }
   
   type Query {

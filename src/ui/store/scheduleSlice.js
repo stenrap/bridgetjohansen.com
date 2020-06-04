@@ -65,6 +65,17 @@ export const slice = createSlice({
       state.parents = sortParents(parents)
       state.users = users
     },
+    deleteLocalUsers: (state, action) => {
+      const users = []
+
+      for (const user of state.users) {
+        if (user.parentId !== action.payload.parentId) {
+          users.push(user)
+        }
+      }
+
+      state.users = users
+    },
     setAddingParent: (state, action) => {
       state.addingParent = action.payload
     },
@@ -107,6 +118,17 @@ export const slice = createSlice({
     },
     setStudents: (state, action) => {
       state.students = sortStudents(action.payload.students)
+    },
+    updateLocalParent: (state, action) => {
+      const parents = [action.payload.parent]
+
+      for (const parent of state.parents) {
+        if (parent.id !== action.payload.parent.id) {
+          parents.push(parent)
+        }
+      }
+
+      state.parents = sortParents(parents)
     }
   }
 })
@@ -117,6 +139,7 @@ export const {
   addLocalStudent,
   addLocalUsers,
   deleteLocalStudent,
+  deleteLocalUsers,
   setAddingParent,
   setAddingStudent,
   setConfirmingDeleteStudentId,
@@ -129,7 +152,8 @@ export const {
   setMutatingStudent,
   setNewEffectiveDate,
   setParents,
-  setStudents
+  setStudents,
+  updateLocalParent
 } = slice.actions
 
 // Thunks
@@ -179,7 +203,7 @@ export const mutateParent = parent => async dispatch => {
 
   const adding = !parent.id
 
-  const response = await requests.createParent(parent)
+  const response = await (adding ? requests.createParent(parent) : requests.updateParent(parent))
 
   if (response.errors) {
     // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
@@ -190,19 +214,30 @@ export const mutateParent = parent => async dispatch => {
 
   batch(() => {
     if (adding) {
-      parent.id = Number(response.data.createParent.id)
+      parent.id = response.data.createParent.id
 
       const users = response.data.createParent.users
 
       for (const user of users) {
-        user.id = Number(user.id)
         user.parentId = parent.id
       }
 
       dispatch(addLocalParent({ parent }))
       dispatch(addLocalUsers({ users }))
+      dispatch(setAddingParent(false))
+    } else {
+      const users = response.data.updateParent.users
+
+      for (const user of users) {
+        user.parentId = parent.id
+      }
+
+      dispatch(updateLocalParent({ parent }))
+      dispatch(deleteLocalUsers({ parentId: parent.id }))
+      dispatch(addLocalUsers({ users }))
+      dispatch(setEditingParent(false))
     }
-    dispatch(setAddingParent(false))
+
     dispatch(setMutatingParent(false))
   })
 }
