@@ -11,7 +11,6 @@ import {
 } from '../../store/scheduleSlice'
 import Button from '../button/Button'
 import deleteIcon from '../../images/delete.svg'
-import edit from '../../images/edit.svg'
 import format from '../../../shared/libs/format'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
@@ -27,7 +26,6 @@ export default student => {
 
   const adminButtons = admin && (
     <div className={styles.adminButtons}>
-      <Button><img alt='Edit' src={edit} /></Button>
       <Button
         onClick={() => dispatch(setConfirmingDeleteStudentId(student.id))}
       >
