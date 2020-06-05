@@ -67,7 +67,7 @@ export default student => {
         const parent = parents.find(parent => parent.id === id)
         return (
           <div key={`student-parent-${id}`}>
-            <ParentName {...parent} />
+            <ParentName parent={parent} studentId={student.id} />
             <div className={styles.phone}>
               <a href={`tel:${parent.phone}`}>{parent.phone}</a>
             </div>
