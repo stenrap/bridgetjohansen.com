@@ -29,12 +29,12 @@ $studentLeftPadding: 0;
 .adminButtons {
   display: flex;
   justify-content: center;
-  width: calc(100% - #{$studentLeftPadding}); // Ensure the buttons are centered.
 
   button {
     background-color: transparent;
     height: $adminButtonSizeMobile;
-    margin: 10px 8px 4px 8px;
+    margin: 10px 0 4px 0;
+    padding: 0;
     width: $adminButtonSizeMobile;
 
     img {
@@ -46,7 +46,7 @@ $studentLeftPadding: 0;
       @media (hover: hover) {
         &:hover {
           background-color: transparent;
-          filter: brightness(0.75);
+          filter: brightness(1.125);
         }
       }
 
