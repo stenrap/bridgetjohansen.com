@@ -88,6 +88,24 @@ const resolvers = {
       if (!validParent) throw new UserInputError('Invalid data')
 
       return parentDao.updateParent(parent)
+    },
+    async updateStudent (previousResolver, { student }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const validStudent = student &&
+        isValidId(student.id) &&
+        isValidString(student.name) &&
+        isValidLessonDay(student.lessonDay) &&
+        isValidLessonHour(student.lessonHour) &&
+        isValidLessonMinutes(student.lessonMinutes) &&
+        isValidLessonMeridiem(student.lessonMeridiem) &&
+        isValidLessonDuration(student.lessonDuration) &&
+        isValidParentIds(student.parentIds)
+
+      if (!validStudent) throw new UserInputError('Invalid data')
+
+      await studentDao.updateStudent(student)
+      return { success: true }
     }
   },
 

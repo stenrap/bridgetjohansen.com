@@ -124,6 +124,54 @@ class StudentDao extends BaseDao {
       if (poolClient) poolClient.release()
     }
   }
+
+  async updateStudent (student) {
+    let poolClient = null
+
+    try {
+      poolClient = await this.getPoolClient()
+      await poolClient.query('BEGIN')
+
+      await poolClient.query(
+        `UPDATE students
+         SET name = $1, lesson_day = $2, lesson_hour = $3, lesson_minutes = $4, lesson_meridiem = $5, lesson_duration = $6
+         WHERE id = $7`,
+        [student.name, student.lessonDay, student.lessonHour, student.lessonMinutes, student.lessonMeridiem, student.lessonDuration, student.id]
+      )
+
+      await poolClient.query(
+        `DELETE FROM student_parents
+         WHERE student_id = $1`,
+        [student.id]
+      )
+
+      await poolClient.query(pgFormat(
+        `INSERT INTO student_parents (student_id, parent_id)
+         VALUES %L`,
+        student.parentIds.map(parentId => [student.id, parentId]) // Create an array of arrays for %L.
+      ))
+
+      /*
+        When a parent is unchecked while updating a student, it's technically
+        possible that the parent is no longer associated with any students.
+
+        You decided against deleting parents (and the corresponding users) in
+        this scenario because it seems unlikely that Bridget would want this
+        behavior of unchecking parents and having them be deleted.
+
+        If you discover that this decision was incorrect, this is the place to
+        make it right.
+       */
+
+      await poolClient.query('COMMIT')
+    } catch (err) {
+      logger.error('Error updating student')
+      logger.error(err)
+      if (poolClient) await poolClient.query('ROLLBACK')
+    } finally {
+      if (poolClient) poolClient.release()
+    }
+  }
 }
 
 module.exports = new StudentDao()

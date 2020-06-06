@@ -179,6 +179,19 @@ class Requests {
       }
     })
   }
+
+  updateStudent (student) {
+    return this.fetch({
+      body: {
+        query: `mutation UpdateStudent ($student: UpdateStudentInput!) {
+          updateStudent(student: $student) {
+            success
+          }
+        }`,
+        variables: { student }
+      }
+    })
+  }
 }
 
 export default new Requests()

@@ -89,6 +89,17 @@ const schema = gql`
     emails: [String!]!
   }
   
+  input UpdateStudentInput {
+    id: ID!
+    lessonDay: Int!
+    lessonDuration: Int!
+    lessonHour: Int!
+    lessonMeridiem: String!
+    lessonMinutes: Int!
+    name: String!
+    parentIds: [ID!]!
+  }
+  
   type User {
     admin: Boolean!
     email: String!
@@ -108,6 +119,7 @@ const schema = gql`
     signOut: SimpleResult
     updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult
     updateParent(parent: UpdateParentInput): ParentResult!
+    updateStudent(student: UpdateStudentInput): SimpleResult!
   }
   
   type Query {

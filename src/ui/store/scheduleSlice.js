@@ -137,6 +137,17 @@ export const slice = createSlice({
       }
 
       state.parents = sortParents(parents)
+    },
+    updateLocalStudent: (state, action) => {
+      const students = [action.payload.student]
+
+      for (const student of state.students) {
+        if (student.id !== action.payload.student.id) {
+          students.push(student)
+        }
+      }
+
+      state.students = sortStudents(students)
     }
   }
 })
@@ -163,7 +174,8 @@ export const {
   setNewEffectiveDate,
   setParents,
   setStudents,
-  updateLocalParent
+  updateLocalParent,
+  updateLocalStudent
 } = slice.actions
 
 // Thunks
@@ -258,7 +270,7 @@ export const mutateStudent = student => async dispatch => {
 
   const adding = !student.id
 
-  const response = await requests.createStudent(student)
+  const response = await (adding ? requests.createStudent(student) : requests.updateStudent(student))
 
   if (response.errors) {
     // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
@@ -271,8 +283,12 @@ export const mutateStudent = student => async dispatch => {
     if (adding) {
       student.id = response.data.createStudent.id
       dispatch(addLocalStudent({ student }))
+      dispatch(setAddingStudent(false))
+    } else {
+      dispatch(updateLocalStudent({ student }))
+      dispatch(setEditingStudentId(0))
     }
-    dispatch(setAddingStudent(false))
+
     dispatch(setMutatingStudent(false))
   })
 }
