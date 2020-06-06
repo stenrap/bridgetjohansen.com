@@ -15,6 +15,7 @@ export const slice = createSlice({
     deletingStudentId: 0,
     editingEffectiveDate: false,
     editingParentOfStudentId: 0,
+    editingStudentId: 0,
     effectiveDate: 0,
     effectiveMonth: -1,
     effectiveYear: 0,
@@ -94,6 +95,9 @@ export const slice = createSlice({
     setEditingParentOfStudentId: (state, action) => {
       state.editingParentOfStudentId = action.payload
     },
+    setEditingStudentId: (state, action) => {
+      state.editingStudentId = action.payload
+    },
     setEffectiveDate: (state, action) => {
       state.effectiveDate = action.payload.date
       state.effectiveMonth = action.payload.month
@@ -146,6 +150,7 @@ export const {
   setDeletingStudentId,
   setEditingEffectiveDate,
   setEditingParentOfStudentId,
+  setEditingStudentId,
   setEffectiveDate,
   setMutatingEffectiveDate,
   setMutatingParent,
@@ -288,8 +293,6 @@ export const updateEffectiveDate = date => async dispatch => {
 }
 
 // Selectors
-export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
-export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
 export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
 export const getParents = state => state.schedule.parents
@@ -297,8 +300,11 @@ export const getStudents = state => state.schedule.students
 export const getUsers = state => state.schedule.users
 export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
+export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
+export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isEditingParentOfStudentId = state => state.schedule.editingParentOfStudentId
+export const isEditingStudentId = state => state.schedule.editingStudentId
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
 export const isMutatingParent = state => state.schedule.mutatingParent
 export const isMutatingStudent = state => state.schedule.mutatingStudent

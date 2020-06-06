@@ -15,6 +15,7 @@ import format from '../../../shared/libs/format'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
 import ParentName from '../parent-name/ParentName'
+import StudentName from '../student-name/StudentName'
 import styles from './Student.module.scss'
 
 export default student => {
@@ -57,7 +58,7 @@ export default student => {
 
   return (
     <div className={styles.student}>
-      <div className={styles.name}>{student.name}</div>
+      <StudentName {...student} />
       <div className={styles.time}>
         {student.lessonHour}:{format.minutes(student.lessonMinutes)} {student.lessonMeridiem} ({student.lessonDuration} minutes)
       </div>

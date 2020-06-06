@@ -24,7 +24,7 @@ export default props => {
   const [lessonMinutes, setLessonMinutes] = useState(student.lessonMinutes || 0)
   const [name, setName] = useState(student.name || '')
   const [nameError, setNameError] = useState(false)
-  const [parentIds, setParentIds] = useState([])
+  const [parentIds, setParentIds] = useState(student.parentIds || [])
   const [parentIdsError, setParentIdsError] = useState(false)
 
   if (mutatingStudent) {

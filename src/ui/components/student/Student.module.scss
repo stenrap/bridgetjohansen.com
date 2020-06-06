@@ -1,18 +1,12 @@
 @use '../../styles/variables' as v;
 
-$adminButtonSizeDesktop: 32px;
-$adminButtonSizeMobile: 40px;
+$adminButtonSizeDesktop: 24px;
+$adminButtonSizeMobile: 32px;
 $studentLeftPadding: 0;
 
 .student {
   border-bottom: 1px solid #000;
   padding: 12px 0 16px $studentLeftPadding;
-}
-
-.name {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 8px;
 }
 
 .time {
