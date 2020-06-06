@@ -1,9 +1,16 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { batch, useDispatch, useSelector } from 'react-redux'
 
-import { getParents, isMutatingStudent, mutateStudent } from '../../store/scheduleSlice'
+import {
+  getParents,
+  isMutatingStudent,
+  mutateStudent,
+  setConfirmingDeleteStudentId,
+  setEditingStudentId
+} from '../../store/scheduleSlice'
 import { isValidString } from '../../../shared/libs/validation'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
+import Button from '../button/Button'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
 import styles from './StudentModal.module.scss'
@@ -51,6 +58,19 @@ export default props => {
         title={`${student.id ? 'Edit' : 'Add'} Student`}
         {...props}
       >
+        {student.id && (
+          <Button
+            className={styles.deleteButton}
+            onClick={() => {
+              batch(() => {
+                dispatch(setEditingStudentId(0))
+                dispatch(setConfirmingDeleteStudentId(student.id))
+              })
+            }}
+          >
+            Delete
+          </Button>
+        )}
         <div className='inputRow'>
           <label>Name</label>
           <input

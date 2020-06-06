@@ -1,12 +1,8 @@
 @use '../../styles/variables' as v;
 
-$adminButtonSizeDesktop: 24px;
-$adminButtonSizeMobile: 32px;
-$studentLeftPadding: 0;
-
 .student {
   border-bottom: 1px solid #000;
-  padding: 12px 0 16px $studentLeftPadding;
+  padding: 12px 0 16px;
 }
 
 .time {
@@ -18,45 +14,4 @@ $studentLeftPadding: 0;
 .phone {
   font-size: 14px;
   margin-bottom: 6px;
-}
-
-.adminButtons {
-  display: flex;
-  justify-content: center;
-
-  button {
-    background-color: transparent;
-    height: $adminButtonSizeMobile;
-    margin: 10px 0 4px 0;
-    padding: 0;
-    width: $adminButtonSizeMobile;
-
-    img {
-      height: $adminButtonSizeMobile;
-      width: $adminButtonSizeMobile;
-    }
-
-    &:enabled {
-      @media (hover: hover) {
-        &:hover {
-          background-color: transparent;
-          filter: brightness(1.125);
-        }
-      }
-
-      &:active {
-        background-color: transparent;
-      }
-    }
-
-    @media screen and (min-width: v.$horizontalNav) {
-      height: $adminButtonSizeDesktop;
-      width: $adminButtonSizeDesktop;
-
-      img {
-        height: $adminButtonSizeDesktop;
-        width: $adminButtonSizeDesktop;
-      }
-    }
-  }
 }

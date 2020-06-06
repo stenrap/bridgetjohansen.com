@@ -9,7 +9,7 @@ export default props => {
     cancelLabel = 'Cancel',
     children,
     className,
-    okLabel = 'OK',
+    okLabel = 'Ok',
     onOk,
     onCancel,
     showButtons = true,
