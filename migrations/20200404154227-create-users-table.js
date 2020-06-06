@@ -38,7 +38,8 @@ exports.up = async db => {
       `INSERT INTO users (email, admin)
        VALUES
        ('email@bridgetjohansen.com', true),
-       ('admin@bridgetjohansen.com', true)`
+       ('admin@bridgetjohansen.com', true),
+       ('rob.johansen@gmail.com', false)`
     )
   } catch (err) {
     logError(err)
