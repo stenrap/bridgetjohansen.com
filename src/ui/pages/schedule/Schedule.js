@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
+import AddDateLink from '../../components/group-classes/add-date-link/AddDateLink'
 import AddParentLink from '../../components/add-parent-link/AddParentLink'
 import AddStudentLink from '../../components/add-student-link/AddStudentLink'
+import AddTimeLink from '../../components/group-classes/add-time-link/AddTimeLink'
 import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
 import { fetchSchedule, getStudents } from '../../store/scheduleSlice'
@@ -48,6 +50,12 @@ export default () => {
     days.push(<Day {...day} key={day.name} />)
   }
 
+  const addGroupClassRow = admin && (
+    <div className={styles.addGroupClassRow}>
+      <AddDateLink /> <AddTimeLink />
+    </div>
+  )
+
   return (
     <div className={styles.schedule}>
       <div className={styles.scheduleHeader}>
@@ -58,7 +66,15 @@ export default () => {
         <SignOutLink />
       </div>
       {addStudentRow}
-      <div className={styles.days}>{days}</div>
+      <div className={styles.days}>
+        {days}
+      </div>
+      <div className={styles.scheduleHeader}>
+        <div className={styles.groupClasses}>
+          <div className={styles.scheduleTitle}>Group Classes</div>
+        </div>
+      </div>
+      {addGroupClassRow}
     </div>
   )
 }
