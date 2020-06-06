@@ -22,6 +22,10 @@ a[href^='tel:'] {
   }
 }
 
+button {
+  padding-top: 0;
+}
+
 input,
 textarea {
   border: 1px solid #ccc;
