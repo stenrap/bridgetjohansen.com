@@ -1,21 +1,33 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { batch, useDispatch, useSelector } from 'react-redux'
 
 import { isAdmin } from '../../store/userSlice'
-import { getUsers, isEditingParentOfStudentId, setEditingParentOfStudentId } from '../../store/scheduleSlice'
+import {
+  getUsers,
+  isEditingParentId,
+  isEditingParentOfStudentId,
+  setEditingParentId,
+  setEditingParentOfStudentId
+} from '../../store/scheduleSlice'
 import ParentModal from '../modal/ParentModal'
 import styles from './ParentName.module.scss'
 
 export default props => {
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
+  const editingParentId = useSelector(isEditingParentId)
   const editingParentOfStudentId = useSelector(isEditingParentOfStudentId)
   const users = useSelector(getUsers)
 
-  const modal = editingParentOfStudentId === props.studentId && (
+  const modal = editingParentId === props.parent.id && editingParentOfStudentId === props.studentId && (
     <ParentModal
       emails={users.filter(user => user.parentId === props.parent.id).map(user => user.email).join('\n')}
-      onCancel={() => dispatch(setEditingParentOfStudentId(0))}
+      onCancel={() => {
+        batch(() => {
+          dispatch(setEditingParentId(0))
+          dispatch(setEditingParentOfStudentId(0))
+        })
+      }}
       parent={props.parent}
     />
   )
@@ -25,7 +37,12 @@ export default props => {
       ? (
         <span
           className={styles.link}
-          onClick={() => dispatch(setEditingParentOfStudentId(props.studentId))}
+          onClick={() => {
+            batch(() => {
+              dispatch(setEditingParentId(props.parent.id))
+              dispatch(setEditingParentOfStudentId(props.studentId))
+            })
+          }}
         >
           {props.parent.name}
         </span>

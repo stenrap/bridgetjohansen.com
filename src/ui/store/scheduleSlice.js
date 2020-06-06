@@ -14,6 +14,7 @@ export const slice = createSlice({
     confirmingDeleteStudentId: 0,
     deletingStudentId: 0,
     editingEffectiveDate: false,
+    editingParentId: 0,
     editingParentOfStudentId: 0,
     editingStudentId: 0,
     effectiveDate: 0,
@@ -92,6 +93,9 @@ export const slice = createSlice({
     setEditingEffectiveDate: (state, action) => {
       state.editingEffectiveDate = action.payload
     },
+    setEditingParentId: (state, action) => {
+      state.editingParentId = action.payload
+    },
     setEditingParentOfStudentId: (state, action) => {
       state.editingParentOfStudentId = action.payload
     },
@@ -149,6 +153,7 @@ export const {
   setConfirmingDeleteStudentId,
   setDeletingStudentId,
   setEditingEffectiveDate,
+  setEditingParentId,
   setEditingParentOfStudentId,
   setEditingStudentId,
   setEffectiveDate,
@@ -240,6 +245,7 @@ export const mutateParent = parent => async dispatch => {
       dispatch(updateLocalParent({ parent }))
       dispatch(deleteLocalUsers({ parentId: parent.id }))
       dispatch(addLocalUsers({ users }))
+      dispatch(setEditingParentId(0))
       dispatch(setEditingParentOfStudentId(0))
     }
 
@@ -303,6 +309,7 @@ export const isAddingStudent = state => state.schedule.addingStudent
 export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
 export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
+export const isEditingParentId = state => state.schedule.editingParentId
 export const isEditingParentOfStudentId = state => state.schedule.editingParentOfStudentId
 export const isEditingStudentId = state => state.schedule.editingStudentId
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
