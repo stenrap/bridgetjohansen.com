@@ -9,9 +9,11 @@ import requests from '../Requests'
 export const slice = createSlice({
   name: 'schedule',
   initialState: {
+    addingGroupClassDate: false,
     addingParent: false,
     addingStudent: false,
     confirmingDeleteStudentId: 0,
+    creatingGroupClassDate: false,
     deletingStudentId: 0,
     editingEffectiveDate: false,
     editingParentId: 0,
@@ -78,11 +80,17 @@ export const slice = createSlice({
     setAddingParent: (state, action) => {
       state.addingParent = action.payload
     },
+    setAddingGroupClassDate: (state, action) => {
+      state.addingGroupClassDate = action.payload
+    },
     setAddingStudent: (state, action) => {
       state.addingStudent = action.payload
     },
     setConfirmingDeleteStudentId: (state, action) => {
       state.confirmingDeleteStudentId = action.payload
+    },
+    setCreatingGroupClassDate: (state, action) => {
+      state.creatingGroupClassDate = action.payload
     },
     setDeletingStudentId: (state, action) => {
       state.deletingStudentId = action.payload
@@ -151,9 +159,11 @@ export const {
   addLocalUsers,
   deleteLocalStudent,
   deleteLocalUsers,
+  setAddingGroupClassDate,
   setAddingParent,
   setAddingStudent,
   setConfirmingDeleteStudentId,
+  setCreatingGroupClassDate,
   setDeletingStudentId,
   setEditingEffectiveDate,
   setEditingParentId,
@@ -170,6 +180,27 @@ export const {
 } = slice.actions
 
 // Thunks
+export const createGroupClassDate = date => async dispatch => {
+  batch(() => {
+    dispatch(setAddingGroupClassDate(false))
+    dispatch(setCreatingGroupClassDate(true))
+  })
+
+  // const response = await requests.createGroupClassDate(date)
+
+  // if (response.errors) {
+  //   // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+  //   console.log('Error adding group class date...')
+  //   console.log(response.errors)
+  //   return
+  // }
+
+  batch(() => {
+    // dispatch(addLocalGroupClassDate(date))
+    dispatch(setCreatingGroupClassDate(false))
+  })
+}
+
 export const deleteStudent = id => async dispatch => {
   dispatch(setDeletingStudentId(id))
 
@@ -309,9 +340,11 @@ export const getEffectiveDate = state => { return { date: state.schedule.effecti
 export const getParents = state => state.schedule.parents
 export const getStudents = state => state.schedule.students
 export const getUsers = state => state.schedule.users
+export const isAddingGroupClassDate = state => state.schedule.addingGroupClassDate
 export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
+export const isCreatingGroupClassDate = state => state.schedule.creatingGroupClassDate
 export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isEditingParentId = state => state.schedule.editingParentId
