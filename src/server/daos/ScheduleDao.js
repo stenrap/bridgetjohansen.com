@@ -146,7 +146,7 @@ class ScheduleDao extends BaseDao {
 
   updateEffectiveDate (month, date, year) {
     return this.query({
-      sql: `UPDATE schedule
+      sql: `UPDATE effective_date
             SET month = $1, date = $2, year = $3`,
       params: [month, date, year]
     })

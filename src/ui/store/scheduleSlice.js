@@ -23,9 +23,6 @@ export const slice = createSlice({
     mutatingEffectiveDate: false,
     mutatingParent: false,
     mutatingStudent: false,
-    newEffectiveDate: 0,
-    newEffectiveMonth: -1,
-    newEffectiveYear: 0,
     parents: [],
     students: [],
     users: []
@@ -102,7 +99,7 @@ export const slice = createSlice({
     setEditingStudentId: (state, action) => {
       state.editingStudentId = action.payload
     },
-    setEffectiveDate: (state, action) => {
+    setLocalEffectiveDate: (state, action) => {
       state.effectiveDate = action.payload.date
       state.effectiveMonth = action.payload.month
       state.effectiveYear = action.payload.year
@@ -115,11 +112,6 @@ export const slice = createSlice({
     },
     setMutatingStudent: (state, action) => {
       state.mutatingStudent = action.payload
-    },
-    setNewEffectiveDate: (state, action) => {
-      state.newEffectiveDate = action.payload.date
-      state.newEffectiveMonth = action.payload.month
-      state.newEffectiveYear = action.payload.year
     },
     setParents: (state, action) => {
       state.parents = sortParents(action.payload.parents)
@@ -167,11 +159,10 @@ export const {
   setEditingParentId,
   setEditingParentOfStudentId,
   setEditingStudentId,
-  setEffectiveDate,
+  setLocalEffectiveDate,
   setMutatingEffectiveDate,
   setMutatingParent,
   setMutatingStudent,
-  setNewEffectiveDate,
   setParents,
   setStudents,
   updateLocalParent,
@@ -211,8 +202,7 @@ export const fetchSchedule = () => async dispatch => {
   }
 
   batch(() => {
-    dispatch(setEffectiveDate(response.data.fetchSchedule))
-    dispatch(setNewEffectiveDate(response.data.fetchSchedule))
+    dispatch(setLocalEffectiveDate(response.data.fetchSchedule))
     dispatch(setParents(response.data.fetchSchedule))
     dispatch(setStudents(response.data.fetchSchedule))
     dispatch(addLocalUsers(response.data.fetchSchedule))
@@ -309,14 +299,13 @@ export const updateEffectiveDate = date => async dispatch => {
   }
 
   batch(() => {
-    dispatch(setEffectiveDate(date))
+    dispatch(setLocalEffectiveDate(date))
     dispatch(setMutatingEffectiveDate(false))
   })
 }
 
 // Selectors
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
-export const getNewEffectiveDate = state => { return { date: state.schedule.newEffectiveDate, month: state.schedule.newEffectiveMonth, year: state.schedule.newEffectiveYear } }
 export const getParents = state => state.schedule.parents
 export const getStudents = state => state.schedule.students
 export const getUsers = state => state.schedule.users
