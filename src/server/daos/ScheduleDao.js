@@ -100,13 +100,27 @@ class ScheduleDao extends BaseDao {
       result = await poolClient.query(
         `SELECT *
          FROM group_class_dates
-         WHERE month >= $1
-         AND date >= $2
-         AND year >= $3`,
-        [today.getMonth(), today.getDate(), today.getFullYear()]
+         WHERE year >= $1`,
+        [today.getFullYear()]
       )
 
-      schedule.groupClassDates = result.rows
+      const groupClassDates = []
+
+      for (const row of result.rows) {
+        if (row.year > today.getFullYear()) {
+          groupClassDates.push(row)
+        } else if (row.year === today.getFullYear()) {
+          if (row.month > today.getMonth()) {
+            groupClassDates.push(row)
+          } else if (row.month === today.getMonth()) {
+            if (row.date >= today.getDate()) {
+              groupClassDates.push(row)
+            }
+          }
+        }
+      }
+
+      schedule.groupClassDates = groupClassDates
 
       // Group class times
 
