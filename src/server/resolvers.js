@@ -2,6 +2,7 @@ const { AuthenticationError, UserInputError } = require('apollo-server-express')
 const { OAuth2Client } = require('google-auth-library')
 
 const {
+  isValidDate,
   isValidEmailList,
   isValidId,
   isValidLessonDay,
@@ -9,8 +10,10 @@ const {
   isValidLessonMeridiem,
   isValidLessonMinutes,
   isValidLessonDuration,
+  isValidMonth,
   isValidParentIds,
-  isValidString
+  isValidString,
+  isValidYear
 } = require('../shared/libs/validation')
 const { TOKEN_COOKIE, USER_TOKEN_EXPIRATION } = require('../shared/Constants')
 const cookieLib = require('../shared/libs/cookie')
@@ -23,6 +26,17 @@ const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 
 const resolvers = {
   Mutation: {
+    async createGroupClassDate (previousResolver, { month, date, year }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const validDate = isValidMonth(month) &&
+        isValidDate(date) &&
+        isValidYear(year)
+
+      if (!validDate) throw new UserInputError('Invalid data')
+
+      return scheduleDao.insertGroupClassDate({ month, date, year })
+    },
     async createParent (previousResolver, { parent }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 
@@ -73,6 +87,13 @@ const resolvers = {
     },
     async updateEffectiveDate (previousResolver, { month, date, year }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const validDate = isValidMonth(month) &&
+        isValidDate(date) &&
+        isValidYear(year)
+
+      if (!validDate) throw new UserInputError('Invalid data')
+
       await scheduleDao.updateEffectiveDate(month, date, year)
       return { success: true }
     },

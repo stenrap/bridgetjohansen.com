@@ -1,5 +1,9 @@
 const { MAX_STRING_LENGTH, SATURDAY, SUNDAY } = require('../Constants')
 
+exports.isValidDate = date => {
+  return /^\d+$/.test(date) && date >= 1 && date <= 31 // Yes, this isn't valid for February. Yawn.
+}
+
 const isValidEmail = email => {
   return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/.test(email) &&
     email.length <= MAX_STRING_LENGTH
@@ -39,6 +43,10 @@ exports.isValidLessonMeridiem = meridiem => {
   return meridiem === 'am' || meridiem === 'pm'
 }
 
+exports.isValidMonth = month => {
+  return /^\d+$/.test(month) && month >= 0 && month <= 11
+}
+
 exports.isValidParentIds = parentIds => {
   if (!Array.isArray(parentIds) || parentIds.length === 0) return false
   for (const id of parentIds) {
@@ -51,4 +59,8 @@ exports.isValidString = string => {
   if (!string) return false
   const trimmed = string.trim()
   return trimmed.length > 0 && trimmed.length <= MAX_STRING_LENGTH
+}
+
+exports.isValidYear = year => {
+  return /^\d\d\d\d$/.test(year) // Yes, the year could be 1297. Yawn.
 }

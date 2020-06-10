@@ -2,6 +2,7 @@ import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
 import { setLoading } from './loadingSlice'
+import { sortDates } from '../../shared/libs/date'
 import { sortParents } from '../../shared/libs/parent'
 import { sortStudents } from '../../shared/libs/student'
 import requests from '../Requests'
@@ -22,6 +23,7 @@ export const slice = createSlice({
     effectiveDate: 0,
     effectiveMonth: -1,
     effectiveYear: 0,
+    groupClassDates: [],
     mutatingEffectiveDate: false,
     mutatingParent: false,
     mutatingStudent: false,
@@ -30,6 +32,10 @@ export const slice = createSlice({
     users: []
   },
   reducers: {
+    addLocalGroupClassDate: (state, action) => {
+      state.groupClassDates.push(action.payload.date)
+      state.groupClassDates = sortDates(state.groupClassDates)
+    },
     addLocalParent: (state, action) => {
       state.parents = sortParents([...state.parents, action.payload.parent])
     },
@@ -112,6 +118,9 @@ export const slice = createSlice({
       state.effectiveMonth = action.payload.month
       state.effectiveYear = action.payload.year
     },
+    setLocalGroupClassDates: (state, action) => {
+      state.groupClassDates = sortDates(action.payload.groupClassDates)
+    },
     setMutatingEffectiveDate: (state, action) => {
       state.mutatingEffectiveDate = action.payload
     },
@@ -154,6 +163,7 @@ export const slice = createSlice({
 
 // Actions
 export const {
+  addLocalGroupClassDate,
   addLocalParent,
   addLocalStudent,
   addLocalUsers,
@@ -170,6 +180,7 @@ export const {
   setEditingParentOfStudentId,
   setEditingStudentId,
   setLocalEffectiveDate,
+  setLocalGroupClassDates,
   setMutatingEffectiveDate,
   setMutatingParent,
   setMutatingStudent,
@@ -186,17 +197,18 @@ export const createGroupClassDate = date => async dispatch => {
     dispatch(setCreatingGroupClassDate(true))
   })
 
-  // const response = await requests.createGroupClassDate(date)
+  const response = await requests.createGroupClassDate(date)
 
-  // if (response.errors) {
-  //   // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
-  //   console.log('Error adding group class date...')
-  //   console.log(response.errors)
-  //   return
-  // }
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error adding group class date...')
+    console.log(response.errors)
+    return
+  }
 
   batch(() => {
-    // dispatch(addLocalGroupClassDate(date))
+    date.id = response.data.createGroupClassDate.id
+    dispatch(addLocalGroupClassDate({ date }))
     dispatch(setCreatingGroupClassDate(false))
   })
 }
@@ -237,6 +249,7 @@ export const fetchSchedule = () => async dispatch => {
     dispatch(setParents(response.data.fetchSchedule))
     dispatch(setStudents(response.data.fetchSchedule))
     dispatch(addLocalUsers(response.data.fetchSchedule))
+    dispatch(setLocalGroupClassDates(response.data.fetchSchedule))
     dispatch(setLoading(false))
   })
 }

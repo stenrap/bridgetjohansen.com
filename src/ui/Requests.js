@@ -21,6 +21,19 @@ class Requests {
     return response
   }
 
+  createGroupClassDate ({ month, date, year }) {
+    return this.fetch({
+      body: {
+        query: `mutation CreateGroupClassDate ($month: Int!, $date: Int!, $year: Int!) {
+          createGroupClassDate(month: $month, date: $date, year: $year) {
+            id
+          }
+        }`,
+        variables: { month, date, year }
+      }
+    })
+  }
+
   createParent (parent) {
     return this.fetch({
       body: {

@@ -18,6 +18,10 @@ const schema = gql`
     year: Int!
   }
   
+  type GroupClassDateResult {
+    id: ID!
+  }
+  
   type GroupClassTime {
     hour: Int!
     id: ID!
@@ -112,6 +116,7 @@ const schema = gql`
   }
   
   type Mutation {
+    createGroupClassDate(month: Int!, date: Int!, year: Int!): GroupClassDateResult!
     createParent(parent: CreateParentInput!): ParentResult!
     createStudent(student: StudentInput!): StudentResult!
     deleteStudent(id: ID!): DeleteStudentResult!

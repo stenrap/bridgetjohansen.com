@@ -7,6 +7,17 @@ const Schedule = require('../../shared/models/Schedule')
 const Student = require('../../shared/models/Student')
 
 class ScheduleDao extends BaseDao {
+  async insertGroupClassDate ({ month, date, year }) {
+    const result = await this.query({
+      sql: `INSERT INTO group_class_dates (month, date, year)
+            VALUES ($1, $2, $3)
+            RETURNING id`,
+      params: [month, date, year]
+    })
+
+    return { id: result.rows[0].id }
+  }
+
   async selectSchedule () {
     const schedule = new Schedule()
 
