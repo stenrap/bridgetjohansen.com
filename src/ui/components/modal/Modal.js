@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 
 import Button from '../button/Button'
 import styles from './Modal.module.scss'
 
 export default props => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
   const {
     cancelLabel = 'Cancel',
     children,
