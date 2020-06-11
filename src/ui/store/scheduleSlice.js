@@ -350,6 +350,7 @@ export const updateEffectiveDate = date => async dispatch => {
 
 // Selectors
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
+export const getGroupClassDates = state => state.schedule.groupClassDates
 export const getParents = state => state.schedule.parents
 export const getStudents = state => state.schedule.students
 export const getUsers = state => state.schedule.users
