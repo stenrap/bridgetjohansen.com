@@ -6,9 +6,10 @@ import AddDateLink from '../../components/group-classes/add-date-link/AddDateLin
 import AddParentLink from '../../components/add-parent-link/AddParentLink'
 import AddStudentLink from '../../components/add-student-link/AddStudentLink'
 import AddTimeLink from '../../components/group-classes/add-time-link/AddTimeLink'
+import Date from '../../components/group-classes/date/Date'
 import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
-import { fetchSchedule, getStudents } from '../../store/scheduleSlice'
+import { fetchSchedule, getGroupClassDates, getStudents } from '../../store/scheduleSlice'
 import { getDay } from '../../../shared/libs/student'
 import { isAdmin, isSignedIn } from '../../store/userSlice'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
@@ -17,6 +18,7 @@ import styles from './Schedule.module.scss'
 export default () => {
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
+  const groupClassDates = useSelector(getGroupClassDates)
   const signedIn = useSelector(isSignedIn)
   const students = useSelector(getStudents)
 
@@ -56,6 +58,19 @@ export default () => {
     </div>
   )
 
+  const groupClassDatesRow = groupClassDates.length > 0 && (
+    <div className={styles.addGroupClassDatesRow}>
+      {groupClassDates.map(groupClassDate => {
+        return (
+          <Date
+            groupClassDate={groupClassDate}
+            key={groupClassDate.id}
+          />
+        )
+      })}
+    </div>
+  )
+
   return (
     <div className={styles.schedule}>
       <div className={styles.scheduleHeader}>
@@ -75,6 +90,7 @@ export default () => {
         </div>
       </div>
       {addGroupClassRow}
+      {groupClassDatesRow}
     </div>
   )
 }

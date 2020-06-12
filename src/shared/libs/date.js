@@ -6,9 +6,9 @@ exports.sortDates = dates => {
     aDate.setFullYear(a.year)
 
     const bDate = new Date()
-    bDate.setMonth(a.month)
-    bDate.setDate(a.date)
-    bDate.setFullYear(a.year)
+    bDate.setMonth(b.month)
+    bDate.setDate(b.date)
+    bDate.setFullYear(b.year)
 
     return aDate.getTime() - bDate.getTime()
   })
