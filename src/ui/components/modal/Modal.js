@@ -11,10 +11,10 @@ export default props => {
   }, [])
 
   const {
-    cancelLabel = 'Cancel',
+    cancelLabel = 'CANCEL',
     children,
     className,
-    okLabel = 'Ok',
+    okLabel = 'OK',
     onOk,
     onCancel,
     showButtons = true,
