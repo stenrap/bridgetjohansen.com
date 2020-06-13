@@ -2,38 +2,38 @@ import React, { useState } from 'react'
 import { batch, useDispatch, useSelector } from 'react-redux'
 
 import {
-  createGroupClassDate,
-  getGroupClassDates,
-  isCreatingGroupClassDate,
-  setAddingGroupClassDate,
-  setEditingGroupClassDateId
+  getGroupClasses,
+  isMutatingGroupClass,
+  mutateGroupClass,
+  setAddingGroupClass,
+  setEditingGroupClassId
 } from '../../store/scheduleSlice'
 import DatePicker from './DatePicker'
 import format from '../../../shared/libs/format'
 import LoadingModal from '../loading/LoadingModal'
 import Modal from './Modal'
-import styles from './GroupClass.module.scss'
+import styles from './GroupClassModal.module.scss'
 
 export default props => {
-  const creatingGroupClassDate = useSelector(isCreatingGroupClassDate)
   const dispatch = useDispatch()
-  const groupClassDates = useSelector(getGroupClassDates)
+  const groupClasses = useSelector(getGroupClasses)
+  const mutatingGroupClass = useSelector(isMutatingGroupClass)
   const today = new Date()
 
   const [dupe, setDupe] = useState(null)
 
   const {
-    groupClassDate = {}
+    groupClass = {}
   } = props
 
   let initialDate = today.getDate()
   let initialMonth = today.getMonth()
   let initialYear = today.getFullYear()
 
-  if (groupClassDate.id) {
-    initialDate = groupClassDate.date
-    initialMonth = groupClassDate.month
-    initialYear = groupClassDate.year
+  if (groupClass.id) {
+    initialDate = groupClass.date
+    initialMonth = groupClass.month
+    initialYear = groupClass.year
   }
 
   if (dupe) {
@@ -53,8 +53,8 @@ export default props => {
     )
   }
 
-  if (creatingGroupClassDate) {
-    return <LoadingModal title='Adding group class...' />
+  if (mutatingGroupClass) {
+    return <LoadingModal title={`${groupClass.id ? 'Editing' : 'Adding'} group class...`} />
   }
 
   return (
@@ -63,8 +63,8 @@ export default props => {
       month={initialMonth}
       onCancel={() => {
         batch(() => {
-          dispatch(setAddingGroupClassDate(false))
-          dispatch(setEditingGroupClassDateId(0))
+          dispatch(setAddingGroupClass(false))
+          dispatch(setEditingGroupClassId(0))
         })
       }}
       onOk={newDate => {
@@ -72,19 +72,15 @@ export default props => {
         const month = newDate.getMonth()
         const year = newDate.getFullYear()
 
-        for (const groupClassDate of groupClassDates) {
-          if (groupClassDate.date === date && groupClassDate.month === month && groupClassDate.year === year) {
+        for (const groupClass of groupClasses) {
+          if (groupClass.date === date && groupClass.month === month && groupClass.year === year) {
             return setDupe({ month, date, year })
           }
         }
 
-        if (groupClassDate.id) {
-          console.log('Mutating group class date...')
-        } else {
-          dispatch(createGroupClassDate({ date, month, year }))
-        }
+        dispatch(mutateGroupClass({ id: groupClass.id, date, month, year }))
       }}
-      title='Add Group Class'
+      title={`${groupClass.id ? 'Edit' : 'Add'} Group Class`}
       year={initialYear}
     />
   )

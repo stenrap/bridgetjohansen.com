@@ -1,11 +1,11 @@
 @use '../../../styles/mixins' as m;
 
-.groupClassDate {
+.groupClass {
   display: inline-block;
   line-height: 28px;
   margin-right: 24px;
 }
 
-.groupClassDateLink {
+.groupClassLink {
   @include m.link;
 }

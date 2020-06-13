@@ -7,7 +7,7 @@ const Schedule = require('../../shared/models/Schedule')
 const Student = require('../../shared/models/Student')
 
 class ScheduleDao extends BaseDao {
-  async insertGroupClassDate ({ month, date, year }) {
+  async insertGroupClass ({ month, date, year }) {
     const result = await this.query({
       sql: `INSERT INTO group_class_dates (month, date, year)
             VALUES ($1, $2, $3)
@@ -104,23 +104,23 @@ class ScheduleDao extends BaseDao {
         [today.getFullYear()]
       )
 
-      const groupClassDates = []
+      const groupClasses = []
 
       for (const row of result.rows) {
         if (row.year > today.getFullYear()) {
-          groupClassDates.push(row)
+          groupClasses.push(row)
         } else if (row.year === today.getFullYear()) {
           if (row.month > today.getMonth()) {
-            groupClassDates.push(row)
+            groupClasses.push(row)
           } else if (row.month === today.getMonth()) {
             if (row.date >= today.getDate()) {
-              groupClassDates.push(row)
+              groupClasses.push(row)
             }
           }
         }
       }
 
-      schedule.groupClassDates = groupClassDates
+      schedule.groupClasses = groupClasses
 
       // Group class times
 
@@ -177,7 +177,7 @@ class ScheduleDao extends BaseDao {
     })
   }
 
-  updateGroupClassDate (id, month, date, year) {
+  updateGroupClass (id, month, date, year) {
     return this.query({
       sql: `UPDATE group_class_dates
             SET month = $1, date = $2, year = $3

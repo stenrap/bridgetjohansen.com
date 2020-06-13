@@ -2,27 +2,27 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
-  isAddingGroupClassDate,
-  setAddingGroupClassDate
+  isAddingGroupClass,
+  setAddingGroupClass
 } from '../../../store/scheduleSlice'
-import GroupClass from '../../modal/GroupClass'
+import GroupClassModal from '../../modal/GroupClassModal'
 import styles from './AddDateLink.module.scss'
 
 export default () => {
-  const addingGroupClassDate = useSelector(isAddingGroupClassDate)
+  const addingGroupClass = useSelector(isAddingGroupClass)
   const dispatch = useDispatch()
 
-  const modal = addingGroupClassDate && (
-    <GroupClass />
+  const modal = addingGroupClass && (
+    <GroupClassModal />
   )
 
   return (
     <>
       <span
         className={styles.addDateLink}
-        onClick={() => dispatch(setAddingGroupClassDate(true))}
+        onClick={() => dispatch(setAddingGroupClass(true))}
       >
-        Add Date
+        Add Group Class
       </span>
       {modal}
     </>

@@ -10,23 +10,22 @@ import requests from '../Requests'
 export const slice = createSlice({
   name: 'schedule',
   initialState: {
-    addingGroupClassDate: false,
+    addingGroupClass: false,
     addingParent: false,
     addingStudent: false,
     confirmingDeleteStudentId: 0,
-    creatingGroupClassDate: false,
     deletingStudentId: 0,
     editingEffectiveDate: false,
-    editingGroupClassDateId: 0,
+    editingGroupClassId: 0,
     editingParentId: 0,
     editingParentOfStudentId: 0,
     editingStudentId: 0,
     effectiveDate: 0,
     effectiveMonth: -1,
     effectiveYear: 0,
-    groupClassDates: [],
+    groupClasses: [],
     mutatingEffectiveDate: false,
-    mutatingGroupClassDate: false,
+    mutatingGroupClass: false,
     mutatingParent: false,
     mutatingStudent: false,
     parents: [],
@@ -34,9 +33,9 @@ export const slice = createSlice({
     users: []
   },
   reducers: {
-    addLocalGroupClassDate: (state, action) => {
-      state.groupClassDates.push(action.payload.date)
-      state.groupClassDates = sortDates(state.groupClassDates)
+    addLocalGroupClass: (state, action) => {
+      state.groupClasses.push(action.payload.groupClass)
+      state.groupClasses = sortDates(state.groupClasses)
     },
     addLocalParent: (state, action) => {
       state.parents = sortParents([...state.parents, action.payload.parent])
@@ -88,8 +87,8 @@ export const slice = createSlice({
     setAddingParent: (state, action) => {
       state.addingParent = action.payload
     },
-    setAddingGroupClassDate: (state, action) => {
-      state.addingGroupClassDate = action.payload
+    setAddingGroupClass: (state, action) => {
+      state.addingGroupClass = action.payload
     },
     setAddingStudent: (state, action) => {
       state.addingStudent = action.payload
@@ -97,17 +96,14 @@ export const slice = createSlice({
     setConfirmingDeleteStudentId: (state, action) => {
       state.confirmingDeleteStudentId = action.payload
     },
-    setCreatingGroupClassDate: (state, action) => {
-      state.creatingGroupClassDate = action.payload
-    },
     setDeletingStudentId: (state, action) => {
       state.deletingStudentId = action.payload
     },
     setEditingEffectiveDate: (state, action) => {
       state.editingEffectiveDate = action.payload
     },
-    setEditingGroupClassDateId: (state, action) => {
-      state.editingGroupClassDateId = action.payload
+    setEditingGroupClassId: (state, action) => {
+      state.editingGroupClassId = action.payload
     },
     setEditingParentId: (state, action) => {
       state.editingParentId = action.payload
@@ -123,14 +119,14 @@ export const slice = createSlice({
       state.effectiveMonth = action.payload.month
       state.effectiveYear = action.payload.year
     },
-    setLocalGroupClassDates: (state, action) => {
-      state.groupClassDates = sortDates(action.payload.groupClassDates)
+    setLocalGroupClasses: (state, action) => {
+      state.groupClasses = sortDates(action.payload.groupClasses)
     },
     setMutatingEffectiveDate: (state, action) => {
       state.mutatingEffectiveDate = action.payload
     },
-    setMutatingGroupClassDate: (state, action) => {
-      state.mutatingGroupClassDate = action.payload
+    setMutatingGroupClass: (state, action) => {
+      state.mutatingGroupClass = action.payload
     },
     setMutatingParent: (state, action) => {
       state.mutatingParent = action.payload
@@ -143,6 +139,17 @@ export const slice = createSlice({
     },
     setStudents: (state, action) => {
       state.students = sortStudents(action.payload.students)
+    },
+    updateLocalGroupClass: (state, action) => {
+      const groupClasses = [action.payload.groupClass]
+
+      for (const groupClass of state.groupClasses) {
+        if (groupClass.id !== action.payload.groupClass.id) {
+          groupClasses.push(groupClass)
+        }
+      }
+
+      state.groupClasses = sortDates(groupClasses)
     },
     updateLocalParent: (state, action) => {
       const parents = [action.payload.parent]
@@ -171,58 +178,36 @@ export const slice = createSlice({
 
 // Actions
 export const {
-  addLocalGroupClassDate,
+  addLocalGroupClass,
   addLocalParent,
   addLocalStudent,
   addLocalUsers,
   deleteLocalStudent,
   deleteLocalUsers,
-  setAddingGroupClassDate,
+  setAddingGroupClass,
   setAddingParent,
   setAddingStudent,
   setConfirmingDeleteStudentId,
-  setCreatingGroupClassDate,
   setDeletingStudentId,
   setEditingEffectiveDate,
-  setEditingGroupClassDateId,
+  setEditingGroupClassId,
   setEditingParentId,
   setEditingParentOfStudentId,
   setEditingStudentId,
   setLocalEffectiveDate,
-  setLocalGroupClassDates,
+  setLocalGroupClasses,
   setMutatingEffectiveDate,
-  setMutatingGroupClassDate,
+  setMutatingGroupClass,
   setMutatingParent,
   setMutatingStudent,
   setParents,
   setStudents,
+  updateLocalGroupClass,
   updateLocalParent,
   updateLocalStudent
 } = slice.actions
 
 // Thunks
-export const createGroupClassDate = date => async dispatch => {
-  batch(() => {
-    dispatch(setAddingGroupClassDate(false))
-    dispatch(setCreatingGroupClassDate(true))
-  })
-
-  const response = await requests.createGroupClassDate(date)
-
-  if (response.errors) {
-    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
-    console.log('Error adding group class date...')
-    console.log(response.errors)
-    return
-  }
-
-  batch(() => {
-    date.id = response.data.createGroupClassDate.id
-    dispatch(addLocalGroupClassDate({ date }))
-    dispatch(setCreatingGroupClassDate(false))
-  })
-}
-
 export const deleteStudent = id => async dispatch => {
   dispatch(setDeletingStudentId(id))
 
@@ -259,42 +244,40 @@ export const fetchSchedule = () => async dispatch => {
     dispatch(setParents(response.data.fetchSchedule))
     dispatch(setStudents(response.data.fetchSchedule))
     dispatch(addLocalUsers(response.data.fetchSchedule))
-    dispatch(setLocalGroupClassDates(response.data.fetchSchedule))
+    dispatch(setLocalGroupClasses(response.data.fetchSchedule))
     dispatch(setLoading(false))
   })
 }
 
-export const mutateGroupClassDate = date => async dispatch => {
+export const mutateGroupClass = groupClass => async dispatch => {
+  // TODO and WYLO .... Test this to make sure it works for adding and editing group classes.
+
   batch(() => {
-    dispatch(setAddingGroupClassDate(false))
-    dispatch(setEditingGroupClassDateId(0))
-    dispatch(setMutatingGroupClassDate(true))
+    dispatch(setAddingGroupClass(false))
+    dispatch(setEditingGroupClassId(0))
+    dispatch(setMutatingGroupClass(true))
   })
 
-  /*
-    TODO:
+  const adding = !groupClass.id
 
-      1. Use the `isMutatingGroupClassDate` prop to show the loader when a group class date is being added or edited.
-      2. Implement and export an `updateLocalGroupClassDate` method.
-      3. Test this to make sure it works for editing group class dates.
-      4. Get this working for adding group class dates and remove `createGroupClassDate()` above.
-      5. Install the new version of WebStorm that you downloaded!
-   */
-
-  const adding = !date.id
-
-  const response = await (adding ? requests.createGroupClassDate(date) : requests.updateGroupClassDate(date))
+  const response = await (adding ? requests.createGroupClass(groupClass) : requests.updateGroupClass(groupClass))
 
   if (response.errors) {
     // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
-    console.log('Error mutating group class date...')
+    console.log('Error mutating group class...')
     console.log(response.errors)
     return
   }
 
   batch(() => {
-    // #2
-    dispatch(setMutatingGroupClassDate(false))
+    if (adding) {
+      groupClass.id = response.data.createGroupClass.id
+      dispatch(addLocalGroupClass({ groupClass }))
+    } else {
+      dispatch(updateLocalGroupClass({ groupClass }))
+    }
+
+    dispatch(setMutatingGroupClass(false))
   })
 }
 
@@ -394,23 +377,22 @@ export const updateEffectiveDate = date => async dispatch => {
 
 // Selectors
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
-export const getGroupClassDates = state => state.schedule.groupClassDates
+export const getGroupClasses = state => state.schedule.groupClasses
 export const getParents = state => state.schedule.parents
 export const getStudents = state => state.schedule.students
 export const getUsers = state => state.schedule.users
-export const isAddingGroupClassDate = state => state.schedule.addingGroupClassDate
+export const isAddingGroupClass = state => state.schedule.addingGroupClass
 export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
-export const isCreatingGroupClassDate = state => state.schedule.creatingGroupClassDate
 export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
-export const isEditingGroupClassDateId = state => state.schedule.editingGroupClassDateId
+export const isEditingGroupClassId = state => state.schedule.editingGroupClassId
 export const isEditingParentId = state => state.schedule.editingParentId
 export const isEditingParentOfStudentId = state => state.schedule.editingParentOfStudentId
 export const isEditingStudentId = state => state.schedule.editingStudentId
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
-export const isMutatingGroupClassDate = state => state.schedule.mutatingGroupClassDate
+export const isMutatingGroupClass = state => state.schedule.mutatingGroupClass
 export const isMutatingParent = state => state.schedule.mutatingParent
 export const isMutatingStudent = state => state.schedule.mutatingStudent
 

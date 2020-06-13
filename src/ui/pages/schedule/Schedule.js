@@ -2,23 +2,23 @@ import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { fetchSchedule, getGroupClasses, getStudents } from '../../store/scheduleSlice'
+import { getDay } from '../../../shared/libs/student'
+import { isAdmin, isSignedIn } from '../../store/userSlice'
 import AddDateLink from '../../components/group-classes/add-date-link/AddDateLink'
 import AddParentLink from '../../components/add-parent-link/AddParentLink'
 import AddStudentLink from '../../components/add-student-link/AddStudentLink'
 import AddTimeLink from '../../components/group-classes/add-time-link/AddTimeLink'
-import Date from '../../components/group-classes/date/Date'
 import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
-import { fetchSchedule, getGroupClassDates, getStudents } from '../../store/scheduleSlice'
-import { getDay } from '../../../shared/libs/student'
-import { isAdmin, isSignedIn } from '../../store/userSlice'
+import GroupClass from '../../components/group-classes/date/GroupClass'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
 
 export default () => {
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
-  const groupClassDates = useSelector(getGroupClassDates)
+  const groupClasses = useSelector(getGroupClasses)
   const signedIn = useSelector(isSignedIn)
   const students = useSelector(getStudents)
 
@@ -58,13 +58,13 @@ export default () => {
     </div>
   )
 
-  const groupClassDatesRow = groupClassDates.length > 0 && (
-    <div className={styles.addGroupClassDatesRow}>
-      {groupClassDates.map(groupClassDate => {
+  const groupClassesRow = groupClasses.length > 0 && (
+    <div className={styles.groupClassesRow}>
+      {groupClasses.map(groupClass => {
         return (
-          <Date
-            groupClassDate={groupClassDate}
-            key={groupClassDate.id}
+          <GroupClass
+            groupClass={groupClass}
+            key={groupClass.id}
           />
         )
       })}
@@ -90,7 +90,7 @@ export default () => {
         </div>
       </div>
       {addGroupClassRow}
-      {groupClassDatesRow}
+      {groupClassesRow}
     </div>
   )
 }

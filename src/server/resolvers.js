@@ -26,7 +26,7 @@ const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 
 const resolvers = {
   Mutation: {
-    async createGroupClassDate (previousResolver, { month, date, year }, { user }) {
+    async createGroupClass (previousResolver, { month, date, year }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 
       const validDate = isValidMonth(month) &&
@@ -35,7 +35,7 @@ const resolvers = {
 
       if (!validDate) throw new UserInputError('Invalid data')
 
-      return scheduleDao.insertGroupClassDate({ month, date, year })
+      return scheduleDao.insertGroupClass({ month, date, year })
     },
     async createParent (previousResolver, { parent }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
@@ -97,7 +97,7 @@ const resolvers = {
       await scheduleDao.updateEffectiveDate(month, date, year)
       return { success: true }
     },
-    async updateGroupClassDate (previousResolver, { id, month, date, year }, { user }) {
+    async updateGroupClass (previousResolver, { id, month, date, year }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 
       const validDate = isValidId(id) &&
@@ -107,7 +107,7 @@ const resolvers = {
 
       if (!validDate) throw new UserInputError('Invalid data')
 
-      await scheduleDao.updateGroupClassDate(id, month, date, year)
+      await scheduleDao.updateGroupClass(id, month, date, year)
       return { success: true }
     },
     async updateParent (previousResolver, { parent }, { user }) {

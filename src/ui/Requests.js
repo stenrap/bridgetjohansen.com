@@ -21,11 +21,11 @@ class Requests {
     return response
   }
 
-  createGroupClassDate ({ month, date, year }) {
+  createGroupClass ({ month, date, year }) {
     return this.fetch({
       body: {
-        query: `mutation CreateGroupClassDate ($month: Int!, $date: Int!, $year: Int!) {
-          createGroupClassDate(month: $month, date: $date, year: $year) {
+        query: `mutation CreateGroupClass ($month: Int!, $date: Int!, $year: Int!) {
+          createGroupClass(month: $month, date: $date, year: $year) {
             id
           }
         }`,
@@ -83,7 +83,7 @@ class Requests {
         query: `query FetchSchedule {
           fetchSchedule {
             date,
-            groupClassDates {
+            groupClasses {
               date,
               id,
               month,
@@ -177,11 +177,11 @@ class Requests {
     })
   }
 
-  updateGroupClassDate ({ id, month, date, year }) {
+  updateGroupClass ({ id, month, date, year }) {
     return this.fetch({
       body: {
-        query: `mutation UpdateGroupClassDate ($id: ID!, $month: Int!, $date: Int!, $year: Int!) {
-          updateGroupClassDate(id: $id, month: $month, date: $date, year: $year) {
+        query: `mutation UpdateGroupClass ($id: ID!, $month: Int!, $date: Int!, $year: Int!) {
+          updateGroupClass(id: $id, month: $month, date: $date, year: $year) {
             success
           }
         }`,

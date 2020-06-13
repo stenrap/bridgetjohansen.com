@@ -11,14 +11,14 @@ const schema = gql`
     deletedParentIds: [ID!]!
   }
   
-  type GroupClassDate {
+  type GroupClass {
     date: Int!
     id: ID!
     month: Int!
     year: Int!
   }
   
-  type GroupClassDateResult {
+  type GroupClassResult {
     id: ID!
   }
   
@@ -48,7 +48,7 @@ const schema = gql`
   
   type Schedule {
     date: Int!
-    groupClassDates: [GroupClassDate!]!
+    groupClasses: [GroupClass!]!
     groupClassTimes: [GroupClassTime!]!
     month: Int!
     parents: [Parent!]!
@@ -116,14 +116,14 @@ const schema = gql`
   }
   
   type Mutation {
-    createGroupClassDate(month: Int!, date: Int!, year: Int!): GroupClassDateResult!
+    createGroupClass(month: Int!, date: Int!, year: Int!): GroupClassResult!
     createParent(parent: CreateParentInput!): ParentResult!
     createStudent(student: StudentInput!): StudentResult!
     deleteStudent(id: ID!): DeleteStudentResult!
     signIn(googleToken: String!): User!
     signOut: SimpleResult
     updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult!
-    updateGroupClassDate(id: ID!, month: Int!, date: Int!, year: Int!): SimpleResult!
+    updateGroupClass(id: ID!, month: Int!, date: Int!, year: Int!): SimpleResult!
     updateParent(parent: UpdateParentInput): ParentResult!
     updateStudent(student: UpdateStudentInput): SimpleResult!
   }

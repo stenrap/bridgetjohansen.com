@@ -3,7 +3,7 @@
 class Schedule {
   constructor () {
     this.date = 0
-    this.groupClassDates = []
+    this.groupClasses = []
     this.groupClassTimes = []
     this.month = -1
     this.parents = []
