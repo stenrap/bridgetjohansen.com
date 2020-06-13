@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { batch, useDispatch, useSelector } from 'react-redux'
 
 import {
   createGroupClassDate,
   getGroupClassDates,
   isCreatingGroupClassDate,
-  setAddingGroupClassDate
+  setAddingGroupClassDate,
+  setEditingGroupClassDateId
 } from '../../store/scheduleSlice'
 import DatePicker from './DatePicker'
 import format from '../../../shared/libs/format'
@@ -22,11 +23,17 @@ export default props => {
   const [dupe, setDupe] = useState(null)
 
   const {
-    groupClass = {}
+    groupClassDate = {}
   } = props
 
-  if (groupClass.id) {
-    console.log('Editing a group class...')
+  let initialDate = today.getDate()
+  let initialMonth = today.getMonth()
+  let initialYear = today.getFullYear()
+
+  if (groupClassDate.id) {
+    initialDate = groupClassDate.date
+    initialMonth = groupClassDate.month
+    initialYear = groupClassDate.year
   }
 
   if (dupe) {
@@ -35,7 +42,6 @@ export default props => {
         className={styles.dupeModal}
         onOk={() => {
           setDupe(null)
-          dispatch(setAddingGroupClassDate(true))
         }}
         showCancel={false}
         title='Duplicate'
@@ -53,9 +59,14 @@ export default props => {
 
   return (
     <DatePicker
-      date={today.getDate()}
-      month={today.getMonth()}
-      onCancel={() => dispatch(setAddingGroupClassDate(false))}
+      date={initialDate}
+      month={initialMonth}
+      onCancel={() => {
+        batch(() => {
+          dispatch(setAddingGroupClassDate(false))
+          dispatch(setEditingGroupClassDateId(0))
+        })
+      }}
       onOk={newDate => {
         const date = newDate.getDate()
         const month = newDate.getMonth()
@@ -63,16 +74,18 @@ export default props => {
 
         for (const groupClassDate of groupClassDates) {
           if (groupClassDate.date === date && groupClassDate.month === month && groupClassDate.year === year) {
-            dispatch(setAddingGroupClassDate(false))
-            setDupe({ month, date, year })
-            return
+            return setDupe({ month, date, year })
           }
         }
 
-        dispatch(createGroupClassDate({ date, month, year }))
+        if (groupClassDate.id) {
+          console.log('Mutating group class date...')
+        } else {
+          dispatch(createGroupClassDate({ date, month, year }))
+        }
       }}
       title='Add Group Class'
-      year={today.getFullYear()}
+      year={initialYear}
     />
   )
 }

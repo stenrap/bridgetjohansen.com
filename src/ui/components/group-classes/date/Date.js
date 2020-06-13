@@ -1,14 +1,26 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { isAdmin } from '../../../store/userSlice'
+import {
+  isEditingGroupClassDateId,
+  setEditingGroupClassDateId
+} from '../../../store/scheduleSlice'
 import format from '../../../../shared/libs/format'
+import GroupClass from '../../modal/GroupClass'
 import styles from './Date.module.scss'
 
 export default ({ groupClassDate }) => {
   const admin = useSelector(isAdmin)
-
+  const dispatch = useDispatch()
+  const editingGroupClassDateId = useSelector(isEditingGroupClassDateId)
   const formattedDate = format.date(groupClassDate)
+
+  const modal = editingGroupClassDateId === groupClassDate.id && (
+    <GroupClass
+      groupClassDate={groupClassDate}
+    />
+  )
 
   const date = (
     admin
@@ -16,7 +28,7 @@ export default ({ groupClassDate }) => {
         <>
           <span
             className={styles.groupClassDateLink}
-            onClick={() => console.log('Opening the Edit Group Class modal...')}
+            onClick={() => dispatch(setEditingGroupClassDateId(groupClassDate.id))}
           >
             {formattedDate}
           </span>
@@ -28,6 +40,7 @@ export default ({ groupClassDate }) => {
   return (
     <div className={styles.groupClassDate}>
       {date}
+      {modal}
     </div>
   )
 }
