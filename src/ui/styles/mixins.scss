@@ -9,3 +9,22 @@
     }
   }
 }
+
+@mixin deleteButton {
+  background-color: rgb(209, 26, 42);
+  position: absolute;
+  right: 22px;
+  top: 22px;
+
+  &:enabled {
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgba(209, 26, 42, 0.875);
+      }
+    }
+
+    &:active {
+      background-color: rgba(209, 26, 42, 0.75);
+    }
+  }
+}

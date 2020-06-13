@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import 'react-calendar/dist/Calendar.css'
 import Calendar from 'react-calendar'
 
+import Button from '../button/Button'
 import format from '../../../shared/libs/format'
 import Modal from './Modal'
 import Next from '../../svgs/next-black.svg'
@@ -21,12 +22,22 @@ export default props => {
   currentDate.setMonth(month)
   currentDate.setFullYear(year)
 
+  const deleteButton = props.showDelete && (
+    <Button
+      className={styles.deleteButton}
+      onClick={props.onDelete}
+    >
+      Delete
+    </Button>
+  )
+
   return (
     <Modal
       onCancel={props.onCancel}
       onOk={() => props.onOk(currentDate)}
       title={props.title}
     >
+      {deleteButton}
       <Calendar
         calendarType='US'
         className={styles.calendar}

@@ -67,6 +67,9 @@ export default props => {
           dispatch(setEditingGroupClassId(0))
         })
       }}
+      onDelete={() => {
+        console.log(`Deleting group class with id ${groupClass.id}`)
+      }}
       onOk={newDate => {
         const date = newDate.getDate()
         const month = newDate.getMonth()
@@ -80,6 +83,7 @@ export default props => {
 
         dispatch(mutateGroupClass({ id: groupClass.id, date, month, year }))
       }}
+      showDelete={groupClass.id}
       title={`${groupClass.id ? 'Edit' : 'Add'} Group Class`}
       year={initialYear}
     />
