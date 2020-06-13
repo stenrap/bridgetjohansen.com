@@ -11,7 +11,7 @@ import AddStudentLink from '../../components/add-student-link/AddStudentLink'
 import AddTimeLink from '../../components/group-classes/add-time-link/AddTimeLink'
 import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
-import GroupClass from '../../components/group-classes/date/GroupClass'
+import GroupClass from '../../components/group-class/GroupClass'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
 

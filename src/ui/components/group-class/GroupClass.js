@@ -1,13 +1,13 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { isAdmin } from '../../../store/userSlice'
+import { isAdmin } from '../../store/userSlice'
 import {
   isEditingGroupClassId,
   setEditingGroupClassId
-} from '../../../store/scheduleSlice'
-import format from '../../../../shared/libs/format'
-import GroupClassModal from '../../modal/GroupClassModal'
+} from '../../store/scheduleSlice'
+import format from '../../../shared/libs/format'
+import GroupClassModal from '../modal/GroupClassModal'
 import styles from './GroupClass.module.scss'
 
 export default ({ groupClass }) => {
