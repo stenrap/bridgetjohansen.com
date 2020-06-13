@@ -97,6 +97,19 @@ const resolvers = {
       await scheduleDao.updateEffectiveDate(month, date, year)
       return { success: true }
     },
+    async updateGroupClassDate (previousResolver, { id, month, date, year }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const validDate = isValidId(id) &&
+        isValidMonth(month) &&
+        isValidDate(date) &&
+        isValidYear(year)
+
+      if (!validDate) throw new UserInputError('Invalid data')
+
+      await scheduleDao.updateGroupClassDate(id, month, date, year)
+      return { success: true }
+    },
     async updateParent (previousResolver, { parent }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 

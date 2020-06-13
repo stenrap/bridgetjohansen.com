@@ -176,6 +176,15 @@ class ScheduleDao extends BaseDao {
       params: [month, date, year]
     })
   }
+
+  updateGroupClassDate (id, month, date, year) {
+    return this.query({
+      sql: `UPDATE group_class_dates
+            SET month = $1, date = $2, year = $3
+            WHERE id = $4`,
+      params: [month, date, year, id]
+    })
+  }
 }
 
 module.exports = new ScheduleDao()

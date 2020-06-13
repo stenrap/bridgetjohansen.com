@@ -122,7 +122,8 @@ const schema = gql`
     deleteStudent(id: ID!): DeleteStudentResult!
     signIn(googleToken: String!): User!
     signOut: SimpleResult
-    updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult
+    updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult!
+    updateGroupClassDate(id: ID!, month: Int!, date: Int!, year: Int!): SimpleResult!
     updateParent(parent: UpdateParentInput): ParentResult!
     updateStudent(student: UpdateStudentInput): SimpleResult!
   }

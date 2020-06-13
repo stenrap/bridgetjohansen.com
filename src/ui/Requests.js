@@ -177,6 +177,19 @@ class Requests {
     })
   }
 
+  updateGroupClassDate ({ id, month, date, year }) {
+    return this.fetch({
+      body: {
+        query: `mutation UpdateGroupClassDate ($id: ID!, $month: Int!, $date: Int!, $year: Int!) {
+          updateGroupClassDate(id: $id, month: $month, date: $date, year: $year) {
+            success
+          }
+        }`,
+        variables: { id, month, date, year }
+      }
+    })
+  }
+
   updateParent (parent) {
     return this.fetch({
       body: {

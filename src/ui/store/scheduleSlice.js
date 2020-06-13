@@ -26,6 +26,7 @@ export const slice = createSlice({
     effectiveYear: 0,
     groupClassDates: [],
     mutatingEffectiveDate: false,
+    mutatingGroupClassDate: false,
     mutatingParent: false,
     mutatingStudent: false,
     parents: [],
@@ -128,6 +129,9 @@ export const slice = createSlice({
     setMutatingEffectiveDate: (state, action) => {
       state.mutatingEffectiveDate = action.payload
     },
+    setMutatingGroupClassDate: (state, action) => {
+      state.mutatingGroupClassDate = action.payload
+    },
     setMutatingParent: (state, action) => {
       state.mutatingParent = action.payload
     },
@@ -187,6 +191,7 @@ export const {
   setLocalEffectiveDate,
   setLocalGroupClassDates,
   setMutatingEffectiveDate,
+  setMutatingGroupClassDate,
   setMutatingParent,
   setMutatingStudent,
   setParents,
@@ -259,6 +264,40 @@ export const fetchSchedule = () => async dispatch => {
   })
 }
 
+export const mutateGroupClassDate = date => async dispatch => {
+  batch(() => {
+    dispatch(setAddingGroupClassDate(false))
+    dispatch(setEditingGroupClassDateId(0))
+    dispatch(setMutatingGroupClassDate(true))
+  })
+
+  /*
+    TODO:
+
+      1. Use the `isMutatingGroupClassDate` prop to show the loader when a group class date is being added or edited.
+      2. Implement and export an `updateLocalGroupClassDate` method.
+      3. Test this to make sure it works for editing group class dates.
+      4. Get this working for adding group class dates and remove `createGroupClassDate()` above.
+      5. Install the new version of WebStorm that you downloaded!
+   */
+
+  const adding = !date.id
+
+  const response = await (adding ? requests.createGroupClassDate(date) : requests.updateGroupClassDate(date))
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error mutating group class date...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    // #2
+    dispatch(setMutatingGroupClassDate(false))
+  })
+}
+
 export const mutateParent = parent => async dispatch => {
   dispatch(setMutatingParent(true))
 
@@ -268,7 +307,7 @@ export const mutateParent = parent => async dispatch => {
 
   if (response.errors) {
     // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
-    console.log('Error creating parent...')
+    console.log('Error mutating parent...')
     console.log(response.errors)
     return
   }
@@ -371,6 +410,7 @@ export const isEditingParentId = state => state.schedule.editingParentId
 export const isEditingParentOfStudentId = state => state.schedule.editingParentOfStudentId
 export const isEditingStudentId = state => state.schedule.editingStudentId
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
+export const isMutatingGroupClassDate = state => state.schedule.mutatingGroupClassDate
 export const isMutatingParent = state => state.schedule.mutatingParent
 export const isMutatingStudent = state => state.schedule.mutatingStudent
 
