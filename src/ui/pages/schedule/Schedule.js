@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchSchedule, getGroupClasses, getStudents } from '../../store/scheduleSlice'
 import { getDay } from '../../../shared/libs/student'
 import { isAdmin, isSignedIn } from '../../store/userSlice'
-import AddDateLink from '../../components/add-group-class-link/AddDateLink'
+import AddGroupClassLink from '../../components/add-group-class-link/AddGroupClassLink'
 import AddParentLink from '../../components/add-parent-link/AddParentLink'
 import AddStudentLink from '../../components/add-student-link/AddStudentLink'
 import AddTimeLink from '../../components/group-classes/add-time-link/AddTimeLink'
@@ -54,7 +54,7 @@ export default () => {
 
   const addGroupClassRow = admin && (
     <div className={styles.addGroupClassRow}>
-      <AddDateLink /> <AddTimeLink />
+      <AddGroupClassLink /> <AddTimeLink />
     </div>
   )
 

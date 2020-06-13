@@ -6,7 +6,7 @@ import {
   setAddingGroupClass
 } from '../../store/scheduleSlice'
 import GroupClassModal from '../modal/GroupClassModal'
-import styles from './AddDateLink.module.scss'
+import styles from './AddGroupClassLink.module.scss'
 
 export default () => {
   const addingGroupClass = useSelector(isAddingGroupClass)
