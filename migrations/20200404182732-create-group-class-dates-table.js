@@ -6,7 +6,7 @@ const logError = (err) => {
 
 exports.up = async db => {
   try {
-    await db.createTable('group_class_dates', {
+    await db.createTable('group_classes', {
       id: {
         type: 'integer',
         primaryKey: true,
@@ -27,14 +27,14 @@ exports.up = async db => {
       }
     })
 
-    await db.addIndex('group_class_dates', 'group_class_dates_index', ['month', 'date', 'year'], true, logError)
+    await db.addIndex('group_classes', 'group_classes_index', ['month', 'date', 'year'], true, logError)
   } catch (err) {
     logError(err)
   }
 }
 
 exports.down = async db => {
-  return db.dropTable('group_class_dates')
+  return db.dropTable('group_classes')
 }
 
 exports._meta = {

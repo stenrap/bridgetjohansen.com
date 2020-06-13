@@ -9,7 +9,7 @@ const Student = require('../../shared/models/Student')
 class ScheduleDao extends BaseDao {
   async insertGroupClass ({ month, date, year }) {
     const result = await this.query({
-      sql: `INSERT INTO group_class_dates (month, date, year)
+      sql: `INSERT INTO group_classes (month, date, year)
             VALUES ($1, $2, $3)
             RETURNING id`,
       params: [month, date, year]
@@ -99,7 +99,7 @@ class ScheduleDao extends BaseDao {
 
       result = await poolClient.query(
         `SELECT *
-         FROM group_class_dates
+         FROM group_classes
          WHERE year >= $1`,
         [today.getFullYear()]
       )
@@ -179,7 +179,7 @@ class ScheduleDao extends BaseDao {
 
   updateGroupClass (id, month, date, year) {
     return this.query({
-      sql: `UPDATE group_class_dates
+      sql: `UPDATE group_classes
             SET month = $1, date = $2, year = $3
             WHERE id = $4`,
       params: [month, date, year, id]

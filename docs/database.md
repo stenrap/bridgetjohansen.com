@@ -129,7 +129,7 @@
 `parent_id` - integer - foreign key reference to `parents.id`  
 `user_id` - integer - foreign key reference to `users.id`
 
-#### `group_class_dates`
+#### `group_classes`
 
 ```
  id | month | date | year
