@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   isAddingGroupClass,
   setAddingGroupClass
-} from '../../../store/scheduleSlice'
-import GroupClassModal from '../../modal/GroupClassModal'
+} from '../../store/scheduleSlice'
+import GroupClassModal from '../modal/GroupClassModal'
 import styles from './AddDateLink.module.scss'
 
 export default () => {
