@@ -15,6 +15,7 @@ export const slice = createSlice({
     addingStudent: false,
     confirmingDeleteStudentId: 0,
     confirmingDeleteGroupClassId: 0,
+    deletingGroupClassId: 0,
     deletingStudentId: 0,
     editingEffectiveDate: false,
     editingGroupClassId: 0,
@@ -46,6 +47,17 @@ export const slice = createSlice({
     },
     addLocalUsers: (state, action) => {
       state.users.push(...action.payload.users)
+    },
+    deleteLocalGroupClass: (state, action) => {
+      const groupClasses = []
+
+      for (const groupClass of state.groupClasses) {
+        if (groupClass.id !== action.payload.id) {
+          groupClasses.push(groupClass)
+        }
+      }
+
+      state.groupClasses = sortDates(groupClasses)
     },
     deleteLocalStudent: (state, action) => {
       const students = []
@@ -99,6 +111,9 @@ export const slice = createSlice({
     },
     setConfirmingDeleteGroupClassId: (state, action) => {
       state.confirmingDeleteGroupClassId = action.payload
+    },
+    setDeletingGroupClassId: (state, action) => {
+      state.deletingGroupClassId = action.payload
     },
     setDeletingStudentId: (state, action) => {
       state.deletingStudentId = action.payload
@@ -186,6 +201,7 @@ export const {
   addLocalParent,
   addLocalStudent,
   addLocalUsers,
+  deleteLocalGroupClass,
   deleteLocalStudent,
   deleteLocalUsers,
   setAddingGroupClass,
@@ -193,6 +209,7 @@ export const {
   setAddingStudent,
   setConfirmingDeleteStudentId,
   setConfirmingDeleteGroupClassId,
+  setDeletingGroupClassId,
   setDeletingStudentId,
   setEditingEffectiveDate,
   setEditingGroupClassId,
@@ -213,6 +230,27 @@ export const {
 } = slice.actions
 
 // Thunks
+export const deleteGroupClass = id => async dispatch => {
+  batch(() => {
+    dispatch(setConfirmingDeleteGroupClassId(0))
+    dispatch(setDeletingGroupClassId(id))
+  })
+
+  const response = await requests.deleteGroupClass(id)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error deleting group class...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    dispatch(deleteLocalGroupClass({ id }))
+    dispatch(setDeletingGroupClassId(0))
+  })
+}
+
 export const deleteStudent = id => async dispatch => {
   dispatch(setDeletingStudentId(id))
 
@@ -391,6 +429,7 @@ export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
 export const isConfirmingDeleteGroupClassId = state => state.schedule.confirmingDeleteGroupClassId
+export const isDeletingGroupClassId = state => state.schedule.deletingGroupClassId
 export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isEditingGroupClassId = state => state.schedule.editingGroupClassId

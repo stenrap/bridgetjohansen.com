@@ -7,6 +7,14 @@ const Schedule = require('../../shared/models/Schedule')
 const Student = require('../../shared/models/Student')
 
 class ScheduleDao extends BaseDao {
+  deleteGroupClass (id) {
+    return this.query({
+      sql: `DELETE FROM group_classes
+            WHERE id = $1`,
+      params: [id]
+    })
+  }
+
   async insertGroupClass ({ month, date, year }) {
     const result = await this.query({
       sql: `INSERT INTO group_classes (month, date, year)

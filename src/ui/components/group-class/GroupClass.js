@@ -3,19 +3,23 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { isAdmin } from '../../store/userSlice'
 import {
+  deleteGroupClass,
   isConfirmingDeleteGroupClassId,
+  isDeletingGroupClassId,
   isEditingGroupClassId,
   setConfirmingDeleteGroupClassId,
   setEditingGroupClassId
 } from '../../store/scheduleSlice'
 import format from '../../../shared/libs/format'
 import GroupClassModal from '../modal/GroupClassModal'
+import LoadingModal from '../loading/LoadingModal'
 import Modal from '../modal/Modal'
 import styles from './GroupClass.module.scss'
 
 export default ({ groupClass }) => {
   const admin = useSelector(isAdmin)
   const confirmingDeleteStudentId = useSelector(isConfirmingDeleteGroupClassId)
+  const deletingGroupClassId = useSelector(isDeletingGroupClassId)
   const dispatch = useDispatch()
   const editingGroupClassId = useSelector(isEditingGroupClassId)
   const formattedDate = format.date(groupClass)
@@ -26,21 +30,30 @@ export default ({ groupClass }) => {
     />
   )
 
-  const deleteModal = confirmingDeleteStudentId === groupClass.id && (
-    <Modal
-      cancelLabel='No'
-      className={styles.confirmDeleteModal}
-      okLabel='Yes'
-      onCancel={() => dispatch(setConfirmingDeleteGroupClassId(0))}
-      onOk={() => console.log('Deleting group class...')}
-      title='Delete Group Class'
-    >
-      <p
-        className={styles.confirmDeleteText}
-      >
-        Are you sure you want to delete the group class on {formattedDate}?
-      </p>
-    </Modal>
+  const confirmingDelete = confirmingDeleteStudentId === groupClass.id
+  const deleting = deletingGroupClassId === groupClass.id
+
+  const deleteModal = (confirmingDelete || deleting) && (
+    confirmingDelete
+      ? (
+        <Modal
+          cancelLabel='No'
+          className={styles.confirmDeleteModal}
+          okLabel='Yes'
+          onCancel={() => dispatch(setConfirmingDeleteGroupClassId(0))}
+          onOk={() => dispatch(deleteGroupClass(groupClass.id))}
+          title='Delete Group Class'
+        >
+          <p
+            className={styles.confirmDeleteText}
+          >
+            Are you sure you want to delete the group class on {formattedDate}?
+          </p>
+        </Modal>
+      )
+      : (
+        <LoadingModal title='Deleting group class...' />
+      )
   )
 
   const date = (

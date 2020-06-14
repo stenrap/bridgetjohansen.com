@@ -119,6 +119,7 @@ const schema = gql`
     createGroupClass(month: Int!, date: Int!, year: Int!): GroupClassResult!
     createParent(parent: CreateParentInput!): ParentResult!
     createStudent(student: StudentInput!): StudentResult!
+    deleteGroupClass(id: ID!): SimpleResult!
     deleteStudent(id: ID!): DeleteStudentResult!
     signIn(googleToken: String!): User!
     signOut: SimpleResult
