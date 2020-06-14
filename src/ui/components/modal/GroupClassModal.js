@@ -6,6 +6,7 @@ import {
   isMutatingGroupClass,
   mutateGroupClass,
   setAddingGroupClass,
+  setConfirmingDeleteGroupClassId,
   setEditingGroupClassId
 } from '../../store/scheduleSlice'
 import DatePicker from './DatePicker'
@@ -68,7 +69,10 @@ export default props => {
         })
       }}
       onDelete={() => {
-        console.log(`Deleting group class with id ${groupClass.id}`)
+        batch(() => {
+          dispatch(setEditingGroupClassId(0))
+          dispatch(setConfirmingDeleteGroupClassId(groupClass.id))
+        })
       }}
       onOk={newDate => {
         const date = newDate.getDate()

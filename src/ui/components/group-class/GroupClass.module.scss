@@ -9,3 +9,11 @@
 .groupClassLink {
   @include m.link;
 }
+
+.confirmDeleteModal {
+  width: 375px;
+}
+
+.confirmDeleteText {
+  line-height: 22px;
+}

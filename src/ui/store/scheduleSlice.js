@@ -14,6 +14,7 @@ export const slice = createSlice({
     addingParent: false,
     addingStudent: false,
     confirmingDeleteStudentId: 0,
+    confirmingDeleteGroupClassId: 0,
     deletingStudentId: 0,
     editingEffectiveDate: false,
     editingGroupClassId: 0,
@@ -95,6 +96,9 @@ export const slice = createSlice({
     },
     setConfirmingDeleteStudentId: (state, action) => {
       state.confirmingDeleteStudentId = action.payload
+    },
+    setConfirmingDeleteGroupClassId: (state, action) => {
+      state.confirmingDeleteGroupClassId = action.payload
     },
     setDeletingStudentId: (state, action) => {
       state.deletingStudentId = action.payload
@@ -188,6 +192,7 @@ export const {
   setAddingParent,
   setAddingStudent,
   setConfirmingDeleteStudentId,
+  setConfirmingDeleteGroupClassId,
   setDeletingStudentId,
   setEditingEffectiveDate,
   setEditingGroupClassId,
@@ -385,6 +390,7 @@ export const isAddingGroupClass = state => state.schedule.addingGroupClass
 export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
+export const isConfirmingDeleteGroupClassId = state => state.schedule.confirmingDeleteGroupClassId
 export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isEditingGroupClassId = state => state.schedule.editingGroupClassId
