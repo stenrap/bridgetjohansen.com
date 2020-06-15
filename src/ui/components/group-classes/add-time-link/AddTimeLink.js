@@ -9,7 +9,7 @@ export default () => {
         className={styles.addTimeLink}
         onClick={() => console.log('Opening the Add Time modal...')}
       >
-        Add Time
+        Add Group Class Time
       </span>
     </>
   )

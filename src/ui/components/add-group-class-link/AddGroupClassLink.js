@@ -19,7 +19,7 @@ export default () => {
   return (
     <>
       <span
-        className={styles.addDateLink}
+        className={styles.addGroupClassLink}
         onClick={() => dispatch(setAddingGroupClass(true))}
       >
         Add Group Class
