@@ -21,8 +21,8 @@ export default student => {
   const dispatch = useDispatch()
   const parents = useSelector(getParents)
 
-  const confirmingDeleteStudent = confirmingDeleteStudentId !== 0 && confirmingDeleteStudentId === student.id
-  const deletingStudent = deletingStudentId !== 0 && deletingStudentId === student.id
+  const confirmingDeleteStudent = confirmingDeleteStudentId === student.id
+  const deletingStudent = deletingStudentId === student.id
 
   const deleteModal = (confirmingDeleteStudent || deletingStudent) && (
     deletingStudent
