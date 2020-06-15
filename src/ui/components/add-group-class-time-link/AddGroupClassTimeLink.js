@@ -1,6 +1,6 @@
 import React from 'react'
 
-import styles from './AddTimeLink.module.scss'
+import styles from './AddGroupClassTimeLink.module.scss'
 
 export default () => {
   return (

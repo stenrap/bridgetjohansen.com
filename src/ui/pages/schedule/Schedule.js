@@ -6,9 +6,9 @@ import { fetchSchedule, getGroupClasses, getStudents } from '../../store/schedul
 import { getDay } from '../../../shared/libs/student'
 import { isAdmin, isSignedIn } from '../../store/userSlice'
 import AddGroupClassLink from '../../components/add-group-class-link/AddGroupClassLink'
+import AddGroupClassTimeLink from '../../components/add-group-class-time-link/AddGroupClassTimeLink'
 import AddParentLink from '../../components/add-parent-link/AddParentLink'
 import AddStudentLink from '../../components/add-student-link/AddStudentLink'
-import AddTimeLink from '../../components/add-group-class-time-link/AddTimeLink'
 import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
 import GroupClass from '../../components/group-class/GroupClass'
@@ -54,7 +54,7 @@ export default () => {
 
   const addGroupClassRow = admin && (
     <div className={styles.addGroupClassRow}>
-      <AddGroupClassLink /> <AddTimeLink />
+      <AddGroupClassLink /> <AddGroupClassTimeLink />
     </div>
   )
 
