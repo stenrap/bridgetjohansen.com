@@ -3,3 +3,11 @@
 .addTimeLink {
   @include m.link;
 }
+
+.missingSomethingModal {
+  width: 375px;
+}
+
+.missingSomethingText {
+  line-height: 22px;
+}
