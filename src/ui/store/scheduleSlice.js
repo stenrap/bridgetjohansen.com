@@ -5,6 +5,7 @@ import { setLoading } from './loadingSlice'
 import { sortDates } from '../../shared/libs/date'
 import { sortParents } from '../../shared/libs/parent'
 import { sortStudents } from '../../shared/libs/student'
+import { sortTimes } from '../../shared/libs/time'
 import requests from '../Requests'
 
 export const slice = createSlice({
@@ -26,6 +27,7 @@ export const slice = createSlice({
     effectiveMonth: -1,
     effectiveYear: 0,
     groupClasses: [],
+    groupClassTimes: [],
     mutatingEffectiveDate: false,
     mutatingGroupClass: false,
     mutatingParent: false,
@@ -133,13 +135,16 @@ export const slice = createSlice({
     setEditingStudentId: (state, action) => {
       state.editingStudentId = action.payload
     },
+    setGroupClasses: (state, action) => {
+      state.groupClasses = sortDates(action.payload.groupClasses)
+    },
+    setGroupClassTimes: (state, action) => {
+      state.groupClassTimes = sortTimes(action.payload.groupClassTimes)
+    },
     setLocalEffectiveDate: (state, action) => {
       state.effectiveDate = action.payload.date
       state.effectiveMonth = action.payload.month
       state.effectiveYear = action.payload.year
-    },
-    setLocalGroupClasses: (state, action) => {
-      state.groupClasses = sortDates(action.payload.groupClasses)
     },
     setMutatingEffectiveDate: (state, action) => {
       state.mutatingEffectiveDate = action.payload
@@ -217,7 +222,8 @@ export const {
   setEditingParentOfStudentId,
   setEditingStudentId,
   setLocalEffectiveDate,
-  setLocalGroupClasses,
+  setGroupClasses,
+  setGroupClassTimes,
   setMutatingEffectiveDate,
   setMutatingGroupClass,
   setMutatingParent,
@@ -287,7 +293,8 @@ export const fetchSchedule = () => async dispatch => {
     dispatch(setParents(response.data.fetchSchedule))
     dispatch(setStudents(response.data.fetchSchedule))
     dispatch(addLocalUsers(response.data.fetchSchedule))
-    dispatch(setLocalGroupClasses(response.data.fetchSchedule))
+    dispatch(setGroupClasses(response.data.fetchSchedule))
+    dispatch(setGroupClassTimes(response.data.fetchSchedule))
     dispatch(setLoading(false))
   })
 }
