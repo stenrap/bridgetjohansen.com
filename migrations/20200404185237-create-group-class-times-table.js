@@ -20,6 +20,10 @@ exports.up = async db => {
       minutes: {
         type: 'integer',
         notNull: true
+      },
+      meridiem: {
+        type: 'text',
+        notNull: true
       }
     })
   } catch (err) {

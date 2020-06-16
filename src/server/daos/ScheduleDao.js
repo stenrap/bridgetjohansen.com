@@ -101,7 +101,7 @@ class ScheduleDao extends BaseDao {
 
       schedule.users = result.rows
 
-      // Group class dates
+      // Group classes
 
       const today = new Date() // TODO: Will this be Mountain time in AWS?
 
@@ -132,13 +132,8 @@ class ScheduleDao extends BaseDao {
 
       // Group class times
 
-      // TODO: The below logic results in an array of group class time objects that each have an array of student ids.
-      //       Is this too complicated a data structure for the redux store? Should you just return an array of group
-      //       class time objects that each has a studentId property? (You're not sure, but think about it when you get
-      //       around to CRUDing group class times.
-
       result = await poolClient.query(
-        `SELECT t.id, t.hour, t.minutes, s.student_id
+        `SELECT t.id, t.hour, t.minutes, t.meridiem, s.student_id
          FROM group_class_times AS t
          JOIN group_class_students AS s
          ON s.group_class_time_id = t.id`,
@@ -157,6 +152,7 @@ class ScheduleDao extends BaseDao {
           const groupClassTime = new GroupClassTime()
           groupClassTime.hour = row.hour
           groupClassTime.id = groupClassTimeId
+          groupClassTime.meridiem = row.meridiem
           groupClassTime.minutes = row.minutes
           groupClassTime.studentIds.push(row.studentId)
           groupClassTimeMap.set(groupClassTimeId, groupClassTime)

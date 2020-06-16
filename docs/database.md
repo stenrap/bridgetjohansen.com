@@ -78,7 +78,7 @@
 `id` - integer - populated automatically by a sequence  
 `name` - text - name of student  
 `lesson_day` - integer - day of the week on which the lesson occurs (`0` - `6` => Sun - Sat)  
-`lesson_hour` - integer - hour of the day when the lesson starts (`0` - `23` => 12:00 am - 11:00 pm)  
+`lesson_hour` - integer - hour of the day when the lesson starts (`1` - `12`)  
 `lesson_minutes` - integer - minutes of the hour when the lesson starts, in 5-minute increments with a max of 55 (`0` - `55` => 0 - 55)  
 `lesson_meridiem` - text - meridiem of the lesson time (`am` or `pm`)  
 `lesson_duration` - integer - duration of the lesson in minutes (also 5-minute increments, but with no max)
@@ -144,13 +144,14 @@
 #### `group_class_times`
 
 ```
- id | hour | minutes
-----+------+---------
+ id | hour | minutes | meridiem
+----+------+---------+----------
 ```
 
 `id` - integer - populated automatically by a sequence  
-`hour` - integer - hour of the day when the group class starts (`0` - `23` => 12:00 am - 11:00 pm)  
-`minutes` - integer - minutes of the hour when the group class starts, in 5-minute increments with a max of 55 (`0` - `55` => 0 - 55)
+`hour` - integer - hour of the day when the group class starts (`1` - `12`)  
+`minutes` - integer - minutes of the hour when the group class starts, in 5-minute increments with a max of 55 (`0` - `55` => 0 - 55)  
+`meridiem` - text - meridiem of the lesson time (`am` or `pm`)
 
 #### `group_class_students`
 
