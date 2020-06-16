@@ -7,8 +7,8 @@ import {
   setAddingParent,
   setAddingStudent
 } from '../../store/scheduleSlice'
-import Modal from '../modal/Modal'
-import StudentModal from '../modal/StudentModal'
+import Modal from '../modals/Modal'
+import StudentModal from '../modals/StudentModal'
 import styles from './AddStudentLink.module.scss'
 
 export default () => {

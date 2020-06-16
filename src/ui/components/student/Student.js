@@ -10,7 +10,7 @@ import {
 } from '../../store/scheduleSlice'
 import format from '../../../shared/libs/format'
 import LoadingModal from '../loading/LoadingModal'
-import Modal from '../modal/Modal'
+import Modal from '../modals/Modal'
 import ParentName from '../parent-name/ParentName'
 import StudentName from '../student-name/StudentName'
 import styles from './Student.module.scss'

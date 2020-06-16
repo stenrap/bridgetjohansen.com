@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { isAdmin } from '../../store/userSlice'
 import { isEditingStudentId, setEditingStudentId } from '../../store/scheduleSlice'
-import StudentModal from '../modal/StudentModal'
+import StudentModal from '../modals/StudentModal'
 import styles from './StudentName.module.scss'
 
 export default student => {

@@ -5,7 +5,7 @@ import {
   isAddingGroupClass,
   setAddingGroupClass
 } from '../../store/scheduleSlice'
-import GroupClassModal from '../modal/GroupClassModal'
+import GroupClassModal from '../modals/GroupClassModal'
 import styles from './AddGroupClassLink.module.scss'
 
 export default () => {

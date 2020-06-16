@@ -9,7 +9,7 @@ import {
   updateEffectiveDate
 } from '../../store/scheduleSlice'
 import { isAdmin } from '../../store/userSlice'
-import DatePicker from '../modal/DatePicker'
+import DatePicker from '../modals/DatePicker'
 import format from '../../../shared/libs/format'
 import LoadingModal from '../loading/LoadingModal'
 import styles from './EffectiveDate.module.scss'

@@ -12,7 +12,7 @@ import { isValidString } from '../../../shared/libs/validation'
 import { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } from '../../../shared/Constants'
 import Button from '../button/Button'
 import LoadingModal from '../loading/LoadingModal'
-import Modal from '../modal/Modal'
+import Modal from './Modal'
 import styles from './StudentModal.module.scss'
 
 export default props => {

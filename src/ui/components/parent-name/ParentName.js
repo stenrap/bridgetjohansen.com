@@ -9,7 +9,7 @@ import {
   setEditingParentId,
   setEditingParentOfStudentId
 } from '../../store/scheduleSlice'
-import ParentModal from '../modal/ParentModal'
+import ParentModal from '../modals/ParentModal'
 import styles from './ParentName.module.scss'
 
 export default props => {

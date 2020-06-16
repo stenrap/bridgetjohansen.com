@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Loader from './Loader'
-import Modal from '../modal/Modal'
+import Modal from '../modals/Modal'
 import styles from './LoadingModal.module.scss'
 
 export default props => {

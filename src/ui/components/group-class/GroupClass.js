@@ -11,9 +11,9 @@ import {
   setEditingGroupClassId
 } from '../../store/scheduleSlice'
 import format from '../../../shared/libs/format'
-import GroupClassModal from '../modal/GroupClassModal'
+import GroupClassModal from '../modals/GroupClassModal'
 import LoadingModal from '../loading/LoadingModal'
-import Modal from '../modal/Modal'
+import Modal from '../modals/Modal'
 import styles from './GroupClass.module.scss'
 
 export default ({ groupClass }) => {
