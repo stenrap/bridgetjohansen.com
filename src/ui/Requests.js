@@ -103,8 +103,10 @@ class Requests {
               year
             },
             groupClassTimes {
+              duration,
               hour,
               id,
+              meridiem,
               minutes,
               studentIds
             },

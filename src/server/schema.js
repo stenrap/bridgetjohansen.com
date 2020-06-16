@@ -23,8 +23,10 @@ const schema = gql`
   }
   
   type GroupClassTime {
+    duration: Int!
     hour: Int!
     id: ID!
+    meridiem: String!
     minutes: Int!
     studentIds: [Int!]!
   }

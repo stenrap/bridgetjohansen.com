@@ -133,7 +133,7 @@ class ScheduleDao extends BaseDao {
       // Group class times
 
       result = await poolClient.query(
-        `SELECT t.id, t.hour, t.minutes, t.meridiem, s.student_id
+        `SELECT t.id, t.hour, t.minutes, t.meridiem, t.duration, s.student_id
          FROM group_class_times AS t
          JOIN group_class_students AS s
          ON s.group_class_time_id = t.id`,

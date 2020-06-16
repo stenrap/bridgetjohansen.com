@@ -16,10 +16,12 @@ export const slice = createSlice({
     addingStudent: false,
     confirmingDeleteStudentId: 0,
     confirmingDeleteGroupClassId: 0,
+    confirmingDeleteGroupClassTimeId: 0,
     deletingGroupClassId: 0,
     deletingStudentId: 0,
     editingEffectiveDate: false,
     editingGroupClassId: 0,
+    editingGroupClassTimeId: 0,
     editingParentId: 0,
     editingParentOfStudentId: 0,
     editingStudentId: 0,
@@ -30,6 +32,7 @@ export const slice = createSlice({
     groupClassTimes: [],
     mutatingEffectiveDate: false,
     mutatingGroupClass: false,
+    mutatingGroupClassTime: false,
     mutatingParent: false,
     mutatingStudent: false,
     parents: [],
@@ -114,6 +117,9 @@ export const slice = createSlice({
     setConfirmingDeleteGroupClassId: (state, action) => {
       state.confirmingDeleteGroupClassId = action.payload
     },
+    setConfirmingDeleteGroupClassTimeId: (state, action) => {
+      state.confirmingDeleteGroupClassTimeId = action.payload
+    },
     setDeletingGroupClassId: (state, action) => {
       state.deletingGroupClassId = action.payload
     },
@@ -125,6 +131,9 @@ export const slice = createSlice({
     },
     setEditingGroupClassId: (state, action) => {
       state.editingGroupClassId = action.payload
+    },
+    setEditingGroupClassTimeId: (state, action) => {
+      state.editingGroupClassTimeId = action.payload
     },
     setEditingParentId: (state, action) => {
       state.editingParentId = action.payload
@@ -214,10 +223,12 @@ export const {
   setAddingStudent,
   setConfirmingDeleteStudentId,
   setConfirmingDeleteGroupClassId,
+  setConfirmingDeleteGroupClassTimeId,
   setDeletingGroupClassId,
   setDeletingStudentId,
   setEditingEffectiveDate,
   setEditingGroupClassId,
+  setEditingGroupClassTimeId,
   setEditingParentId,
   setEditingParentOfStudentId,
   setEditingStudentId,
@@ -436,15 +447,18 @@ export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId
 export const isConfirmingDeleteGroupClassId = state => state.schedule.confirmingDeleteGroupClassId
+export const isConfirmingDeleteGroupClassTimeId = state => state.schedule.confirmingDeleteGroupClassTimeId
 export const isDeletingGroupClassId = state => state.schedule.deletingGroupClassId
 export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isEditingGroupClassId = state => state.schedule.editingGroupClassId
+export const isEditingGroupClassTimeId = state => state.schedule.editingGroupClassTimeId
 export const isEditingParentId = state => state.schedule.editingParentId
 export const isEditingParentOfStudentId = state => state.schedule.editingParentOfStudentId
 export const isEditingStudentId = state => state.schedule.editingStudentId
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
 export const isMutatingGroupClass = state => state.schedule.mutatingGroupClass
+export const isMutatingGroupClassTime = state => state.schedule.mutatingGroupClassTime
 export const isMutatingParent = state => state.schedule.mutatingParent
 export const isMutatingStudent = state => state.schedule.mutatingStudent
 

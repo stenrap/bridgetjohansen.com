@@ -1,0 +1,23 @@
+@use '../../styles/mixins' as m;
+
+.groupClassTimeModal {
+  width: 375px;
+}
+
+.deleteButton {
+  @include m.deleteButton;
+}
+
+.hour {
+  margin-left: 8px;
+  width: 50px;
+}
+
+.minutes {
+  margin-right: 8px;
+  width: 50px;
+}
+
+.duration {
+  width: 74px;
+}
