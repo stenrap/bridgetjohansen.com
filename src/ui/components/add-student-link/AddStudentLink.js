@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
   getParents,
   isAddingStudent,
-  setAddingParent,
   setAddingStudent
 } from '../../store/scheduleSlice'
-import Modal from '../modals/Modal'
 import StudentModal from '../modals/StudentModal'
 import styles from './AddStudentLink.module.scss'
 
@@ -16,41 +14,19 @@ export default () => {
   const dispatch = useDispatch()
   const parents = useSelector(getParents)
 
-  const [noParentsError, setNoParentsError] = useState(false)
+  if (parents.length === 0) return null
 
-  const modal = (noParentsError || addingStudent) && (
-    noParentsError
-      ? (
-        <Modal
-          className={styles.noParentsModal}
-          onOk={() => {
-            setNoParentsError(false)
-            dispatch(setAddingParent(true))
-          }}
-          showCancel={false}
-          title='Need Parents'
-        >
-          <p className={styles.noParentsText}>
-            Adding a student requires selecting parents from a list,
-            but you have no parents. Please add a parent first.
-          </p>
-        </Modal>
-      )
-      : (
-        <StudentModal
-          onCancel={() => dispatch(setAddingStudent(false))}
-        />
-      )
+  const modal = addingStudent && (
+    <StudentModal
+      onCancel={() => dispatch(setAddingStudent(false))}
+    />
   )
 
   return (
     <>
       <span
         className={styles.addStudentLink}
-        onClick={() => {
-          if (parents.length === 0) return setNoParentsError(true)
-          dispatch(setAddingStudent(true))
-        }}
+        onClick={() => dispatch(setAddingStudent(true))}
       >
         Add Student
       </span>
