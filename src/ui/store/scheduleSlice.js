@@ -12,6 +12,7 @@ export const slice = createSlice({
   name: 'schedule',
   initialState: {
     addingGroupClass: false,
+    addingGroupClassTime: false,
     addingParent: false,
     addingStudent: false,
     confirmingDeleteStudentId: 0,
@@ -107,6 +108,9 @@ export const slice = createSlice({
     },
     setAddingGroupClass: (state, action) => {
       state.addingGroupClass = action.payload
+    },
+    setAddingGroupClassTime: (state, action) => {
+      state.addingGroupClassTime = action.payload
     },
     setAddingStudent: (state, action) => {
       state.addingStudent = action.payload
@@ -219,6 +223,7 @@ export const {
   deleteLocalStudent,
   deleteLocalUsers,
   setAddingGroupClass,
+  setAddingGroupClassTime,
   setAddingParent,
   setAddingStudent,
   setConfirmingDeleteStudentId,
@@ -439,10 +444,12 @@ export const updateEffectiveDate = date => async dispatch => {
 // Selectors
 export const getEffectiveDate = state => { return { date: state.schedule.effectiveDate, month: state.schedule.effectiveMonth, year: state.schedule.effectiveYear } }
 export const getGroupClasses = state => state.schedule.groupClasses
+export const getGroupClassTimes = state => state.schedule.groupClassTimes
 export const getParents = state => state.schedule.parents
 export const getStudents = state => state.schedule.students
 export const getUsers = state => state.schedule.users
 export const isAddingGroupClass = state => state.schedule.addingGroupClass
+export const isAddingGroupClassTime = state => state.schedule.addingGroupClassTime
 export const isAddingParent = state => state.schedule.addingParent
 export const isAddingStudent = state => state.schedule.addingStudent
 export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDeleteStudentId

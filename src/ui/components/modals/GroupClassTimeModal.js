@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { batch, useDispatch, useSelector } from 'react-redux'
 
 import {
+  getGroupClassTimes,
+  getStudents,
   isMutatingGroupClassTime,
   setConfirmingDeleteGroupClassTimeId,
   setEditingGroupClassTimeId
@@ -13,7 +15,9 @@ import styles from './GroupClassTimeModal.module.scss'
 
 export default props => {
   const dispatch = useDispatch()
+  const groupClassTimes = useSelector(getGroupClassTimes)
   const mutatingGroupClassTime = useSelector(isMutatingGroupClassTime)
+  const unsortedStudents = useSelector(getStudents)
 
   const {
     groupClassTime = {}
@@ -23,14 +27,30 @@ export default props => {
   const [hour, setHour] = useState(groupClassTime.hour || 3)
   const [meridiem, setMeridiem] = useState(groupClassTime.meridiem || 'pm')
   const [minutes, setMinutes] = useState(groupClassTime.minutes || 0)
+  const [studentIds, setStudentIds] = useState(groupClassTime.studentIds || [])
+  const [studentIdsError, setStudentIdsError] = useState(false)
 
   if (mutatingGroupClassTime) {
     return <LoadingModal title={`${mutatingGroupClassTime ? 'Editing' : 'Adding'} group class time...`} />
   } else {
+    const students = [...unsortedStudents].sort((a, b) => {
+      const nameA = a.name.toLowerCase()
+      const nameB = b.name.toLowerCase()
+      if (nameA < nameB) return -1
+      if (nameA > nameB) return 1
+      return 0
+    })
+
     return (
       <Modal
         className={styles.groupClassTimeModal}
+        onOk={() => {
+          if (studentIds.length === 0) return setStudentIdsError(true)
+
+          console.log('Group class time will have students:', studentIds)
+        }}
         title={`${groupClassTime.id ? 'Edit' : 'Add'} Group Class Time`}
+        {...props}
       >
         {groupClassTime.id && (
           <Button
@@ -99,6 +119,48 @@ export default props => {
             <option value={45}>45 min</option>
             <option value={60}>60 min</option>
           </select>
+        </div>
+        <div>
+          <label>Students</label>
+          <div className={`${styles.students}${studentIdsError ? ` ${styles.studentsError}` : ''}`}>
+            {students.map(student => {
+              for (const time of groupClassTimes) {
+                if (time.id !== groupClassTime.id && time.studentIds.includes(student.id)) {
+                  return null
+                }
+              }
+
+              const idAttribute = `studentSelector${student.id}`
+              return (
+                <div key={`group-class-time-student-${student.id}`}>
+                  <input
+                    checked={groupClassTime.studentIds && groupClassTime.studentIds.includes(student.id)}
+                    id={idAttribute}
+                    onChange={event => {
+                      if (event.target.checked) {
+                        setStudentIdsError(false)
+                        setStudentIds(studentIds.concat(student.id))
+                      } else {
+                        const newStudentIds = []
+                        for (const id of studentIds) {
+                          if (id !== student.id) {
+                            newStudentIds.push(id)
+                          }
+                        }
+                        setStudentIds(newStudentIds)
+                      }
+                    }}
+                    type='checkbox'
+                  />
+                  <label
+                    htmlFor={idAttribute}
+                  >
+                    {student.name}
+                  </label>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </Modal>
     )
