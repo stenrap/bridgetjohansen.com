@@ -5,6 +5,7 @@ import {
   getGroupClassTimes,
   getStudents,
   isMutatingGroupClassTime,
+  mutateGroupClassTime,
   setConfirmingDeleteGroupClassTimeId,
   setEditingGroupClassTimeId
 } from '../../store/scheduleSlice'
@@ -31,7 +32,7 @@ export default props => {
   const [studentIdsError, setStudentIdsError] = useState(false)
 
   if (mutatingGroupClassTime) {
-    return <LoadingModal title={`${mutatingGroupClassTime ? 'Editing' : 'Adding'} group class time...`} />
+    return <LoadingModal title={`${mutatingGroupClassTime.id ? 'Editing' : 'Adding'} group class time...`} />
   } else {
     const students = [...unsortedStudents].sort((a, b) => {
       const nameA = a.name.toLowerCase()
@@ -47,7 +48,14 @@ export default props => {
         onOk={() => {
           if (studentIds.length === 0) return setStudentIdsError(true)
 
-          console.log('Group class time will have students:', studentIds)
+          dispatch(mutateGroupClassTime({
+            duration,
+            hour,
+            id: groupClassTime.id,
+            meridiem,
+            minutes,
+            studentIds
+          }))
         }}
         title={`${groupClassTime.id ? 'Edit' : 'Add'} Group Class Time`}
         {...props}
@@ -117,6 +125,7 @@ export default props => {
           >
             <option value={30}>30 min</option>
             <option value={45}>45 min</option>
+            <option value={50}>50 min</option>
             <option value={60}>60 min</option>
           </select>
         </div>

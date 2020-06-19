@@ -23,6 +23,14 @@ exports.isValidId = id => {
   return /^\d+$/.test(id) && id > 0
 }
 
+exports.isValidGroupClassTimeDuration = duration => {
+  return duration === 30 || duration === 45 || duration === 50 || duration === 60
+}
+
+exports.isValidHour = hour => {
+  return hour >= 1 && hour <= 12
+}
+
 exports.isValidLessonDay = day => {
   return day >= SUNDAY && day <= SATURDAY
 }
@@ -31,28 +39,24 @@ exports.isValidLessonDuration = duration => {
   return duration === 30 || duration === 45 || duration === 60
 }
 
-exports.isValidLessonHour = hour => {
-  return hour >= 1 && hour <= 12
+exports.isValidListOfIds = ids => {
+  if (!Array.isArray(ids) || ids.length === 0) return false
+  for (const id of ids) {
+    if (!exports.isValidId(id)) return false
+  }
+  return true
 }
 
-exports.isValidLessonMinutes = minutes => {
-  return minutes >= 0 && minutes <= 55 && minutes % 5 === 0
-}
-
-exports.isValidLessonMeridiem = meridiem => {
+exports.isValidMeridiem = meridiem => {
   return meridiem === 'am' || meridiem === 'pm'
+}
+
+exports.isValidMinutes = minutes => {
+  return minutes >= 0 && minutes <= 55 && minutes % 5 === 0
 }
 
 exports.isValidMonth = month => {
   return /^\d+$/.test(month) && month >= 0 && month <= 11
-}
-
-exports.isValidParentIds = parentIds => {
-  if (!Array.isArray(parentIds) || parentIds.length === 0) return false
-  for (const id of parentIds) {
-    if (!/^\d+$/.test(id)) return false
-  }
-  return true
 }
 
 exports.isValidString = string => {

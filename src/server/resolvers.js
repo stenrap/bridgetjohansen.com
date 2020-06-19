@@ -4,14 +4,15 @@ const { OAuth2Client } = require('google-auth-library')
 const {
   isValidDate,
   isValidEmailList,
+  isValidGroupClassTimeDuration,
+  isValidHour,
   isValidId,
   isValidLessonDay,
-  isValidLessonHour,
-  isValidLessonMeridiem,
-  isValidLessonMinutes,
   isValidLessonDuration,
+  isValidListOfIds,
+  isValidMeridiem,
+  isValidMinutes,
   isValidMonth,
-  isValidParentIds,
   isValidString,
   isValidYear
 } = require('../shared/libs/validation')
@@ -37,6 +38,19 @@ const resolvers = {
 
       return scheduleDao.insertGroupClass({ month, date, year })
     },
+    async createGroupClassTime (previousResolver, { groupClassTime }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const validGroupClass = isValidHour(groupClassTime.hour) &&
+        isValidMinutes(groupClassTime.minutes) &&
+        isValidMeridiem(groupClassTime.meridiem) &&
+        isValidGroupClassTimeDuration(groupClassTime.duration) &&
+        isValidListOfIds(groupClassTime.studentIds)
+
+      if (!validGroupClass) throw new UserInputError('Invalid data')
+
+      return scheduleDao.insertGroupClassTime(groupClassTime)
+    },
     async createParent (previousResolver, { parent }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 
@@ -55,11 +69,11 @@ const resolvers = {
       const validStudent = student &&
         isValidString(student.name) &&
         isValidLessonDay(student.lessonDay) &&
-        isValidLessonHour(student.lessonHour) &&
-        isValidLessonMinutes(student.lessonMinutes) &&
-        isValidLessonMeridiem(student.lessonMeridiem) &&
+        isValidHour(student.lessonHour) &&
+        isValidMinutes(student.lessonMinutes) &&
+        isValidMeridiem(student.lessonMeridiem) &&
         isValidLessonDuration(student.lessonDuration) &&
-        isValidParentIds(student.parentIds)
+        isValidListOfIds(student.parentIds)
 
       if (!validStudent) throw new UserInputError('Invalid data')
 
@@ -135,11 +149,11 @@ const resolvers = {
         isValidId(student.id) &&
         isValidString(student.name) &&
         isValidLessonDay(student.lessonDay) &&
-        isValidLessonHour(student.lessonHour) &&
-        isValidLessonMinutes(student.lessonMinutes) &&
-        isValidLessonMeridiem(student.lessonMeridiem) &&
+        isValidHour(student.lessonHour) &&
+        isValidMinutes(student.lessonMinutes) &&
+        isValidMeridiem(student.lessonMeridiem) &&
         isValidLessonDuration(student.lessonDuration) &&
-        isValidParentIds(student.parentIds)
+        isValidListOfIds(student.parentIds)
 
       if (!validStudent) throw new UserInputError('Invalid data')
 

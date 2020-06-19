@@ -3,6 +3,7 @@
 const BaseDao = require('./BaseDao')
 const GroupClassTime = require('../../shared/models/GroupClassTime')
 const logger = require('../Logger')
+const pgFormat = require('pg-format')
 const Schedule = require('../../shared/models/Schedule')
 const Student = require('../../shared/models/Student')
 
@@ -24,6 +25,40 @@ class ScheduleDao extends BaseDao {
     })
 
     return { id: result.rows[0].id }
+  }
+
+  async insertGroupClassTime ({ hour, minutes, meridiem, duration, studentIds }) {
+    let poolClient = null
+
+    try {
+      poolClient = await this.getPoolClient()
+      await poolClient.query('BEGIN')
+
+      const result = await poolClient.query(
+        `INSERT INTO group_class_times (hour, minutes, meridiem, duration)
+         VALUES ($1, $2, $3, $4)
+         RETURNING id`,
+        [hour, minutes, meridiem, duration]
+      )
+
+      const id = result.rows[0].id
+
+      await poolClient.query(pgFormat(
+        `INSERT INTO group_class_students (student_id, group_class_time_id)
+         VALUES %L`,
+        studentIds.map(studentId => [studentId, id]) // Create an array of arrays for %L.
+      ))
+
+      await poolClient.query('COMMIT')
+
+      return { id }
+    } catch (err) {
+      logger.error('Error inserting group class time')
+      logger.error(err)
+      if (poolClient) await poolClient.query('ROLLBACK')
+    } finally {
+      if (poolClient) poolClient.release()
+    }
   }
 
   async selectSchedule () {
@@ -150,6 +185,7 @@ class ScheduleDao extends BaseDao {
           groupClassTimeMap.get(groupClassTimeId).studentIds.push(row.studentId)
         } else {
           const groupClassTime = new GroupClassTime()
+          groupClassTime.duration = row.duration
           groupClassTime.hour = row.hour
           groupClassTime.id = groupClassTimeId
           groupClassTime.meridiem = row.meridiem

@@ -1,6 +1,14 @@
 const { gql } = require('apollo-server-express')
 
 const schema = gql`
+  input CreateGroupClassTimeInput {
+    duration: Int!
+    hour: Int!
+    meridiem: String!
+    minutes: Int!
+    studentIds: [ID!]!
+  }
+  
   input CreateParentInput {
     name: String!
     phone: String!
@@ -18,17 +26,17 @@ const schema = gql`
     year: Int!
   }
   
-  type GroupClassResult {
-    id: ID!
-  }
-  
   type GroupClassTime {
     duration: Int!
     hour: Int!
     id: ID!
     meridiem: String!
     minutes: Int!
-    studentIds: [Int!]!
+    studentIds: [ID!]!
+  }
+  
+  type IdResult {
+    id: ID!
   }
   
   type Parent {
@@ -84,10 +92,6 @@ const schema = gql`
     parentIds: [ID!]!
   }
   
-  type StudentResult {
-    id: ID!
-  }
-  
   input UpdateParentInput {
     id: ID!
     name: String!
@@ -118,9 +122,10 @@ const schema = gql`
   }
   
   type Mutation {
-    createGroupClass(month: Int!, date: Int!, year: Int!): GroupClassResult!
+    createGroupClass(month: Int!, date: Int!, year: Int!): IdResult!
+    createGroupClassTime(groupClassTime: CreateGroupClassTimeInput!): IdResult!
     createParent(parent: CreateParentInput!): ParentResult!
-    createStudent(student: StudentInput!): StudentResult!
+    createStudent(student: StudentInput!): IdResult!
     deleteGroupClass(id: ID!): SimpleResult!
     deleteStudent(id: ID!): DeleteStudentResult!
     signIn(googleToken: String!): User!

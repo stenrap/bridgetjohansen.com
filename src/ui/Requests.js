@@ -34,6 +34,19 @@ class Requests {
     })
   }
 
+  createGroupClassTime (groupClassTime) {
+    return this.fetch({
+      body: {
+        query: `mutation CreateGroupClassTime ($groupClassTime: CreateGroupClassTimeInput!) {
+          createGroupClassTime(groupClassTime: $groupClassTime) {
+            id
+          }
+        }`,
+        variables: { groupClassTime }
+      }
+    })
+  }
+
   createParent (parent) {
     return this.fetch({
       body: {

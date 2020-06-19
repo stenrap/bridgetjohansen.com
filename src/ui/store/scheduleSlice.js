@@ -165,6 +165,9 @@ export const slice = createSlice({
     setMutatingGroupClass: (state, action) => {
       state.mutatingGroupClass = action.payload
     },
+    setMutatingGroupClassTime: (state, action) => {
+      state.mutatingGroupClassTime = action.payload
+    },
     setMutatingParent: (state, action) => {
       state.mutatingParent = action.payload
     },
@@ -242,6 +245,7 @@ export const {
   setGroupClassTimes,
   setMutatingEffectiveDate,
   setMutatingGroupClass,
+  setMutatingGroupClassTime,
   setMutatingParent,
   setMutatingStudent,
   setParents,
@@ -316,8 +320,6 @@ export const fetchSchedule = () => async dispatch => {
 }
 
 export const mutateGroupClass = groupClass => async dispatch => {
-  // TODO and WYLO .... Test this to make sure it works for adding and editing group classes.
-
   batch(() => {
     dispatch(setAddingGroupClass(false))
     dispatch(setEditingGroupClassId(0))
@@ -344,6 +346,33 @@ export const mutateGroupClass = groupClass => async dispatch => {
     }
 
     dispatch(setMutatingGroupClass(false))
+  })
+}
+
+export const mutateGroupClassTime = groupClassTime => async dispatch => {
+  dispatch(setMutatingGroupClassTime(true))
+
+  const adding = !groupClassTime.id
+
+  const response = await requests.createGroupClassTime(groupClassTime)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error mutating group class time...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    if (adding) {
+      groupClassTime.id = response.data.createGroupClassTime.id
+      // TODO .... Add the new local group class time
+      dispatch(setAddingGroupClassTime(false))
+    } else {
+      // TODO .... Update the local group class time
+    }
+
+    dispatch(setMutatingGroupClassTime(false))
   })
 }
 
