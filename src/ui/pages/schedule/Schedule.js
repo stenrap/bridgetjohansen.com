@@ -9,9 +9,9 @@ import AddGroupClassLink from '../../components/add-group-class-link/AddGroupCla
 import AddGroupClassTimeLink from '../../components/add-group-class-time-link/AddGroupClassTimeLink'
 import AddParentLink from '../../components/add-parent-link/AddParentLink'
 import AddStudentLink from '../../components/add-student-link/AddStudentLink'
-import Day from '../../components/day/Day'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
 import GroupClass from '../../components/group-class/GroupClass'
+import LessonDay from '../../components/lesson-day/LessonDay'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
 
@@ -35,7 +35,7 @@ export default () => {
     </div>
   )
 
-  const days = []
+  const lessonDays = []
 
   if (students.length > 0) {
     let day = { name: getDay(students[0].lessonDay), students: [] }
@@ -43,13 +43,13 @@ export default () => {
       if (getDay(student.lessonDay) === day.name) {
         day.students.push(student)
       } else {
-        days.push(<Day {...day} key={day.name} />)
+        lessonDays.push(<LessonDay {...day} key={day.name} />)
         day = { name: getDay(student.lessonDay), students: [student] }
       }
     }
-    // This may look like an unnecessary extra call to days.push(), but the else block
+    // This may look like an unnecessary extra call to lessonDays.push(), but the else block
     // is never executed for the last day (or the first day if there's only one day).
-    days.push(<Day {...day} key={day.name} />)
+    lessonDays.push(<LessonDay {...day} key={day.name} />)
   }
 
   const addGroupClassRow = admin && (
@@ -81,8 +81,8 @@ export default () => {
         <SignOutLink />
       </div>
       {addStudentRow}
-      <div className={styles.days}>
-        {days}
+      <div className={styles.lessonDays}>
+        {lessonDays}
       </div>
       <div className={styles.scheduleHeader}>
         <div className={styles.groupClasses}>

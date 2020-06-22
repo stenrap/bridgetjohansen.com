@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Student from '../student/Student'
-import styles from './Day.module.scss'
+import styles from './LessonDay.module.scss'
 
 export default props => {
   const students = []
