@@ -45,6 +45,10 @@ export const slice = createSlice({
       state.groupClasses.push(action.payload.groupClass)
       state.groupClasses = sortDates(state.groupClasses)
     },
+    addLocalGroupClassTime: (state, action) => {
+      state.groupClassTimes.push(action.payload.groupClassTime)
+      state.groupClassTimes = sortTimes(state.groupClassTimes)
+    },
     addLocalParent: (state, action) => {
       state.parents = sortParents([...state.parents, action.payload.parent])
     },
@@ -219,6 +223,7 @@ export const slice = createSlice({
 // Actions
 export const {
   addLocalGroupClass,
+  addLocalGroupClassTime,
   addLocalParent,
   addLocalStudent,
   addLocalUsers,
@@ -366,7 +371,7 @@ export const mutateGroupClassTime = groupClassTime => async dispatch => {
   batch(() => {
     if (adding) {
       groupClassTime.id = response.data.createGroupClassTime.id
-      // TODO .... Add the new local group class time
+      dispatch(addLocalGroupClassTime({ groupClassTime }))
       dispatch(setAddingGroupClassTime(false))
     } else {
       // TODO .... Update the local group class time
