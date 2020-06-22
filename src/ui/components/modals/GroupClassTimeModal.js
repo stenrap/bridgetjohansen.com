@@ -24,12 +24,26 @@ export default props => {
     groupClassTime = {}
   } = props
 
+  const [dupe, setDupe] = useState('')
   const [duration, setDuration] = useState(groupClassTime.duration || 30)
   const [hour, setHour] = useState(groupClassTime.hour || 3)
   const [meridiem, setMeridiem] = useState(groupClassTime.meridiem || 'pm')
   const [minutes, setMinutes] = useState(groupClassTime.minutes || 0)
   const [studentIds, setStudentIds] = useState(groupClassTime.studentIds || [])
   const [studentIdsError, setStudentIdsError] = useState(false)
+
+  if (dupe) {
+    return (
+      <Modal
+        onOk={() => setDupe('')}
+        showCancel={false}
+      >
+        <p>
+          You already have a group class time at {dupe}.
+        </p>
+      </Modal>
+    )
+  }
 
   if (mutatingGroupClassTime) {
     return <LoadingModal title={`${mutatingGroupClassTime.id ? 'Editing' : 'Adding'} group class time...`} />
@@ -47,6 +61,13 @@ export default props => {
         className={styles.groupClassTimeModal}
         onOk={() => {
           if (studentIds.length === 0) return setStudentIdsError(true)
+
+          for (const time of groupClassTimes) {
+            if (time.hour === hour && time.minutes === minutes && time.meridiem === meridiem) {
+              const displayMinutes = minutes < 10 ? `0${minutes}` : minutes
+              return setDupe(`${hour}:${displayMinutes} ${meridiem}`)
+            }
+          }
 
           dispatch(mutateGroupClassTime({
             duration,
@@ -143,7 +164,7 @@ export default props => {
               return (
                 <div key={`group-class-time-student-${student.id}`}>
                   <input
-                    checked={groupClassTime.studentIds && groupClassTime.studentIds.includes(student.id)}
+                    checked={studentIds.includes(student.id)}
                     id={idAttribute}
                     onChange={event => {
                       if (event.target.checked) {
