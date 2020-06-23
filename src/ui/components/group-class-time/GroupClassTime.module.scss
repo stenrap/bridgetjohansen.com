@@ -1,0 +1,44 @@
+.groupClassTime {
+  display: inline-block;
+  margin: 0 7px 24px;
+  text-align: center;
+  width: 225px;
+}
+
+.time {
+  background-color: #000;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 4px 0 8px;
+  text-align: center;
+}
+
+.duration {
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.students {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+}
+
+$studentRowHeight: 32px;
+
+.even,
+.odd {
+  height: $studentRowHeight;
+  line-height: $studentRowHeight;
+
+  &:last-child {
+    border-bottom: 1px solid #000;
+  }
+}
+
+.odd {
+  background-color: #eee;
+}

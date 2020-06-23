@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchSchedule, getGroupClasses, getStudents } from '../../store/scheduleSlice'
+import { fetchSchedule, getGroupClasses, getGroupClassTimes, getStudents } from '../../store/scheduleSlice'
 import { getDay } from '../../../shared/libs/student'
 import { isAdmin, isSignedIn } from '../../store/userSlice'
 import AddGroupClassLink from '../../components/add-group-class-link/AddGroupClassLink'
@@ -11,6 +11,7 @@ import AddParentLink from '../../components/add-parent-link/AddParentLink'
 import AddStudentLink from '../../components/add-student-link/AddStudentLink'
 import EffectiveDate from '../../components/effective-date/EffectiveDate'
 import GroupClass from '../../components/group-class/GroupClass'
+import GroupClassTime from '../../components/group-class-time/GroupClassTime'
 import LessonDay from '../../components/lesson-day/LessonDay'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
@@ -19,6 +20,7 @@ export default () => {
   const admin = useSelector(isAdmin)
   const dispatch = useDispatch()
   const groupClasses = useSelector(getGroupClasses)
+  const groupClassTimes = useSelector(getGroupClassTimes)
   const signedIn = useSelector(isSignedIn)
   const students = useSelector(getStudents)
 
@@ -91,6 +93,16 @@ export default () => {
       </div>
       {addGroupClassRow}
       {groupClassesRow}
+      <div className={styles.groupClassTimes}>
+        {groupClassTimes.map(groupClassTime => {
+          return (
+            <GroupClassTime
+              key={groupClassTime.id}
+              {...groupClassTime}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }
