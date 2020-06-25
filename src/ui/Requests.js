@@ -218,6 +218,19 @@ class Requests {
     })
   }
 
+  updateGroupClassTime (groupClassTime) {
+    return this.fetch({
+      body: {
+        query: `mutation UpdateGroupClassTime ($groupClassTime: UpdateGroupClassTimeInput!) {
+          updateGroupClassTime(groupClassTime: $groupClassTime) {
+            success
+          }
+        }`,
+        variables: { groupClassTime }
+      }
+    })
+  }
+
   updateParent (parent) {
     return this.fetch({
       body: {

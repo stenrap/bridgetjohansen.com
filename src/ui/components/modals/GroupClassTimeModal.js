@@ -63,7 +63,7 @@ export default props => {
           if (studentIds.length === 0) return setStudentIdsError(true)
 
           for (const time of groupClassTimes) {
-            if (time.hour === hour && time.minutes === minutes && time.meridiem === meridiem) {
+            if (time.hour === hour && time.minutes === minutes && time.meridiem === meridiem && time.id !== groupClassTime.id) {
               const displayMinutes = minutes < 10 ? `0${minutes}` : minutes
               return setDupe(`${hour}:${displayMinutes} ${meridiem}`)
             }

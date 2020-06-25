@@ -225,6 +225,51 @@ class ScheduleDao extends BaseDao {
       params: [month, date, year, id]
     })
   }
+
+  async updateGroupClassTime (groupClassTime) {
+    const {
+      duration,
+      hour,
+      id,
+      meridiem,
+      minutes,
+      studentIds
+    } = groupClassTime
+
+    let poolClient = null
+
+    try {
+      poolClient = await this.getPoolClient()
+      await poolClient.query('BEGIN')
+
+      await poolClient.query(
+        `DELETE FROM group_class_students
+         WHERE group_class_time_id = $1`,
+        [id]
+      )
+
+      await poolClient.query(
+        `UPDATE group_class_times
+         SET hour = $1, minutes = $2, meridiem = $3, duration = $4
+         WHERE id = $5`,
+        [hour, minutes, meridiem, duration, id]
+      )
+
+      await poolClient.query(pgFormat(
+        `INSERT INTO group_class_students (student_id, group_class_time_id)
+         VALUES %L`,
+        studentIds.map(studentId => [studentId, id]) // Create an array of arrays for %L.
+      ))
+
+      await poolClient.query('COMMIT')
+    } catch (err) {
+      logger.error('Error updating group class time')
+      logger.error(err)
+      if (poolClient) await poolClient.query('ROLLBACK')
+    } finally {
+      if (poolClient) poolClient.release()
+    }
+  }
 }
 
 module.exports = new ScheduleDao()

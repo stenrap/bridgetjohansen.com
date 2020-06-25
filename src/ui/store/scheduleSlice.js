@@ -195,6 +195,17 @@ export const slice = createSlice({
 
       state.groupClasses = sortDates(groupClasses)
     },
+    updateLocalGroupClassTime: (state, action) => {
+      const groupClassTimes = [action.payload.groupClassTime]
+
+      for (const groupClassTime of state.groupClassTimes) {
+        if (groupClassTime.id !== action.payload.groupClassTime.id) {
+          groupClassTimes.push(groupClassTime)
+        }
+      }
+
+      state.groupClassTimes = sortTimes(groupClassTimes)
+    },
     updateLocalParent: (state, action) => {
       const parents = [action.payload.parent]
 
@@ -256,6 +267,7 @@ export const {
   setParents,
   setStudents,
   updateLocalGroupClass,
+  updateLocalGroupClassTime,
   updateLocalParent,
   updateLocalStudent
 } = slice.actions
@@ -355,11 +367,15 @@ export const mutateGroupClass = groupClass => async dispatch => {
 }
 
 export const mutateGroupClassTime = groupClassTime => async dispatch => {
-  dispatch(setMutatingGroupClassTime(true))
+  batch(() => {
+    dispatch(setAddingGroupClassTime(false))
+    dispatch(setEditingGroupClassTimeId(0))
+    dispatch(setMutatingGroupClassTime(true))
+  })
 
   const adding = !groupClassTime.id
 
-  const response = await requests.createGroupClassTime(groupClassTime)
+  const response = await (adding ? requests.createGroupClassTime(groupClassTime) : requests.updateGroupClassTime(groupClassTime))
 
   if (response.errors) {
     // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
@@ -372,9 +388,8 @@ export const mutateGroupClassTime = groupClassTime => async dispatch => {
     if (adding) {
       groupClassTime.id = response.data.createGroupClassTime.id
       dispatch(addLocalGroupClassTime({ groupClassTime }))
-      dispatch(setAddingGroupClassTime(false))
     } else {
-      // TODO .... Update the local group class time
+      dispatch(updateLocalGroupClassTime({ groupClassTime }))
     }
 
     dispatch(setMutatingGroupClassTime(false))

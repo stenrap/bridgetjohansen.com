@@ -1,14 +1,24 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { getStudents } from '../../store/scheduleSlice'
+import {
+  getStudents,
+  isEditingGroupClassTimeId,
+  setEditingGroupClassTimeId
+} from '../../store/scheduleSlice'
+import { isAdmin } from '../../store/userSlice'
+import GroupClassTimeModal from '../modals/GroupClassTimeModal'
 import styles from './GroupClassTime.module.scss'
 
-export default props => {
+export default groupClassTime => {
+  const admin = useSelector(isAdmin)
   const allStudents = useSelector(getStudents)
-  const displayMinutes = props.minutes < 10 ? `0${props.minutes}` : props.minutes
+  const dispatch = useDispatch()
+  const editingGroupClassTimeId = useSelector(isEditingGroupClassTimeId)
 
-  const students = props.studentIds.map(id => {
+  const displayMinutes = groupClassTime.minutes < 10 ? `0${groupClassTime.minutes}` : groupClassTime.minutes
+
+  const students = groupClassTime.studentIds.map(id => {
     for (const student of allStudents) {
       if (id === student.id) {
         return { id, name: student.name }
@@ -24,12 +34,34 @@ export default props => {
     return 0
   })
 
+  const timeText = `${groupClassTime.hour}:${displayMinutes} ${groupClassTime.meridiem}`
+
+  const time = (
+    admin
+      ? (
+        <span
+          className={styles.timeLink}
+          onClick={() => dispatch(setEditingGroupClassTimeId(groupClassTime.id))}
+        >
+          {timeText}
+        </span>
+      )
+      : timeText
+  )
+
+  const modal = editingGroupClassTimeId === groupClassTime.id && (
+    <GroupClassTimeModal
+      groupClassTime={groupClassTime}
+      onCancel={() => dispatch(setEditingGroupClassTimeId(0))}
+    />
+  )
+
   return (
     <div className={styles.groupClassTime}>
       <div className={styles.time}>
-        {`${props.hour}:${displayMinutes} ${props.meridiem}`}
+        {time}
         <div className={styles.duration}>
-          {`(${props.duration} minutes)`}
+          {`(${groupClassTime.duration} minutes)`}
         </div>
       </div>
       <div className={styles.students}>
@@ -44,6 +76,7 @@ export default props => {
           )
         })}
       </div>
+      {modal}
     </div>
   )
 }

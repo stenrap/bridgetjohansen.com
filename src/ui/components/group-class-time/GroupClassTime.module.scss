@@ -1,3 +1,5 @@
+@use '../../styles/mixins' as m;
+
 .groupClassTime {
   display: inline-block;
   margin: 0 7px 24px;
@@ -14,6 +16,10 @@
   font-weight: 600;
   padding: 4px 0 8px;
   text-align: center;
+}
+
+.timeLink {
+  @include m.link;
 }
 
 .duration {

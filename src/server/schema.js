@@ -92,6 +92,15 @@ const schema = gql`
     parentIds: [ID!]!
   }
   
+  input UpdateGroupClassTimeInput {
+    id: ID!
+    duration: Int!
+    hour: Int!
+    meridiem: String!
+    minutes: Int!
+    studentIds: [ID!]!
+  }
+  
   input UpdateParentInput {
     id: ID!
     name: String!
@@ -132,6 +141,7 @@ const schema = gql`
     signOut: SimpleResult
     updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult!
     updateGroupClass(id: ID!, month: Int!, date: Int!, year: Int!): SimpleResult!
+    updateGroupClassTime(groupClassTime: UpdateGroupClassTimeInput!): SimpleResult!
     updateParent(parent: UpdateParentInput): ParentResult!
     updateStudent(student: UpdateStudentInput): SimpleResult!
   }

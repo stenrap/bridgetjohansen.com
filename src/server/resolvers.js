@@ -41,13 +41,13 @@ const resolvers = {
     async createGroupClassTime (previousResolver, { groupClassTime }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 
-      const validGroupClass = isValidHour(groupClassTime.hour) &&
+      const validGroupClassTime = isValidHour(groupClassTime.hour) &&
         isValidMinutes(groupClassTime.minutes) &&
         isValidMeridiem(groupClassTime.meridiem) &&
         isValidGroupClassTimeDuration(groupClassTime.duration) &&
         isValidListOfIds(groupClassTime.studentIds)
 
-      if (!validGroupClass) throw new UserInputError('Invalid data')
+      if (!validGroupClassTime) throw new UserInputError('Invalid data')
 
       return scheduleDao.insertGroupClassTime(groupClassTime)
     },
@@ -127,6 +127,21 @@ const resolvers = {
       if (!validDate) throw new UserInputError('Invalid data')
 
       await scheduleDao.updateGroupClass(id, month, date, year)
+      return { success: true }
+    },
+    async updateGroupClassTime (previousResolver, { groupClassTime }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const validGroupClassTime = isValidId(groupClassTime.id) &&
+        isValidHour(groupClassTime.hour) &&
+        isValidMinutes(groupClassTime.minutes) &&
+        isValidMeridiem(groupClassTime.meridiem) &&
+        isValidGroupClassTimeDuration(groupClassTime.duration) &&
+        isValidListOfIds(groupClassTime.studentIds)
+
+      if (!validGroupClassTime) throw new UserInputError('Invalid data')
+
+      await scheduleDao.updateGroupClassTime(groupClassTime)
       return { success: true }
     },
     async updateParent (previousResolver, { parent }, { user }) {
