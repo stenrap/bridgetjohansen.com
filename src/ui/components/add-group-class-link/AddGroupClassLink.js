@@ -22,7 +22,7 @@ export default () => {
         className={styles.addGroupClassLink}
         onClick={() => dispatch(setAddingGroupClass(true))}
       >
-        Add Group Class
+        Add Class
       </span>
       {modal}
     </>

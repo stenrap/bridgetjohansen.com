@@ -24,7 +24,7 @@ export default () => {
         className={styles.addTimeLink}
         onClick={() => dispatch(setAddingGroupClassTime(true))}
       >
-        Add Group Class Time
+        Add Time
       </span>
       {modal}
     </>

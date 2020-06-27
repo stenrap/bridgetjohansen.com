@@ -42,17 +42,17 @@ export default ({ groupClass }) => {
           okLabel='Yes'
           onCancel={() => dispatch(setConfirmingDeleteGroupClassId(0))}
           onOk={() => dispatch(deleteGroupClass(groupClass.id))}
-          title='Delete Group Class'
+          title='Delete Class'
         >
           <p
             className={styles.confirmDeleteText}
           >
-            Are you sure you want to delete the group class on {formattedDate}?
+            Are you sure you want to delete the class on {formattedDate}?
           </p>
         </Modal>
       )
       : (
-        <LoadingModal title='Deleting group class...' />
+        <LoadingModal title='Deleting class...' />
       )
   )
 

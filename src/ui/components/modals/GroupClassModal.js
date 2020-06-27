@@ -48,14 +48,14 @@ export default props => {
         title='Duplicate'
       >
         <p className={styles.dupeText}>
-          There's already a group class on {format.date(dupe)}.
+          There's already a class on {format.date(dupe)}.
         </p>
       </Modal>
     )
   }
 
   if (mutatingGroupClass) {
-    return <LoadingModal title={`${groupClass.id ? 'Editing' : 'Adding'} group class...`} />
+    return <LoadingModal title={`${groupClass.id ? 'Editing' : 'Adding'} class...`} />
   }
 
   return (
@@ -88,7 +88,7 @@ export default props => {
         dispatch(mutateGroupClass({ id: groupClass.id, date, month, year }))
       }}
       showDelete={groupClass.id}
-      title={`${groupClass.id ? 'Edit' : 'Add'} Group Class`}
+      title={`${groupClass.id ? 'Edit' : 'Add'} Class`}
       year={initialYear}
     />
   )

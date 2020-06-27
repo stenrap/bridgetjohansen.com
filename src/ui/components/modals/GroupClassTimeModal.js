@@ -39,14 +39,14 @@ export default props => {
         showCancel={false}
       >
         <p>
-          You already have a group class time at {dupe}.
+          You already have a class at {dupe}.
         </p>
       </Modal>
     )
   }
 
   if (mutatingGroupClassTime) {
-    return <LoadingModal title={`${mutatingGroupClassTime.id ? 'Editing' : 'Adding'} group class time...`} />
+    return <LoadingModal title={`${mutatingGroupClassTime.id ? 'Editing' : 'Adding'} time...`} />
   } else {
     const students = [...unsortedStudents].sort((a, b) => {
       const nameA = a.name.toLowerCase()
@@ -78,7 +78,7 @@ export default props => {
             studentIds
           }))
         }}
-        title={`${groupClassTime.id ? 'Edit' : 'Add'} Group Class Time`}
+        title={`${groupClassTime.id ? 'Edit' : 'Add'} Time`}
         {...props}
       >
         {groupClassTime.id && (
