@@ -19,6 +19,7 @@ export const slice = createSlice({
     confirmingDeleteGroupClassId: 0,
     confirmingDeleteGroupClassTimeId: 0,
     deletingGroupClassId: 0,
+    deletingGroupClassTimeId: 0,
     deletingStudentId: 0,
     editingEffectiveDate: false,
     editingGroupClassId: 0,
@@ -130,6 +131,9 @@ export const slice = createSlice({
     },
     setDeletingGroupClassId: (state, action) => {
       state.deletingGroupClassId = action.payload
+    },
+    setDeletingGroupClassTimeId: (state, action) => {
+      state.deletingGroupClassTimeId = action.payload
     },
     setDeletingStudentId: (state, action) => {
       state.deletingStudentId = action.payload
@@ -249,6 +253,7 @@ export const {
   setConfirmingDeleteGroupClassId,
   setConfirmingDeleteGroupClassTimeId,
   setDeletingGroupClassId,
+  setDeletingGroupClassTimeId,
   setDeletingStudentId,
   setEditingEffectiveDate,
   setEditingGroupClassId,
@@ -292,6 +297,15 @@ export const deleteGroupClass = id => async dispatch => {
     dispatch(deleteLocalGroupClass({ id }))
     dispatch(setDeletingGroupClassId(0))
   })
+}
+
+export const deleteGroupClassTime = id => async dispatch => {
+  batch(() => {
+    dispatch(setConfirmingDeleteGroupClassTimeId(0))
+    dispatch(setDeletingGroupClassTimeId(id))
+  })
+
+  // TODO and WYLO .... Implement the back-end logic and fire off the request.
 }
 
 export const deleteStudent = id => async dispatch => {
@@ -505,6 +519,7 @@ export const isConfirmingDeleteStudentId = state => state.schedule.confirmingDel
 export const isConfirmingDeleteGroupClassId = state => state.schedule.confirmingDeleteGroupClassId
 export const isConfirmingDeleteGroupClassTimeId = state => state.schedule.confirmingDeleteGroupClassTimeId
 export const isDeletingGroupClassId = state => state.schedule.deletingGroupClassId
+export const isDeletingGroupClassTimeId = state => state.schedule.deletingGroupClassTimeId
 export const isDeletingStudentId = state => state.schedule.deletingStudentId
 export const isEditingEffectiveDate = state => state.schedule.editingEffectiveDate
 export const isEditingGroupClassId = state => state.schedule.editingGroupClassId

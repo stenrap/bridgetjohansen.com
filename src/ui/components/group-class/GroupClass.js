@@ -44,9 +44,7 @@ export default ({ groupClass }) => {
           onOk={() => dispatch(deleteGroupClass(groupClass.id))}
           title='Delete Class'
         >
-          <p
-            className={styles.confirmDeleteText}
-          >
+          <p className={styles.confirmDeleteText}>
             Are you sure you want to delete the class on {formattedDate}?
           </p>
         </Modal>

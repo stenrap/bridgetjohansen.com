@@ -2,17 +2,25 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
+  deleteGroupClassTime,
   getStudents,
+  isConfirmingDeleteGroupClassTimeId,
+  isDeletingGroupClassTimeId,
   isEditingGroupClassTimeId,
+  setConfirmingDeleteGroupClassTimeId,
   setEditingGroupClassTimeId
 } from '../../store/scheduleSlice'
 import { isAdmin } from '../../store/userSlice'
 import GroupClassTimeModal from '../modals/GroupClassTimeModal'
+import LoadingModal from '../loading/LoadingModal'
+import Modal from '../modals/Modal'
 import styles from './GroupClassTime.module.scss'
 
 export default groupClassTime => {
   const admin = useSelector(isAdmin)
   const allStudents = useSelector(getStudents)
+  const confirmingDeleteGroupClassTimeId = useSelector(isConfirmingDeleteGroupClassTimeId)
+  const deletingGroupClassTimeId = useSelector(isDeletingGroupClassTimeId)
   const dispatch = useDispatch()
   const editingGroupClassTimeId = useSelector(isEditingGroupClassTimeId)
 
@@ -56,6 +64,28 @@ export default groupClassTime => {
     />
   )
 
+  const confirmingDelete = confirmingDeleteGroupClassTimeId === groupClassTime.id
+  const deleting = deletingGroupClassTimeId === groupClassTime.id
+
+  const deleteModal = (confirmingDelete || deleting) && (
+    confirmingDelete ? (
+      <Modal
+        cancelLabel='No'
+        className={styles.confirmDeleteModal}
+        okLabel='Yes'
+        onCancel={() => dispatch(setConfirmingDeleteGroupClassTimeId(0))}
+        onOk={() => dispatch(deleteGroupClassTime(groupClassTime.id))}
+        title='Delete Class'
+      >
+        <p className={styles.confirmDeleteText}>
+          Are you sure you want to delete the class at {timeText}?
+        </p>
+      </Modal>
+    ) : (
+      <LoadingModal title='Deleting time...' />
+    )
+  )
+
   return (
     <div className={styles.groupClassTime}>
       <div className={styles.time}>
@@ -77,6 +107,7 @@ export default groupClassTime => {
         })}
       </div>
       {modal}
+      {deleteModal}
     </div>
   )
 }
