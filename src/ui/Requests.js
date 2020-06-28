@@ -90,6 +90,19 @@ class Requests {
     })
   }
 
+  deleteGroupClassTime (id) {
+    return this.fetch({
+      body: {
+        query: `mutation DeleteGroupClassTime ($id: ID!) {
+          deleteGroupClassTime(id: $id) {
+            success
+          }
+        }`,
+        variables: { id }
+      }
+    })
+  }
+
   deleteStudent (id) {
     return this.fetch({
       body: {

@@ -70,6 +70,17 @@ export const slice = createSlice({
 
       state.groupClasses = sortDates(groupClasses)
     },
+    deleteLocalGroupClassTime: (state, action) => {
+      const groupClassesTimes = []
+
+      for (const groupClassTime of state.groupClassTimes) {
+        if (groupClassTime.id !== action.payload.id) {
+          groupClassesTimes.push(groupClassTime)
+        }
+      }
+
+      state.groupClassTimes = sortTimes(groupClassesTimes)
+    },
     deleteLocalStudent: (state, action) => {
       const students = []
       const parents = []
@@ -243,6 +254,7 @@ export const {
   addLocalStudent,
   addLocalUsers,
   deleteLocalGroupClass,
+  deleteLocalGroupClassTime,
   deleteLocalStudent,
   deleteLocalUsers,
   setAddingGroupClass,
@@ -305,7 +317,19 @@ export const deleteGroupClassTime = id => async dispatch => {
     dispatch(setDeletingGroupClassTimeId(id))
   })
 
-  // TODO and WYLO .... Implement the back-end logic and fire off the request.
+  const response = await requests.deleteGroupClassTime(id)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error deleting group class time...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    dispatch(deleteLocalGroupClassTime({ id }))
+    dispatch(setDeletingGroupClassTimeId(0))
+  })
 }
 
 export const deleteStudent = id => async dispatch => {

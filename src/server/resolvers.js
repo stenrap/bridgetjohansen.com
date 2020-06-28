@@ -84,6 +84,11 @@ const resolvers = {
       await scheduleDao.deleteGroupClass(id)
       return { success: true }
     },
+    async deleteGroupClassTime (previousResolver, { id }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+      await scheduleDao.deleteGroupClassTime(id)
+      return { success: true }
+    },
     async deleteStudent (previousResolver, { id }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
       return studentDao.deleteStudent(id)

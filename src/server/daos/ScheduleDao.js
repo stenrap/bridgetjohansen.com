@@ -16,6 +16,14 @@ class ScheduleDao extends BaseDao {
     })
   }
 
+  deleteGroupClassTime (id) {
+    return this.query({
+      sql: `DELETE FROM group_class_times
+            WHERE id = $1`,
+      params: [id]
+    })
+  }
+
   async insertGroupClass ({ month, date, year }) {
     const result = await this.query({
       sql: `INSERT INTO group_classes (month, date, year)
