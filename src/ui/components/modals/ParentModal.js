@@ -30,8 +30,8 @@ export default props => {
       <Modal
         className={styles.parentModal}
         onOk={() => {
-          if (!isValidString(name)) setNameError(true)
-          if (!isValidString(phone)) setPhoneError(true)
+          if (!isValidString(name)) return setNameError(true)
+          if (!isValidString(phone)) return setPhoneError(true)
 
           const allEmails = emails.split('\n').filter(email => isValidString(email))
           if (allEmails.length === 0) return setEmailsError(true)
