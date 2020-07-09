@@ -1,0 +1,9 @@
+@use '../../styles/mixins' as m;
+
+.eventModal {
+  width: 375px;
+}
+
+.expirationLink {
+  @include m.link;
+}
