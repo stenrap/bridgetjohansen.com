@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { isMutatingEvent } from '../../store/eventsSlice'
+import { isValidString } from '../../../shared/libs/validation'
 import DatePicker from './DatePicker'
 import format from '../../../shared/libs/format'
 import LoadingModal from '../loading/LoadingModal'
@@ -18,11 +19,16 @@ export default props => {
   // Events must expire in the future, so we default to expiring them tomorrow.
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
+  tomorrow.setHours(0)
+  tomorrow.setMinutes(0)
+  tomorrow.setSeconds(0)
+  tomorrow.setMilliseconds(0)
 
   const [choosingExpiration, setChoosingExpiration] = useState(false)
   const [dateAndTime, setDateAndTime] = useState(props.dateAndTime || '')
   const [dateAndTimeError, setdateAndTimeError] = useState(false)
   const [expiration, setExpiration] = useState(props.expiration || tomorrow)
+  const [expirationError, setExpirationError] = useState(false)
   const [location, setLocation] = useState(props.location || '')
   const [locationError, setLocationError] = useState(props.location || '')
   const [name, setName] = useState(props.name || '')
@@ -38,7 +44,12 @@ export default props => {
           month={expiration.getMonth()}
           onCancel={() => setChoosingExpiration(false)}
           onOk={date => {
+            date.setHours(0)
+            date.setMinutes(0)
+            date.setSeconds(0)
+            date.setMilliseconds(0)
             setExpiration(date)
+            setExpirationError(false)
             setChoosingExpiration(false)
           }}
           title='Event Expiration'
@@ -51,7 +62,11 @@ export default props => {
       <Modal
         className={styles.eventModal}
         onOk={() => {
-          console.log('Dispatch something to add/edit the event...')
+          if (!isValidString(name)) return setNameError(true)
+          if (!isValidString(dateAndTime)) return setdateAndTimeError(true)
+          if (!isValidString(location)) return setLocationError(true)
+          if (expiration.getTime() < tomorrow.getTime()) return setExpirationError(true)
+          console.log('Adding/Editing event...')
         }}
         title={`${event.id ? 'Edit' : 'Add'} Event`}
         {...props}
@@ -69,18 +84,6 @@ export default props => {
           />
         </div>
         <div className='inputRow'>
-          <label>Date & Time</label>
-          <input
-            className={dateAndTimeError ? 'error' : undefined}
-            onChange={event => {
-              setDateAndTime(event.target.value)
-              setdateAndTimeError(false)
-            }}
-            type='text'
-            value={dateAndTime}
-          />
-        </div>
-        <div className='inputRow'>
           <label>Location</label>
           <input
             className={locationError ? 'error' : undefined}
@@ -93,9 +96,21 @@ export default props => {
           />
         </div>
         <div className='inputRow'>
+          <label>Date & Time</label>
+          <input
+            className={dateAndTimeError ? 'error' : undefined}
+            onChange={event => {
+              setDateAndTime(event.target.value)
+              setdateAndTimeError(false)
+            }}
+            type='text'
+            value={dateAndTime}
+          />
+        </div>
+        <div className='inputRow'>
           <label>Expiration</label>
           <span
-            className={styles.expirationLink}
+            className={`${styles.expirationLink}${expirationError ? ` ${styles.expirationLinkError}` : ''}`}
             onClick={() => setChoosingExpiration(true)}
           >
             {format.date({
