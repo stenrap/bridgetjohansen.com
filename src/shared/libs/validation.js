@@ -19,6 +19,16 @@ exports.isValidEmailList = emails => {
   return true
 }
 
+exports.isValidEventExpiration = expiration => {
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  tomorrow.setHours(0)
+  tomorrow.setMinutes(0)
+  tomorrow.setSeconds(0)
+  tomorrow.setMilliseconds(0)
+  return expiration.getTime() >= tomorrow.getTime()
+}
+
 exports.isValidId = id => {
   return /^\d+$/.test(id) && id > 0
 }

@@ -70,7 +70,7 @@ export default props => {
 
           dispatch(mutateEvent({
             dateAndTime,
-            expiration,
+            expiration: expiration.getTime().toString(),
             id: event.id,
             location,
             name

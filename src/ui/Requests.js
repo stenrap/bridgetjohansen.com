@@ -21,6 +21,19 @@ class Requests {
     return response
   }
 
+  createEvent (event) {
+    return this.fetch({
+      body: {
+        query: `mutation CreateEvent ($event: EventInput!) {
+          createEvent(event: $event) {
+            id
+          }
+        }`,
+        variables: { event }
+      }
+    })
+  }
+
   createGroupClass ({ month, date, year }) {
     return this.fetch({
       body: {

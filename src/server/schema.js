@@ -19,6 +19,13 @@ const schema = gql`
     deletedParentIds: [ID!]!
   }
   
+  input EventInput {
+    dateAndTime: String!
+    expiration: String!
+    location: String!
+    name: String!
+  }
+  
   type GroupClass {
     date: Int!
     id: ID!
@@ -131,6 +138,7 @@ const schema = gql`
   }
   
   type Mutation {
+    createEvent(event: EventInput!): IdResult!
     createGroupClass(month: Int!, date: Int!, year: Int!): IdResult!
     createGroupClassTime(groupClassTime: CreateGroupClassTimeInput!): IdResult!
     createParent(parent: CreateParentInput!): ParentResult!

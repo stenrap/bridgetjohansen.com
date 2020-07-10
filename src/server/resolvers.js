@@ -4,6 +4,7 @@ const { OAuth2Client } = require('google-auth-library')
 const {
   isValidDate,
   isValidEmailList,
+  isValidEventExpiration,
   isValidGroupClassTimeDuration,
   isValidHour,
   isValidId,
@@ -18,6 +19,7 @@ const {
 } = require('../shared/libs/validation')
 const { TOKEN_COOKIE, USER_TOKEN_EXPIRATION } = require('../shared/Constants')
 const cookieLib = require('../shared/libs/cookie')
+const eventDao = require('./daos/EventDao')
 const parentDao = require('./daos/ParentDao')
 const scheduleDao = require('./daos/ScheduleDao')
 const studentDao = require('./daos/StudentDao')
@@ -27,6 +29,22 @@ const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
 
 const resolvers = {
   Mutation: {
+    async createEvent (previousResolver, { event }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const expiration = new Date(parseInt(event.expiration, 10))
+
+      const validEvent = isValidString(event.dateAndTime) &&
+        isValidEventExpiration(expiration) &&
+        isValidString(event.location) &&
+        isValidString(event.name)
+
+      if (!validEvent) throw new UserInputError('Invalid data')
+
+      event.expiration = expiration
+
+      return eventDao.insertEvent(event)
+    },
     async createGroupClass (previousResolver, { month, date, year }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 
