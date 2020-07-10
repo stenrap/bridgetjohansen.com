@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { isMutatingEvent } from '../../store/eventsSlice'
+import { isMutatingEvent, mutateEvent } from '../../store/eventsSlice'
 import { isValidString } from '../../../shared/libs/validation'
 import DatePicker from './DatePicker'
 import format from '../../../shared/libs/format'
@@ -10,6 +10,7 @@ import Modal from './Modal'
 import styles from './EventModal.module.scss'
 
 export default props => {
+  const dispatch = useDispatch()
   const mutatingEvent = useSelector(isMutatingEvent)
 
   const {
@@ -66,7 +67,14 @@ export default props => {
           if (!isValidString(dateAndTime)) return setdateAndTimeError(true)
           if (!isValidString(location)) return setLocationError(true)
           if (expiration.getTime() < tomorrow.getTime()) return setExpirationError(true)
-          console.log('Adding/Editing event...')
+
+          dispatch(mutateEvent({
+            dateAndTime,
+            expiration,
+            id: event.id,
+            location,
+            name
+          }))
         }}
         title={`${event.id ? 'Edit' : 'Add'} Event`}
         {...props}

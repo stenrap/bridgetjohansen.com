@@ -23,6 +23,9 @@ export const {
 } = slice.actions
 
 // Thunks
+export const mutateEvent = event => async dispatch => {
+  dispatch(setMutatingEvent(true))
+}
 
 // Selectors
 export const isAddingEvent = state => state.events.addingEvent
