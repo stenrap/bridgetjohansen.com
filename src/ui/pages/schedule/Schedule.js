@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchSchedule, getGroupClasses, getGroupClassTimes, getStudents } from '../../store/scheduleSlice'
 import { getDay } from '../../../shared/libs/student'
 import { isAdmin, isSignedIn } from '../../store/userSlice'
+import { isLoading } from '../../store/loadingSlice'
 import AddGroupClassLink from '../../components/add-group-class-link/AddGroupClassLink'
 import AddGroupClassTimeLink from '../../components/add-group-class-time-link/AddGroupClassTimeLink'
 import AddParentLink from '../../components/add-parent-link/AddParentLink'
@@ -13,6 +14,7 @@ import EffectiveDate from '../../components/effective-date/EffectiveDate'
 import GroupClass from '../../components/group-class/GroupClass'
 import GroupClassTime from '../../components/group-class-time/GroupClassTime'
 import LessonDay from '../../components/lesson-day/LessonDay'
+import Loader from '../../components/loading/Loader'
 import SignOutLink from '../../components/sign-out-link/SignOutLink'
 import styles from './Schedule.module.scss'
 
@@ -21,6 +23,7 @@ export default () => {
   const dispatch = useDispatch()
   const groupClasses = useSelector(getGroupClasses)
   const groupClassTimes = useSelector(getGroupClassTimes)
+  const loading = useSelector(isLoading)
   const signedIn = useSelector(isSignedIn)
   const students = useSelector(getStudents)
 
@@ -30,6 +33,8 @@ export default () => {
   }, [dispatch, signedIn])
 
   if (!signedIn) return <Redirect to='/sign-in' />
+
+  if (loading) return <Loader />
 
   const addStudentRow = admin && (
     <div className={styles.addStudentRow}>
