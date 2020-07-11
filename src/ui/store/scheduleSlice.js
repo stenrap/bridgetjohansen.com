@@ -1,7 +1,6 @@
 import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
-import { setLoading } from './loadingSlice'
 import { sortDates } from '../../shared/libs/date'
 import { sortParents } from '../../shared/libs/parent'
 import { sortStudents } from '../../shared/libs/student'
@@ -30,6 +29,7 @@ export const slice = createSlice({
     effectiveDate: 0,
     effectiveMonth: -1,
     effectiveYear: 0,
+    fetched: false,
     groupClasses: [],
     groupClassTimes: [],
     mutatingEffectiveDate: false,
@@ -167,6 +167,9 @@ export const slice = createSlice({
     setEditingStudentId: (state, action) => {
       state.editingStudentId = action.payload
     },
+    setFetched: (state, action) => {
+      state.fetched = action.payload
+    },
     setGroupClasses: (state, action) => {
       state.groupClasses = sortDates(action.payload.groupClasses)
     },
@@ -273,6 +276,7 @@ export const {
   setEditingParentId,
   setEditingParentOfStudentId,
   setEditingStudentId,
+  setFetched,
   setLocalEffectiveDate,
   setGroupClasses,
   setGroupClassTimes,
@@ -352,8 +356,6 @@ export const deleteStudent = id => async dispatch => {
 }
 
 export const fetchSchedule = () => async dispatch => {
-  dispatch(setLoading(true))
-
   const response = await requests.fetchSchedule()
 
   if (response.errors) {
@@ -370,7 +372,7 @@ export const fetchSchedule = () => async dispatch => {
     dispatch(addLocalUsers(response.data.fetchSchedule))
     dispatch(setGroupClasses(response.data.fetchSchedule))
     dispatch(setGroupClassTimes(response.data.fetchSchedule))
-    dispatch(setLoading(false))
+    dispatch(setFetched(true))
   })
 }
 
@@ -551,6 +553,7 @@ export const isEditingGroupClassTimeId = state => state.schedule.editingGroupCla
 export const isEditingParentId = state => state.schedule.editingParentId
 export const isEditingParentOfStudentId = state => state.schedule.editingParentOfStudentId
 export const isEditingStudentId = state => state.schedule.editingStudentId
+export const isFetched = state => state.schedule.fetched
 export const isMutatingEffectiveDate = state => state.schedule.mutatingEffectiveDate
 export const isMutatingGroupClass = state => state.schedule.mutatingGroupClass
 export const isMutatingGroupClassTime = state => state.schedule.mutatingGroupClassTime
