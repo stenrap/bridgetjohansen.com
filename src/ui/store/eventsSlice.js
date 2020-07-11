@@ -1,7 +1,6 @@
 import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
-import { setLoading } from './loadingSlice'
 import { sortEvents } from '../../shared/libs/event'
 import requests from '../Requests'
 
@@ -10,6 +9,7 @@ export const slice = createSlice({
   initialState: {
     addingEvent: false,
     events: [],
+    fetched: false,
     mutatingEvent: false
   },
   reducers: {
@@ -19,6 +19,9 @@ export const slice = createSlice({
     },
     setAddingEvent: (state, action) => {
       state.addingEvent = action.payload
+    },
+    setFetched: (state, action) => {
+      state.fetched = action.payload
     },
     setLocalEvents: (state, action) => {
       for (const event of action.payload) {
@@ -36,14 +39,13 @@ export const slice = createSlice({
 export const {
   addLocalEvent,
   setAddingEvent,
+  setFetched,
   setLocalEvents,
   setMutatingEvent
 } = slice.actions
 
 // Thunks
 export const fetchEvents = () => async dispatch => {
-  dispatch(setLoading(true))
-
   const response = await requests.fetchEvents()
 
   if (response.errors) {
@@ -55,7 +57,7 @@ export const fetchEvents = () => async dispatch => {
 
   batch(() => {
     dispatch(setLocalEvents(response.data.fetchEvents))
-    dispatch(setLoading(false))
+    dispatch(setFetched(true))
   })
 }
 
@@ -87,6 +89,7 @@ export const mutateEvent = event => async dispatch => {
 
 // Selectors
 export const isAddingEvent = state => state.events.addingEvent
+export const isFetched = state => state.events.fetched
 export const isMutatingEvent = state => state.events.mutatingEvent
 
 export default slice.reducer
