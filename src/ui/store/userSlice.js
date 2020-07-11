@@ -1,7 +1,6 @@
 import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
-import { setLoading } from './loadingSlice'
 import requests from '../Requests'
 
 export const slice = createSlice({
@@ -10,9 +9,13 @@ export const slice = createSlice({
     admin: false,
     email: '',
     id: 0,
-    signedIn: false
+    signedIn: false,
+    signingIn: false
   },
   reducers: {
+    setSigningIn: (state, action) => {
+      state.signingIn = action.payload
+    },
     setUser: (state, action) => {
       state.admin = action.payload.admin
       state.email = action.payload.email
@@ -23,11 +26,12 @@ export const slice = createSlice({
 })
 
 // Actions
-export const { setUser } = slice.actions
+export const { setSigningIn, setUser } = slice.actions
 
 // Thunks
 export const signIn = googleToken => async dispatch => {
-  dispatch(setLoading(true))
+  dispatch(setSigningIn(true))
+
   const response = await requests.signIn(googleToken)
 
   if (response.errors) {
@@ -37,12 +41,11 @@ export const signIn = googleToken => async dispatch => {
 
   batch(() => {
     dispatch(setUser(response.data.signIn))
-    dispatch(setLoading(false))
+    dispatch(setSigningIn(false))
   })
 }
 
 export const signOut = () => async dispatch => {
-  dispatch(setLoading(true))
   const response = await requests.signOut()
 
   if (response.errors) {
@@ -59,6 +62,7 @@ export const signOut = () => async dispatch => {
 // Selectors
 export const isAdmin = state => state.user.admin
 export const isSignedIn = state => state.user.signedIn
+export const isSigningIn = state => state.user.signingIn
 
 // Reducer
 export default slice.reducer

@@ -17,8 +17,6 @@ const Photos = lazy(() => import('../../pages/photos/Photos'))
 const SignIn = lazy(() => import('../../pages/sign-in/SignIn'))
 
 export default () => {
-  // We can't use the global loading state because child components
-  // will change it and cause an infinite render loop.
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
 
