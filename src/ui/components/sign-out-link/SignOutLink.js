@@ -1,6 +1,7 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { batch, useDispatch } from 'react-redux'
 
+import { setFetched } from '../../store/scheduleSlice'
 import { signOut } from '../../store/userSlice'
 import styles from './SignOutLink.module.scss'
 
@@ -10,7 +11,12 @@ export default () => {
   return (
     <span
       className={styles.signOutLink}
-      onClick={() => dispatch(signOut())}
+      onClick={() => {
+        batch(() => {
+          dispatch(setFetched(false)) // Make the schedule page render the loader.
+          dispatch(signOut())
+        })
+      }}
     >
       Sign Out
     </span>
