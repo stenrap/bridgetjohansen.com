@@ -13,6 +13,17 @@ class EventDao extends BaseDao {
 
     return { id: result.rows[0].id }
   }
+
+  async selectEvents () {
+    const result = await this.query({
+      sql: `SELECT *
+            FROM events
+            WHERE expiration > (now()::date)::timestamptz`,
+      params: []
+    })
+
+    return result.rows
+  }
 }
 
 module.exports = new EventDao()

@@ -1,6 +1,7 @@
 import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
 
+import { setLoading } from './loadingSlice'
 import { sortEvents } from '../../shared/libs/event'
 import requests from '../Requests'
 
@@ -19,6 +20,12 @@ export const slice = createSlice({
     setAddingEvent: (state, action) => {
       state.addingEvent = action.payload
     },
+    setLocalEvents: (state, action) => {
+      for (const event of action.payload) {
+        event.expiration = parseInt(event.expiration, 10)
+      }
+      state.events = sortEvents(action.payload)
+    },
     setMutatingEvent: (state, action) => {
       state.mutatingEvent = action.payload
     }
@@ -29,10 +36,29 @@ export const slice = createSlice({
 export const {
   addLocalEvent,
   setAddingEvent,
+  setLocalEvents,
   setMutatingEvent
 } = slice.actions
 
 // Thunks
+export const fetchEvents = () => async dispatch => {
+  dispatch(setLoading(true))
+
+  const response = await requests.fetchEvents()
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error fetching events...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    dispatch(setLocalEvents(response.data.fetchEvents))
+    dispatch(setLoading(false))
+  })
+}
+
 export const mutateEvent = event => async dispatch => {
   dispatch(setMutatingEvent(true))
 

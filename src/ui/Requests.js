@@ -129,6 +129,22 @@ class Requests {
     })
   }
 
+  fetchEvents () {
+    return this.fetch({
+      body: {
+        query: `query FetchEvents {
+          fetchEvents {
+            dateAndTime,
+            expiration,
+            id,
+            location,
+            name
+          }
+        }`
+      }
+    })
+  }
+
   fetchSchedule () {
     return this.fetch({
       body: {

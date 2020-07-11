@@ -19,6 +19,14 @@ const schema = gql`
     deletedParentIds: [ID!]!
   }
   
+  type Event {
+    dateAndTime: String!
+    expiration: String!
+    id: ID!
+    location: String!
+    name: String!
+  }
+  
   input EventInput {
     dateAndTime: String!
     expiration: String!
@@ -156,6 +164,7 @@ const schema = gql`
   }
   
   type Query {
+    fetchEvents: [Event!]!
     fetchSchedule: Schedule!
     fetchUser: User
   }

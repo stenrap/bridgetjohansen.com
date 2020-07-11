@@ -201,6 +201,9 @@ const resolvers = {
   },
 
   Query: {
+    fetchEvents (previousResolver, args, { user }) {
+      return eventDao.selectEvents()
+    },
     fetchSchedule (previousResolver, args, { user }) {
       if (!user) throw new AuthenticationError('Unauthorized')
       return scheduleDao.selectSchedule()
