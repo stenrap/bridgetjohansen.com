@@ -1,14 +1,21 @@
 import { batch } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit'
+
+import { sortEvents } from '../../shared/libs/event'
 import requests from '../Requests'
 
 export const slice = createSlice({
   name: 'events',
   initialState: {
     addingEvent: false,
+    events: [],
     mutatingEvent: false
   },
   reducers: {
+    addLocalEvent: (state, action) => {
+      state.events.push(action.payload.event)
+      state.events = sortEvents(state.events)
+    },
     setAddingEvent: (state, action) => {
       state.addingEvent = action.payload
     },
@@ -20,6 +27,7 @@ export const slice = createSlice({
 
 // Actions
 export const {
+  addLocalEvent,
   setAddingEvent,
   setMutatingEvent
 } = slice.actions
@@ -41,8 +49,9 @@ export const mutateEvent = event => async dispatch => {
 
   batch(() => {
     if (adding) {
+      event.expiration = parseInt(event.expiration, 10)
       event.id = response.data.createEvent.id
-      // TODO .... Add the event locally
+      dispatch(addLocalEvent({ event }))
     }
 
     dispatch(setAddingEvent(false))
