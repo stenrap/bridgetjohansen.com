@@ -35,7 +35,7 @@ export default props => {
   const [parentIdsError, setParentIdsError] = useState(false)
 
   if (mutatingStudent) {
-    return <LoadingModal title={`${student.id ? 'Editing' : 'Adding'} student...`} />
+    return <LoadingModal title={`${student.id ? 'Updating' : 'Adding'} student...`} />
   } else {
     return (
       <Modal

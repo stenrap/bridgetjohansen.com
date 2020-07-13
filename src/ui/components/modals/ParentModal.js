@@ -24,7 +24,7 @@ export default props => {
   const [phoneError, setPhoneError] = useState(false)
 
   if (mutatingParent) {
-    return <LoadingModal title={`${parent.id ? 'Editing' : 'Adding'} parent...`} />
+    return <LoadingModal title={`${parent.id ? 'Updating' : 'Adding'} parent...`} />
   } else {
     return (
       <Modal

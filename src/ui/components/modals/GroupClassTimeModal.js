@@ -46,7 +46,7 @@ export default props => {
   }
 
   if (mutatingGroupClassTime) {
-    return <LoadingModal title={`${mutatingGroupClassTime.id ? 'Editing' : 'Adding'} time...`} />
+    return <LoadingModal title={`${mutatingGroupClassTime.id ? 'Updating' : 'Adding'} time...`} />
   } else {
     const students = [...unsortedStudents].sort((a, b) => {
       const nameA = a.name.toLowerCase()

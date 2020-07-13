@@ -55,7 +55,7 @@ export default props => {
   }
 
   if (mutatingGroupClass) {
-    return <LoadingModal title={`${groupClass.id ? 'Editing' : 'Adding'} class...`} />
+    return <LoadingModal title={`${groupClass.id ? 'Updating' : 'Adding'} class...`} />
   }
 
   return (
