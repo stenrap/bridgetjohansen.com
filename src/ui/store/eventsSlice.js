@@ -88,6 +88,7 @@ export const mutateEvent = event => async dispatch => {
 }
 
 // Selectors
+export const getEvents = state => state.events.events
 export const isAddingEvent = state => state.events.addingEvent
 export const isFetched = state => state.events.fetched
 export const isMutatingEvent = state => state.events.mutatingEvent
