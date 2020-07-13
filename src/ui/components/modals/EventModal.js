@@ -17,6 +17,8 @@ export default props => {
     event = {}
   } = props
 
+  const startingExpiration = event.expiration ? new Date(event.expiration) : event.expiration
+
   // Events must expire in the future, so we default to expiring them tomorrow.
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
@@ -26,17 +28,17 @@ export default props => {
   tomorrow.setMilliseconds(0)
 
   const [choosingExpiration, setChoosingExpiration] = useState(false)
-  const [dateAndTime, setDateAndTime] = useState(props.dateAndTime || '')
+  const [dateAndTime, setDateAndTime] = useState(event.dateAndTime || '')
   const [dateAndTimeError, setdateAndTimeError] = useState(false)
-  const [expiration, setExpiration] = useState(props.expiration || tomorrow)
+  const [expiration, setExpiration] = useState(startingExpiration || tomorrow)
   const [expirationError, setExpirationError] = useState(false)
-  const [location, setLocation] = useState(props.location || '')
-  const [locationError, setLocationError] = useState(props.location || '')
-  const [name, setName] = useState(props.name || '')
+  const [location, setLocation] = useState(event.location || '')
+  const [locationError, setLocationError] = useState(false)
+  const [name, setName] = useState(event.name || '')
   const [nameError, setNameError] = useState(false)
 
   if (mutatingEvent) {
-    return <LoadingModal title={`${event.id ? 'Editing' : 'Adding'} event...`} />
+    return <LoadingModal title={`${event.id ? 'Updating' : 'Adding'} event...`} />
   } else {
     if (choosingExpiration) {
       return (

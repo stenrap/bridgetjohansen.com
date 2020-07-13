@@ -8,6 +8,7 @@ export const slice = createSlice({
   name: 'events',
   initialState: {
     addingEvent: false,
+    editingEventId: 0,
     events: [],
     fetched: false,
     mutatingEvent: false
@@ -19,6 +20,9 @@ export const slice = createSlice({
     },
     setAddingEvent: (state, action) => {
       state.addingEvent = action.payload
+    },
+    setEditingEventId: (state, action) => {
+      state.editingEventId = action.payload
     },
     setFetched: (state, action) => {
       state.fetched = action.payload
@@ -39,6 +43,7 @@ export const slice = createSlice({
 export const {
   addLocalEvent,
   setAddingEvent,
+  setEditingEventId,
   setFetched,
   setLocalEvents,
   setMutatingEvent
@@ -90,6 +95,7 @@ export const mutateEvent = event => async dispatch => {
 // Selectors
 export const getEvents = state => state.events.events
 export const isAddingEvent = state => state.events.addingEvent
+export const isEditingEventId = state => state.events.editingEventId
 export const isFetched = state => state.events.fetched
 export const isMutatingEvent = state => state.events.mutatingEvent
 
