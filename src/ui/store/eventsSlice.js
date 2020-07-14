@@ -8,6 +8,8 @@ export const slice = createSlice({
   name: 'events',
   initialState: {
     addingEvent: false,
+    confirmingDeleteEventId: 0,
+    deletingEventId: 0,
     editingEventId: 0,
     events: [],
     fetched: false,
@@ -20,6 +22,12 @@ export const slice = createSlice({
     },
     setAddingEvent: (state, action) => {
       state.addingEvent = action.payload
+    },
+    setConfirmingDeleteEventId: (state, action) => {
+      state.confirmingDeleteEventId = action.payload
+    },
+    setDeletingEventId: (state, action) => {
+      state.deletingEventId = action.payload
     },
     setEditingEventId: (state, action) => {
       state.editingEventId = action.payload
@@ -54,6 +62,8 @@ export const slice = createSlice({
 export const {
   addLocalEvent,
   setAddingEvent,
+  setConfirmingDeleteEventId,
+  setDeletingEventId,
   setEditingEventId,
   setFetched,
   setLocalEvents,
@@ -62,6 +72,10 @@ export const {
 } = slice.actions
 
 // Thunks
+export const deleteEvent = id => async dispatch => {
+  dispatch(setDeletingEventId(id))
+}
+
 export const fetchEvents = () => async dispatch => {
   const response = await requests.fetchEvents()
 
@@ -111,6 +125,8 @@ export const mutateEvent = event => async dispatch => {
 // Selectors
 export const getEvents = state => state.events.events
 export const isAddingEvent = state => state.events.addingEvent
+export const isConfirmingDeleteEventId = state => state.events.confirmingDeleteEventId
+export const isDeletingEventId = state => state.events.deletingEventId
 export const isEditingEventId = state => state.events.editingEventId
 export const isFetched = state => state.events.fetched
 export const isMutatingEvent = state => state.events.mutatingEvent

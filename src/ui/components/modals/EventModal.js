@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { batch, useDispatch, useSelector } from 'react-redux'
 
-import { isMutatingEvent, mutateEvent } from '../../store/eventsSlice'
+import { isMutatingEvent, mutateEvent, setConfirmingDeleteEventId, setEditingEventId } from '../../store/eventsSlice'
 import { isValidString } from '../../../shared/libs/validation'
+import Button from '../button/Button'
 import DatePicker from './DatePicker'
 import format from '../../../shared/libs/format'
 import LoadingModal from '../loading/LoadingModal'
@@ -81,6 +82,19 @@ export default props => {
         title={`${event.id ? 'Edit' : 'Add'} Event`}
         {...props}
       >
+        {event.id && (
+          <Button
+            className={styles.deleteButton}
+            onClick={() => {
+              batch(() => {
+                dispatch(setEditingEventId(0))
+                dispatch(setConfirmingDeleteEventId(event.id))
+              })
+            }}
+          >
+            Delete
+          </Button>
+        )}
         <div className='inputRow'>
           <label>Name</label>
           <input

@@ -5,6 +5,10 @@
   width: 375px;
 }
 
+.deleteButton {
+  @include m.deleteButton;
+}
+
 .expirationLink {
   @include m.link;
 }
