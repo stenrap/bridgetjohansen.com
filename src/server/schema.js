@@ -82,7 +82,7 @@ const schema = gql`
     year: Int!
   }
   
-  type SimpleResult {
+  type SuccessResult {
     success: Boolean
   }
   
@@ -159,17 +159,18 @@ const schema = gql`
     createGroupClassTime(groupClassTime: CreateGroupClassTimeInput!): IdResult!
     createParent(parent: CreateParentInput!): ParentResult!
     createStudent(student: StudentInput!): IdResult!
-    deleteGroupClass(id: ID!): SimpleResult!
-    deleteGroupClassTime(id: ID!): SimpleResult!
+    deleteEvent(id: ID!): SuccessResult!
+    deleteGroupClass(id: ID!): SuccessResult!
+    deleteGroupClassTime(id: ID!): SuccessResult!
     deleteStudent(id: ID!): DeleteStudentResult!
     signIn(googleToken: String!): User!
-    signOut: SimpleResult
-    updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult!
-    updateEvent(event: UpdateEventInput!): SimpleResult!
-    updateGroupClass(id: ID!, month: Int!, date: Int!, year: Int!): SimpleResult!
-    updateGroupClassTime(groupClassTime: UpdateGroupClassTimeInput!): SimpleResult!
+    signOut: SuccessResult
+    updateEffectiveDate(month: Int!, date: Int!, year: Int!): SuccessResult!
+    updateEvent(event: UpdateEventInput!): SuccessResult!
+    updateGroupClass(id: ID!, month: Int!, date: Int!, year: Int!): SuccessResult!
+    updateGroupClassTime(groupClassTime: UpdateGroupClassTimeInput!): SuccessResult!
     updateParent(parent: UpdateParentInput): ParentResult!
-    updateStudent(student: UpdateStudentInput): SimpleResult!
+    updateStudent(student: UpdateStudentInput): SuccessResult!
   }
   
   type Query {

@@ -97,18 +97,27 @@ const resolvers = {
 
       return studentDao.insertStudent(student)
     },
+    async deleteEvent (previousResolver, { id }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+      if (!isValidId(id)) throw new UserInputError('Invalid data')
+      await eventDao.deleteEvent(id)
+      return { success: true }
+    },
     async deleteGroupClass (previousResolver, { id }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+      if (!isValidId(id)) throw new UserInputError('Invalid data')
       await scheduleDao.deleteGroupClass(id)
       return { success: true }
     },
     async deleteGroupClassTime (previousResolver, { id }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+      if (!isValidId(id)) throw new UserInputError('Invalid data')
       await scheduleDao.deleteGroupClassTime(id)
       return { success: true }
     },
     async deleteStudent (previousResolver, { id }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+      if (!isValidId(id)) throw new UserInputError('Invalid data')
       return studentDao.deleteStudent(id)
     },
     async signIn (previousResolver, { googleToken }, { res }) {

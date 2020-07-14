@@ -90,6 +90,19 @@ class Requests {
     })
   }
 
+  deleteEvent (id) {
+    return this.fetch({
+      body: {
+        query: `mutation DeleteEvent ($id: ID!) {
+          deleteEvent(id: $id) {
+            success
+          }
+        }`,
+        variables: { id }
+      }
+    })
+  }
+
   deleteGroupClass (id) {
     return this.fetch({
       body: {

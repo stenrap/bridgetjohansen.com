@@ -20,6 +20,17 @@ export const slice = createSlice({
       state.events.push(action.payload.event)
       state.events = sortEvents(state.events)
     },
+    deleteLocalEvent: (state, action) => {
+      const events = []
+
+      for (const event of state.events) {
+        if (event.id !== action.payload.id) {
+          events.push(event)
+        }
+      }
+
+      state.events = sortEvents(events)
+    },
     setAddingEvent: (state, action) => {
       state.addingEvent = action.payload
     },
@@ -61,6 +72,7 @@ export const slice = createSlice({
 // Actions
 export const {
   addLocalEvent,
+  deleteLocalEvent,
   setAddingEvent,
   setConfirmingDeleteEventId,
   setDeletingEventId,
@@ -74,6 +86,21 @@ export const {
 // Thunks
 export const deleteEvent = id => async dispatch => {
   dispatch(setDeletingEventId(id))
+
+  const response = await requests.deleteEvent(id)
+
+  if (response.errors) {
+    // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
+    console.log('Error deleting event...')
+    console.log(response.errors)
+    return
+  }
+
+  batch(() => {
+    dispatch(deleteLocalEvent({ id }))
+    dispatch(setDeletingEventId(0))
+    dispatch(setConfirmingDeleteEventId(0))
+  })
 }
 
 export const fetchEvents = () => async dispatch => {

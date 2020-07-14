@@ -3,6 +3,14 @@
 const BaseDao = require('./BaseDao')
 
 class EventDao extends BaseDao {
+  deleteEvent (id) {
+    return this.query({
+      sql: `DELETE FROM events
+            WHERE id = $1`,
+      params: [id]
+    })
+  }
+
   async insertEvent (event) {
     const result = await this.query({
       sql: `INSERT INTO events (name, date_and_time, location, expiration)
