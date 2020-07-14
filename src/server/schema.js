@@ -107,6 +107,14 @@ const schema = gql`
     parentIds: [ID!]!
   }
   
+  input UpdateEventInput {
+    dateAndTime: String!
+    expiration: String!
+    id: ID!
+    location: String!
+    name: String!
+  }
+  
   input UpdateGroupClassTimeInput {
     id: ID!
     duration: Int!
@@ -157,6 +165,7 @@ const schema = gql`
     signIn(googleToken: String!): User!
     signOut: SimpleResult
     updateEffectiveDate(month: Int!, date: Int!, year: Int!): SimpleResult!
+    updateEvent(event: UpdateEventInput!): SimpleResult!
     updateGroupClass(id: ID!, month: Int!, date: Int!, year: Int!): SimpleResult!
     updateGroupClassTime(groupClassTime: UpdateGroupClassTimeInput!): SimpleResult!
     updateParent(parent: UpdateParentInput): ParentResult!

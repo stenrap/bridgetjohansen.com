@@ -127,6 +127,24 @@ const resolvers = {
       cookieLib.clearCookie(res, new Date(0), true, TOKEN_COOKIE)
       return { success: true }
     },
+    async updateEvent (previousResolver, { event }, { user }) {
+      if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
+
+      const expiration = new Date(parseInt(event.expiration, 10))
+
+      const validEvent = isValidString(event.dateAndTime) &&
+        isValidEventExpiration(expiration) &&
+        isValidId(event.id) &&
+        isValidString(event.location) &&
+        isValidString(event.name)
+
+      if (!validEvent) throw new UserInputError('Invalid data')
+
+      event.expiration = expiration
+
+      await eventDao.updateEvent(event)
+      return { success: true }
+    },
     async updateEffectiveDate (previousResolver, { month, date, year }, { user }) {
       if (!user || !user.admin) throw new AuthenticationError('Unauthorized')
 

@@ -247,6 +247,19 @@ class Requests {
     })
   }
 
+  updateEvent (event) {
+    return this.fetch({
+      body: {
+        query: `mutation UpdateEvent ($event: UpdateEventInput!) {
+          updateEvent(event: $event) {
+            success
+          }
+        }`,
+        variables: { event }
+      }
+    })
+  }
+
   updateGroupClass ({ id, month, date, year }) {
     return this.fetch({
       body: {

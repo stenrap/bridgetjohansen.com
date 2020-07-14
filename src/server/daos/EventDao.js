@@ -24,6 +24,15 @@ class EventDao extends BaseDao {
 
     return result.rows
   }
+
+  updateEvent (event) {
+    return this.query({
+      sql: `UPDATE events
+            SET name = $1, date_and_time = $2, location = $3, expiration = $4
+            WHERE id = $5`,
+      params: [event.name, event.dateAndTime, event.location, event.expiration, event.id]
+    })
+  }
 }
 
 module.exports = new EventDao()

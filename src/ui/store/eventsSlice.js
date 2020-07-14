@@ -35,6 +35,17 @@ export const slice = createSlice({
     },
     setMutatingEvent: (state, action) => {
       state.mutatingEvent = action.payload
+    },
+    updateLocalEvent: (state, action) => {
+      const events = [action.payload.event]
+
+      for (const event of state.events) {
+        if (event.id !== action.payload.event.id) {
+          events.push(event)
+        }
+      }
+
+      state.events = sortEvents(events)
     }
   }
 })
@@ -46,7 +57,8 @@ export const {
   setEditingEventId,
   setFetched,
   setLocalEvents,
-  setMutatingEvent
+  setMutatingEvent,
+  updateLocalEvent
 } = slice.actions
 
 // Thunks
@@ -71,7 +83,7 @@ export const mutateEvent = event => async dispatch => {
 
   const adding = !event.id
 
-  const response = await requests.createEvent(event)
+  const response = await (adding ? requests.createEvent(event) : requests.updateEvent(event))
 
   if (response.errors) {
     // TODO .... https://github.com/stenrap/bridgetjohansen.com/issues/20
@@ -80,14 +92,18 @@ export const mutateEvent = event => async dispatch => {
     return
   }
 
+  event.expiration = parseInt(event.expiration, 10)
+
   batch(() => {
     if (adding) {
-      event.expiration = parseInt(event.expiration, 10)
       event.id = response.data.createEvent.id
       dispatch(addLocalEvent({ event }))
+      dispatch(setAddingEvent(false))
+    } else {
+      dispatch(updateLocalEvent({ event }))
+      dispatch(setEditingEventId(0))
     }
 
-    dispatch(setAddingEvent(false))
     dispatch(setMutatingEvent(false))
   })
 }

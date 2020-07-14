@@ -72,7 +72,7 @@ export default props => {
 
           dispatch(mutateEvent({
             dateAndTime,
-            expiration: expiration.getTime().toString(),
+            expiration: expiration.getTime().toString(), // GraphQL integers are 32-bit, so we do this little dance.
             id: event.id,
             location,
             name
