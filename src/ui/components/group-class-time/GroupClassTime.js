@@ -26,13 +26,15 @@ export default groupClassTime => {
 
   const displayMinutes = groupClassTime.minutes < 10 ? `0${groupClassTime.minutes}` : groupClassTime.minutes
 
-  const students = groupClassTime.studentIds.map(id => {
+  const students = []
+
+  for (const id of groupClassTime.studentIds) {
     for (const student of allStudents) {
       if (id === student.id) {
-        return { id, name: student.name }
+        students.push({ id, name: student.name })
       }
     }
-  })
+  }
 
   students.sort((a, b) => {
     const nameA = a.name.toLowerCase()
