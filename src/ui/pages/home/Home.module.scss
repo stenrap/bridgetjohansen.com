@@ -1,7 +1,67 @@
+.quoteBox {
+  // Phone portrait
+  margin: 60px auto 0;
+  width: calc(100% - 80px);
+
+  // Phone landscape
+  @media screen and (orientation: landscape) and (max-height: 420px) {
+    margin: 40px 40px 0;
+    width: 50%;
+  }
+
+  // iPad portrait
+  @media screen and (orientation: portrait) and (min-width: 768px) {
+    margin: 120px auto 0;
+    width: calc(100% - 160px);
+  }
+
+  // iPad landscape
+  @media screen and (orientation: landscape) and (max-height: 768px) {
+    margin: 50px 70px 0;
+    width: 36%;
+  }
+}
+
+.quote {
+  color: #ccc;
+  font-size: 18px;
+  line-height: 24px;
+
+  // iPad portrait
+  @media screen and (orientation: portrait) and (min-width: 768px) {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  // iPad landscape
+  @media screen and (orientation: landscape) and (max-height: 768px) {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
+.bach {
+  color: #888;
+  margin-top: 20px;
+  padding-right: 20px;
+  text-align: right;
+
+  // iPad portrait
+  @media screen and (orientation: portrait) and (min-width: 768px) {
+    font-size: 20px;
+  }
+
+  // iPad landscape
+  @media screen and (orientation: landscape) and (max-height: 768px) {
+    font-size: 20px;
+  }
+}
+
 .background {
   bottom: 0;
   position: absolute;
   right: 0;
+  z-index: -1;
 
   img {
     display: block;
