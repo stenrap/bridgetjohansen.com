@@ -56,6 +56,12 @@
     margin: 90px 70px 0;
     width: 40%;
   }
+
+  // Desktop Huge
+  @media screen and (orientation: landscape) and (min-width: 1440px) and (min-height: 910px) {
+    margin: 150px 270px 0;
+    width: 40%;
+  }
 }
 
 .quote {
