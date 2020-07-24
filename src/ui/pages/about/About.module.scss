@@ -1,0 +1,44 @@
+.about {
+
+}
+
+.bridget {
+  @media screen and (orientation: landscape) {
+    padding: 20px;
+  }
+}
+
+.bridgetPhoto {
+  display: block;
+  height: auto;
+  width: 100%;
+
+  @media screen and (orientation: landscape) {
+    float: left;
+    margin-right: 20px;
+    width: 50%;
+  }
+}
+
+.explanation {
+  margin-top: 20px;
+  padding: 0 20px;
+
+  p {
+    margin: 0;
+  }
+
+  @media screen and (orientation: landscape) {
+    margin-top: unset;
+    padding: unset;
+  }
+}
+
+.usu {
+
+}
+
+.usuPhoto {
+  height: auto;
+  width: 100%;
+}
