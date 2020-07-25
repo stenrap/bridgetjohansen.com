@@ -11,6 +11,9 @@ export default () => {
   return (
     <div className={styles.about}>
       <div className={styles.bridget}>
+        <div className={styles.aboutHeader}>
+          Professional
+        </div>
         <img alt='Bridget Johansen' className={styles.bridgetPhoto} src='/images/bridget.jpg' />
         <div className={styles.explanation}>
           <p>
@@ -30,6 +33,9 @@ export default () => {
         </div>
       </div>
       <div className={styles.usu}>
+        <div className={styles.aboutHeader}>
+          Education
+        </div>
         <img alt='Utah State University' className={styles.usuPhoto} src='/images/usu.jpg' />
         <div className={styles.explanation}>
           <p>
