@@ -1,10 +1,16 @@
 .about {
+  margin: 0 auto;
+  max-width: 700px;
+  width: 100%;
 
+  @media screen and (orientation: landscape) {
+    max-width: 960px;
+  }
 }
 
 .bridget {
   @media screen and (orientation: landscape) {
-    padding: 20px;
+    padding: 30px;
   }
 }
 
@@ -15,8 +21,13 @@
 
   @media screen and (orientation: landscape) {
     float: left;
-    margin-right: 20px;
-    width: 50%;
+    margin-bottom: 16px;
+    margin-right: 30px;
+    max-width: 400px;
+
+    @media screen and (max-width: 896px) {
+      width: 200px;
+    }
   }
 }
 
@@ -25,7 +36,8 @@
   padding: 0 20px;
 
   p {
-    margin: 0;
+    line-height: 20px;
+    margin: 0 0 16px 0;
   }
 
   @media screen and (orientation: landscape) {
