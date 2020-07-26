@@ -25,11 +25,11 @@
     
     `\c <PIANO_DB_NAME>`
     
-1. Grant `PIANO_DB_USER` access to all tables with this command:
+1. Grant `PIANO_DB_USER` access to all tables:
     
     `GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO <PIANO_DB_USER>;`
     
-1. Quit as the postgres user:
+1. Quit as the `postgres` user:
     
     `\q`
     
@@ -41,7 +41,7 @@
 
 ### Migrations
 
-*Note: Due to [this db-migrate issue](https://github.com/db-migrate/node-db-migrate/issues/635), you must currently run migrations using node v8.9.4.*
+*Due to [this db-migrate issue](https://github.com/db-migrate/node-db-migrate/issues/635), you must currently run migrations using node v8.9.4.*
 
 1. Open a shell and change to the root directory of the project.
 1. Switch to Node.js v8.9.4:
@@ -51,6 +51,9 @@
 1. Run migrations:
     
     `npx db-migrate up`
+    
+
+Note that you'll need to address this before running migratins in AWS ([this](https://medium.com/@ymslavov/install-node-and-npm-via-nvm-on-aws-elastic-beanstalk-f1af763fd572) might work).
 
 ---
 
