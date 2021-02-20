@@ -1,6 +1,0 @@
-@use '../../styles/mixins' as m;
-
-.addGroupClassLink {
-  @include m.link;
-  margin-right: 20px;
-}
