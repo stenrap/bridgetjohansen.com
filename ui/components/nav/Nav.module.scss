@@ -1,0 +1,131 @@
+@use '../../styles/variables' as v;
+
+$menuBarHeight: 1px;
+$menuBarWidth: 32px;
+$menuIconSize: 48px;
+
+.menu {
+  height: $menuIconSize;
+  opacity: 1;
+  position: relative;
+  transition: 0.375s ease-in-out;
+  width: $menuIconSize;
+  z-index: 2;
+
+  span {
+    border-radius: $menuBarHeight;
+    background-color: #fff;
+    display: block;
+    height: $menuBarHeight;
+    left: v.$menuBarLeft;
+    position: absolute;
+    transform: rotate(0deg);
+    transform-origin: left center;
+    transition: 0.1875s ease-in-out;
+    width: $menuBarWidth;
+
+    &:nth-child(1) {
+      top: 14px;
+    }
+
+    &:nth-child(2) {
+      top: 24px;
+    }
+
+    &:nth-child(3) {
+      top: 34px;
+    }
+  }
+
+  &.open {
+    span {
+      &:nth-child(1) {
+        left: 10px;
+        transform: rotate(45deg);
+      }
+
+      &:nth-child(2) {
+        width: 0;
+        opacity: 0;
+      }
+
+      &:nth-child(3) {
+        left: 10px;
+        top: 36px;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+
+  @media screen and (min-width: v.$horizontalNav) {
+    display: none;
+  }
+}
+
+.nav {
+  background-color: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.3125);
+  height: calc(100vh - #{v.$headerHeight});
+  list-style-type: none;
+  margin-block-end: 0;
+  margin-block-start: 0;
+  padding-inline-start: 0;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: -100vh;
+  transition: 0.3125s ease-in-out;
+  width: 100%;
+  z-index: 1;
+
+  &.open {
+    top: v.$headerHeight;
+  }
+
+  li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3125);
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 20px;
+  }
+
+  a {
+    display: block;
+    font-size: 18px;
+    padding: 20px;
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+
+    &:active {
+      opacity: 0.5;
+    }
+  }
+
+  @media screen and (min-width: v.$horizontalNav) {
+    align-items: center;
+    border-top: none;
+    display: flex;
+    height: v.$headerHeight;
+    justify-content: flex-end;
+    top: 0;
+
+    li {
+      border-bottom: none;
+      display: inline-block;
+      min-width: 120px;
+    }
+
+    a {
+      display: inline-block;
+    }
+  }
+}
+
+.navSelected {
+  color: #fff;
+  font-weight: 600;
+}
+

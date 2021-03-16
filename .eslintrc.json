@@ -1,0 +1,34 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "root": true,
+  "rules": {
+    "eol-last": ["error", "always"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
+    "sort-imports": ["error", {
+      "allowSeparatedGroups": true,
+      "ignoreCase": true,
+      "ignoreDeclarationSort": false,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    }],
+    "space-before-function-paren": ["error", "always"],
+    "@typescript-eslint/explicit-function-return-type": ["error", {
+      "allowConciseArrowFunctionExpressionsStartingWithVoid": false,
+      "allowDirectConstAssertionInArrowFunctions": false,
+      "allowExpressions": false,
+      "allowHigherOrderFunctions": false,
+      "allowTypedFunctionExpressions": false
+    }]
+  }
+}

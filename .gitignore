@@ -1,8 +1,17 @@
-# Apple
-.DS_Store
+# Environment
+.env
+
+# ESLint
+.eslintcache
 
 # JetBrains
 .idea
+
+# Mac
+.DS_Store
+
+# Next.js
+.next
 
 # Node.js
 node_modules
