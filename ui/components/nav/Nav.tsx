@@ -7,10 +7,10 @@ const Nav = (): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   const menuButtonClasses = `${styles.menu}${open ? ` ${styles.open}` : ''}`
-  const navClasses = `${styles.nav}${open ? ` ${styles.open}` : ''}`
+  const navListClasses = `${styles.navList}${open ? ` ${styles.open}` : ''}`
 
   return (
-    <>
+    <div className={styles.nav}>
       <div
         className={menuButtonClasses}
         onClick={(): void => setOpen(!open)}
@@ -19,14 +19,14 @@ const Nav = (): JSX.Element => {
         <span />
         <span />
       </div>
-      <ul className={navClasses}>
+      <ul className={navListClasses}>
         <li>
-          <Link href='/'>
-            <a>Home</a>
+          <Link href='/about'>
+            <a>About</a>
           </Link>
         </li>
       </ul>
-    </>
+    </div>
   )
 }
 

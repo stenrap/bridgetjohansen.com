@@ -64,6 +64,11 @@ $menuIconSize: 48px;
 
 .nav {
   background-color: #000;
+  height:  v.$headerHeight;
+}
+
+.navList {
+  background-color: #000;
   border-top: 1px solid rgba(255, 255, 255, 0.3125);
   height: calc(100vh - #{v.$headerHeight});
   list-style-type: none;
