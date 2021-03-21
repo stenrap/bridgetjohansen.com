@@ -8,12 +8,12 @@ import logger from '../logger'
 pgCamelCase.inject(pg)
 
 const pool = new Pool({
-  database: process.env.PIANO_DB_NAME,
-  host: process.env.PIANO_DB_HOST,
+  database: process.env.BRIDGET_DB_NAME,
+  host: process.env.BRIDGET_DB_HOST,
   idleTimeoutMillis: 60000,
-  password: process.env.PIANO_DB_PASSWORD,
+  password: process.env.BRIDGET_DB_PASSWORD,
   port: 5432,
-  user: process.env.PIANO_DB_USER
+  user: process.env.BRIDGET_DB_USER
 })
 
 pool.on('error', (err: Error): void => {
@@ -23,6 +23,15 @@ pool.on('error', (err: Error): void => {
 
 export interface PoolTxnOptions {
   commit: boolean
+}
+
+export const endPool = async (): Promise<void> => {
+  try {
+    return await pool.end()
+  } catch (err) {
+    logger.error('Failed to end connection pool')
+    logger.error(err.message)
+  }
 }
 
 export const endTxn = async (client: PoolClient, { commit }: PoolTxnOptions): Promise<void> => {
@@ -38,8 +47,8 @@ export const endTxn = async (client: PoolClient, { commit }: PoolTxnOptions): Pr
   }
 }
 
-export const query = (sql: string, params: unknown[]): Promise<QueryResult> => {
-  return pool.query(sql, params)
+export const query = <T> (sql: string, params?: unknown[]): Promise<QueryResult<T>> => {
+  return pool.query<T>(sql, params)
 }
 
 export const startTxn = async (): Promise<PoolClient> => {

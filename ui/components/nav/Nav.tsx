@@ -1,5 +1,5 @@
+import { useCallback, useState } from 'react'
 import Link from 'next/link'
-import { useState } from 'react'
 
 import styles from './Nav.module.scss'
 
@@ -9,11 +9,25 @@ const Nav = (): JSX.Element => {
   const menuButtonClasses = `${styles.menu}${open ? ` ${styles.open}` : ''}`
   const navListClasses = `${styles.navList}${open ? ` ${styles.open}` : ''}`
 
+  const onButtonClick = useCallback((): void => {
+    setOpen(!open)
+  }, [open])
+
+  const onLinkClick = useCallback((): void => {
+    if (open) setOpen(false)
+  }, [open])
+
+  /*
+    TODO:
+      1. Distinguish the link of the current page from the other links.
+      2. Move the menu button and styles into their own files (and make it a <button> instead of a <div>).
+   */
+
   return (
     <div className={styles.nav}>
       <div
         className={menuButtonClasses}
-        onClick={(): void => setOpen(!open)}
+        onClick={onButtonClick}
       >
         <span />
         <span />
@@ -22,7 +36,10 @@ const Nav = (): JSX.Element => {
       <ul className={navListClasses}>
         <li>
           <Link href='/about'>
-            <a>About</a>
+            <a onClick={onLinkClick}>About</a>
+          </Link>
+          <Link href='/sign-in'>
+            <a onClick={onLinkClick}>Sign In</a>
           </Link>
         </li>
       </ul>

@@ -23,10 +23,10 @@ apollo.applyMiddleware({
   bodyParserConfig: true,
   cors: {
     methods: ['POST'],
-    origin: process.env.PIANO_CORS_ORIGIN
+    origin: process.env.BRIDGET_CORS_ORIGIN
   }
 })
 
-const port = process.env.PIANO_SERVER_PORT
+const port = process.env.BRIDGET_SERVER_PORT
 server.listen(port)
 logger.info(`api.bridgetjohansen.com listening on ${port}`)

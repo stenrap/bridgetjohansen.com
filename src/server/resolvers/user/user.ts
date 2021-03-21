@@ -6,7 +6,7 @@ import { validateGoogleId, validatePayload } from '../../lib/google/google'
 import { Context } from '../../context/context'
 import User from '../../../shared/models/User'
 
-const client = new OAuth2Client(process.env.PIANO_GOOGLE_CLIENT_ID)
+const client = new OAuth2Client(process.env.BRIDGET_GOOGLE_CLIENT_ID)
 
 export const fetchUser = (
   _: ResolverFn,
@@ -21,7 +21,7 @@ export const signIn = async (
   { googleToken }: { googleToken: string }
 ): Promise<User> => {
   const ticket: LoginTicket = await client.verifyIdToken({
-    audience: process.env.PIANO_GOOGLE_CLIENT_ID,
+    audience: process.env.BRIDGET_GOOGLE_CLIENT_ID,
     idToken: googleToken
   })
 

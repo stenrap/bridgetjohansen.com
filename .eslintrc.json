@@ -13,6 +13,7 @@
   "root": true,
   "rules": {
     "eol-last": ["error", "always"],
+    "no-duplicate-imports": "error",
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
     "sort-imports": ["error", {

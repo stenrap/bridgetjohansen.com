@@ -40,7 +40,7 @@
 ### Site Navigation
 
 ```
-Home | About | Teaching Resoures | Studio | Blog | Search | Sign In
+Home | About | Teaching Resoures | Studio | Blog | Sign In | Search
                                    |-Schedule
                                    |-Calendar
                                    |-Policies

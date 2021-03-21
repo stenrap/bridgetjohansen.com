@@ -21,7 +21,7 @@ $menuIconSize: 48px;
     position: absolute;
     transform: rotate(0deg);
     transform-origin: left center;
-    transition: 0.1875s ease-in-out;
+    transition: 0.1s ease-in-out;
     width: $menuBarWidth;
 
     &:nth-child(1) {
@@ -79,7 +79,6 @@ $menuIconSize: 48px;
   right: 0;
   text-align: right;
   top: -100vh;
-  transition: 0.3125s ease-in-out;
   width: 100%;
   z-index: 1;
 
