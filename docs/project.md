@@ -20,8 +20,12 @@
   - [Helpful article][2]
   - ...
 - Studio
-  - Schedule (requires account with "studio" access)
-  - ...
+  - User account information will not be linked to the studio in any way. Bridget will enter all information about students and their contact(s).
+  - As indicated by the previous bullet, there's no such thing as "parents". Instead there are "student contacts"—the people who can be contacted about a student
+     (and in the case of an adult student, they will be their own student contact)
+  - Bridget can create an account for a new parent (or adult student) with studio access, and they receive an email that prompts them to set a password.
+    - But this doesn't create a record in the `students` or `student_contacts` tables (see the first bullet). It only creates a record in the `users` table.
+  - If an existing user needs studio access, Bridget can search for them by email and grant it.
 - Teaching Resources
   - Each resource is a separate page, and can be purchased individually:
     - How to start a studio
