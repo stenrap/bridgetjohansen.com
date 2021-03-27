@@ -1,0 +1,50 @@
+.inputBox {
+  position: relative;
+}
+
+@mixin labelPlaceholder {
+  top: -11px;
+  transform: scale(0.875);
+  z-index: 1;
+}
+
+.input {
+  background-color: transparent;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  height: 48px;
+  outline: none;
+  position: relative;
+  padding: 4px 8px;
+  width: 280px;
+  z-index: 1;
+
+  &:focus {
+    border: 2px solid #2467de;
+    padding: 4px 7px;
+
+    + .placeholder {
+      @include labelPlaceholder;
+    }
+  }
+
+  &:not(:placeholder-shown) {
+    + .placeholder {
+      @include labelPlaceholder;
+    }
+  }
+}
+
+.placeholder {
+  background-color: #fff;
+  color: #5f6368;
+  left: 10px;
+  padding: 0 4px;
+  position: absolute;
+  transition: 0.1s;
+  top: 13px;
+  z-index: 0;
+}

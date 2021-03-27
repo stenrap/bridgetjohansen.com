@@ -53,7 +53,7 @@
   "scripts": {
     "build": "next build",
     "db:migrate:dev": "npx ts-node ./data/migrations/migrate.ts",
-    "dev": "next dev",
+    "dev": "ts-node dev-server.ts",
     "lint": "eslint --cache --max-warnings 0 './src/**/*.ts'",
     "start": "next start"
   },

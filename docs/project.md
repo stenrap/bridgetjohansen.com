@@ -1,3 +1,43 @@
+### Development Environment Setup
+
+1. Create a self-signed certificate for local.bridgetjohansen.com that expires in 10 years (do this from the /certs directory):
+    
+    ```
+    openssl req -x509 -days 3650 -out local.bridgetjohansen.com.crt -keyout local.bridgetjohansen.com.key \
+      -newkey rsa:2048 -nodes -sha256 -subj '/CN=local.bridgetjohansen.com' -extensions EXT \
+      -config <(printf "[dn]\nCN=local.bridgetjohansen.com\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:local.bridgetjohansen.com\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+    ```
+    
+1. Double-click on the `local.bridgetjohansen.com.crt` file to import it into the macOS Keychain Access app.
+1. In the Keychain Access app, double-click the `local.bridgetjohanse.com` certificate to open it.
+1. Expand the certificate's `Trust` setting.
+1. Set the `When using this certificate` option to `Always Trust`.
+1. SSH into your gateway device (password is in 1Password):
+    
+    ```
+    ssh admin@192.168.1.1
+    ```
+    
+1. Open the file that lets you map domain names to IP addresses:
+    
+    ```
+    sudo vi /etc/dnsmasq.d/dnsmasq.static.conf
+    ```
+    
+1. Add the desired mapping and save the file:
+    
+    ```
+    address=/local-api.wordit.app/192.168.1.9
+    ```
+    
+1. Reload the config:
+    
+    ```
+    sudo /etc/init.d/dnsmasq force-reload
+    ```
+    
+You should now be able to access https://local.bridgetjohansen.com:3000 in your browsers (you might have to accept the "risks" in Firefox and type `thisisunsafe` in Chrome).
+
 ### Features
 
 - Blog
@@ -49,7 +89,13 @@ Home | About | Teaching Resoures | Studio | Blog | Sign In | Search
                                    |-Calendar
                                    |-Policies
                                    |-Events
+                                   |-Photos (v3.?)
 ```                                 
+
+- Studio *might* be its own page, that's like an "About" page just for piano
+- If it turns out that Studio *is* its own page, then when you're on the Studio page, there's this sub navigation (see GitHub for inspiration):
+    
+    Schedule | Calendar | Policies | Events | Photos (v3.?)
 
 ### Technical
 - SSL
