@@ -42,7 +42,13 @@
 
 ### Migrations
 
-1. TODO: Implement them similar to how you did them in Pyvott.
+1. Open a shell and change to the root directory of the project.
+1. Execute the following to run migrations:
+    
+    ```
+    npm run db:migrate:dev
+    ```
+    
 
 ---
 

@@ -1,8 +1,10 @@
 .inputBox {
+  margin-bottom: 16px;
   position: relative;
 }
 
 @mixin labelPlaceholder {
+  left: 4px;
   top: -11px;
   transform: scale(0.875);
   z-index: 1;
@@ -15,7 +17,7 @@
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
-  height: 48px;
+  height: 44px;
   outline: none;
   position: relative;
   padding: 4px 8px;
@@ -27,6 +29,7 @@
     padding: 4px 7px;
 
     + .placeholder {
+      color: #2467de;
       @include labelPlaceholder;
     }
   }
@@ -40,11 +43,11 @@
 
 .placeholder {
   background-color: #fff;
-  color: #5f6368;
+  color: #888;
   left: 10px;
   padding: 0 4px;
   position: absolute;
   transition: 0.1s;
-  top: 13px;
+  top: 11px;
   z-index: 0;
 }
