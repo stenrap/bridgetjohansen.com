@@ -1,10 +1,10 @@
 import { LoginTicket, OAuth2Client, TokenPayload } from 'google-auth-library'
 import { ResolverFn } from 'apollo-server-express'
 
-import { validateEmail, validateUser } from '../../lib/user/user'
-import { validateGoogleId, validatePayload } from '../../lib/google/google'
+import { validateEmail, validateUser } from '../../../lib/user/user'
+import { validateGoogleId, validatePayload } from '../../../lib/google/google'
 import { Context } from '../../context/context'
-import User from '../../../shared/models/User'
+import User from '../../../data/models/user/User'
 
 const client = new OAuth2Client(process.env.BRIDGET_GOOGLE_CLIENT_ID)
 

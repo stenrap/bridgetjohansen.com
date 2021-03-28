@@ -1,8 +1,11 @@
 {
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
+    "@types/cookie": "^0.4.0",
     "@types/react": "^17.0.3",
     "apollo-server-express": "^2.21.0",
+    "apollo-server-micro": "^2.22.1",
+    "cookie": "^0.4.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "google-auth-library": "^7.0.2",
@@ -54,7 +57,7 @@
     "build": "next build",
     "db:migrate:dev": "npx ts-node ./data/migrations/migrate.ts",
     "dev": "ts-node dev-server.ts",
-    "lint": "eslint --cache --max-warnings 0 './src/**/*.ts'",
+    "lint": "eslint --cache --max-warnings 0 './**/*.ts'",
     "start": "next start"
   },
   "version": "3.0.0"

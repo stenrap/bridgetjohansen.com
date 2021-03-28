@@ -1,8 +1,8 @@
 import { PoolClient, QueryResult } from 'pg'
 
-import logger from '../../logger'
-import { query } from '../db'
-import User from '../../../shared/models/User'
+import { query } from '../../db'
+import logger from '../../../logger'
+import User from '../../models/user/User'
 
 export const selectUser = async (token: string, client?: PoolClient): Promise<User | undefined> => {
   try {

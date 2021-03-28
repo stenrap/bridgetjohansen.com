@@ -1,6 +1,6 @@
 import { ValidationError } from 'apollo-server-express'
 
-import User from '../../../shared/models/User'
+import User from '../../data/models/user/User'
 
 export const validateEmail = (email?: string): string => {
   if (!email) {

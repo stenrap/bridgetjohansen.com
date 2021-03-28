@@ -4,7 +4,7 @@ import { parse } from 'url'
 import fs from 'fs'
 import next from 'next'
 
-import logger from './src/server/logger'
+import logger from './logger'
 
 const app = next({ dev: true })
 const handle = app.getRequestHandler()

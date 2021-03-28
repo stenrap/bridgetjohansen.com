@@ -1,8 +1,8 @@
 import { PoolClient, QueryResult } from 'pg'
 import fs from 'fs/promises'
 
-import { endPool, endTxn, query, startTxn } from '../../src/server/data/db'
-import logger from '../../src/server/logger'
+import { endPool, endTxn, query, startTxn } from '../db'
+import logger from '../../logger'
 import Migration from '../models/migration/Migration'
 import MigrationFile from '../models/migration/MigrationFile'
 
