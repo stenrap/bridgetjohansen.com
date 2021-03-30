@@ -1,4 +1,4 @@
-import { ValidationError } from 'apollo-server-express'
+import { ValidationError } from 'apollo-server-micro'
 
 import User from '../../data/models/user/User'
 

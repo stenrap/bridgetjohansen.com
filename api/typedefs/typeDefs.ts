@@ -1,18 +1,12 @@
-import { gql } from 'apollo-server-express'
+import { gql } from 'apollo-server-micro'
 
 const typeDefs = gql`
   type Mutation {
-    signIn(googleToken: String!): User!
+    
   }
   
   type Query {
-    fetchUser: User
-  }
-  
-  type User {
-    admin: Boolean!
-    email: String!
-    id: ID!
+    isEmailAvailable(email: String!): Boolean!
   }
 `
 

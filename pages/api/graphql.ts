@@ -4,14 +4,15 @@ import { context, Context } from '../../api/context/context'
 
 /*
   TODO and WYLO:
-    1. Create a real resolver in `/api/resolvers` for checking whether an email is already associated with an account.
-    2. Replace the phony resolvers and typeDefs below with the real ones defined in `/api/resolvers` and `/api/typeDefs`.
+    1. Break up the typeDefs like you did in that other project
+    2. Replace the phony resolvers and typeDefs below with the real ones defined in `/api/resolvers` and `/api/typeDefs`
+    3. Finish implementing the `isEmailAvailable()` resolver
  */
 
 const resolvers = {
   Query: {
-    users (parent, __: undefined, context: Context): { name: string }[] {
-      console.log(parent)
+    users (_: undefined, __: undefined, context: Context): { name: string }[] {
+      console.log(_)
       console.log(__)
       console.log(context)
       return [{ name: 'Rob' }]

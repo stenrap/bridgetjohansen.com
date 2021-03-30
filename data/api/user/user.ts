@@ -1,23 +1,33 @@
 import { PoolClient, QueryResult } from 'pg'
 
 import { query } from '../../db'
-import logger from '../../../logger'
-import User from '../../models/user/User'
+import User, { UserIdentifier } from '../../models/user/User'
 
-export const selectUser = async (token: string, client?: PoolClient): Promise<User | undefined> => {
-  try {
-    const sql = `
-      SELECT *
-      FROM users
-      WHERE token = $1
-    `
-    const params: unknown[] = [token]
-    const result: QueryResult = client
-      ? await client.query(sql, params)
-      : await query(sql, params)
-    return result.rows[0]
-  } catch (err) {
-    logger.error(`Error selecting user from database with token ${token}`)
-    logger.error(err.message)
+export const selectUser = async (identifier: UserIdentifier, client?: PoolClient): Promise<User | undefined> => {
+  let sql = `
+    SELECT *
+    FROM users
+    WHERE
+  `
+
+  const params: unknown[] = []
+
+  if (identifier.email) {
+    params.push(identifier.email)
+    sql += ' email = $1'
+  } else if (identifier.id) {
+    params.push(identifier.id)
+    sql += ' id = $1'
+  } else if (identifier.token) {
+    params.push(identifier.token)
+    sql += ' token = $1'
   }
+
+  if (params.length === 0) throw new Error('Cannot select user without identifier')
+
+  const result: QueryResult = client
+    ? await client.query(sql, params)
+    : await query(sql, params)
+
+  return result.rows[0]
 }

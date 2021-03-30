@@ -1,11 +1,11 @@
-import { fetchUser } from './user/user'
+import { isEmailAvailable } from './create-account/createAccount'
 
 const resolvers = {
   Mutation: {
 
   },
   Query: {
-    fetchUser
+    isEmailAvailable
   }
 }
 
