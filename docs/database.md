@@ -145,14 +145,17 @@
 #### `users`
 
 ```
- id | admin | email | name | password | studio | token
-----+-------+-------+------+----------+--------+-------
+ id | first_name | last_name | email | password | token | created | last_login | studio | admin
+----+------------+-----------+-------+----------+-------+---------+------------+--------+-------
 ```
 
 `id` - integer - populated automatically by an identity  
-`admin` - boolean - whether the user is an admin  
+`first_name` - text - first name of the user  
+`last_name` - text - last name of the user  
 `email` - text - email of the user  
-`name` - text - name of the user  
 `password` - text - password of the user  
+`token` - text - token used for authentication status  
+`created` - timestamptz - when the user created this account  
+`last_login` - timestamptz - when the user last logged in  
 `studio` - boolean - whether the user has studio access  
-`token` - text - token used for authentication status
+`admin` - boolean - whether the user is an admin

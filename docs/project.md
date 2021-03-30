@@ -85,6 +85,7 @@ You should now be able to access https://local.bridgetjohansen.com:3000 in your 
 
 ```
 Home | About | Teaching Resoures | Studio | Blog | Sign In | Search
+                                   |-About
                                    |-Schedule
                                    |-Calendar
                                    |-Policies
@@ -92,10 +93,13 @@ Home | About | Teaching Resoures | Studio | Blog | Sign In | Search
                                    |-Photos (v3.?)
 ```                                 
 
-- Studio *might* be its own page, that's like an "About" page just for piano
-- If it turns out that Studio *is* its own page, then when you're on the Studio page, there's this sub navigation (see GitHub for inspiration):
+- Studio will be its own "About" page just for piano
+- When you land on the Studio page, you'll be on the `About` tab of this sub navigation (see GitHub for inspiration):
     
-    Schedule | Calendar | Policies | Events | Photos (v3.?)
+    ```
+    About | Schedule | Calendar | Policies | Events | Photos (v3.?)
+    ```
+    
 
 ### Technical
 - SSL

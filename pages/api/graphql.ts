@@ -4,7 +4,6 @@ import { context, Context } from '../../api/context/context'
 
 /*
   TODO and WYLO:
-    0. Add a migration that creates the `users` table.
     1. Create a real resolver in `/api/resolvers` for checking whether an email is already associated with an account.
     2. Replace the phony resolvers and typeDefs below with the real ones defined in `/api/resolvers` and `/api/typeDefs`.
  */
