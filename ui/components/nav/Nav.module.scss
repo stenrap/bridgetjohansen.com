@@ -21,7 +21,7 @@ $menuIconSize: 48px;
     position: absolute;
     transform: rotate(0deg);
     transform-origin: left center;
-    transition: 0.1s ease-in-out;
+    transition: 0.1s ease-out;
     width: $menuBarWidth;
 
     &:nth-child(1) {
@@ -65,25 +65,27 @@ $menuIconSize: 48px;
 .nav {
   background-color: #000;
   height:  v.$headerHeight;
+
+  &.open {
+    height: auto;
+  }
 }
 
 .navList {
   background-color: #000;
   border-top: 1px solid rgba(255, 255, 255, 0.3125);
-  height: calc(100vh - #{v.$headerHeight});
+  display: none;
   list-style-type: none;
   margin-block-end: 0;
   margin-block-start: 0;
   padding-inline-start: 0;
-  position: absolute;
   right: 0;
   text-align: right;
-  top: -100vh;
   width: 100%;
   z-index: 1;
 
   &.open {
-    top: v.$headerHeight;
+    display: block;
   }
 
   li {

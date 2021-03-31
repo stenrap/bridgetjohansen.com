@@ -7,6 +7,7 @@ const Nav = (): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   const menuButtonClasses = `${styles.menu}${open ? ` ${styles.open}` : ''}`
+  const navClasses = `${styles.nav}${open ? ` ${styles.open}` : ''}`
   const navListClasses = `${styles.navList}${open ? ` ${styles.open}` : ''}`
 
   const onButtonClick = useCallback((): void => {
@@ -24,7 +25,7 @@ const Nav = (): JSX.Element => {
    */
 
   return (
-    <div className={styles.nav}>
+    <div className={navClasses}>
       <div
         className={menuButtonClasses}
         onClick={onButtonClick}
