@@ -3,7 +3,10 @@ import { PoolClient, QueryResult } from 'pg'
 import { query } from '../../db'
 import User, { UserIdentifier } from '../../models/user/User'
 
-export const selectUser = async (identifier: UserIdentifier, client?: PoolClient): Promise<User | undefined> => {
+export const selectUser = async (
+  identifier: UserIdentifier,
+  client?: PoolClient
+): Promise<User | undefined> => {
   let sql = `
     SELECT *
     FROM users

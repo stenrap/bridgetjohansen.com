@@ -1,33 +1,8 @@
-import { ApolloServer, gql } from 'apollo-server-micro'
+import { ApolloServer } from 'apollo-server-micro'
 
-import { context, Context } from '../../api/context/context'
-
-/*
-  TODO and WYLO:
-    1. Break up the typeDefs like you did in that other project
-    2. Replace the phony resolvers and typeDefs below with the real ones defined in `/api/resolvers` and `/api/typeDefs`
-    3. Finish implementing the `isEmailAvailable()` resolver
- */
-
-const resolvers = {
-  Query: {
-    users (_: undefined, __: undefined, context: Context): { name: string }[] {
-      console.log(_)
-      console.log(__)
-      console.log(context)
-      return [{ name: 'Rob' }]
-    },
-  },
-}
-
-const typeDefs = gql`
-  type Query {
-    users: [User!]!
-  }
-  type User {
-    name: String
-  }
-`
+import { context } from '../../api/context/context'
+import resolvers from '../../api/resolvers/resolvers'
+import typeDefs from '../../api/typedefs/typeDefs'
 
 const apolloServer = new ApolloServer({
   context,

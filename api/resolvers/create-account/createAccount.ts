@@ -1,14 +1,16 @@
+import { selectUser } from '../../../data/api/user/user'
+import { validateEmail } from '../../../shared/validations/user/user'
+
 /**
  * Checks whether an email is available (i.e. not associated with an existing user)
  *
- * @param _ Root GraphQL value
+ * @param _ Root value passed to GraphQL executor
  * @param email Email to check
  */
 export const isEmailAvailable = async (
   _: undefined,
   { email }: { email: string }
 ): Promise<boolean> => {
-  console.log(email)
-  // TODO: Validate the email before hitting the db (keep it basic?)
-  return true
+  validateEmail(email)
+  return (await selectUser({ email })) === undefined
 }

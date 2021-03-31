@@ -1,4 +1,4 @@
-import { validateUser } from '../../../lib/user/user'
+import { validateUser } from '../../../shared/validations/user/user'
 import { Context } from '../../context/context'
 import User from '../../../data/models/user/User'
 
