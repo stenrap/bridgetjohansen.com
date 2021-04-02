@@ -19,14 +19,16 @@ const query = async <T> (query: GraphQLQuery): Promise<T | GraphQLError> => {
   }
 
   try {
-    const response: Response = await window.fetch(`${process.env.BRIDGET_API_HOST}/api/graphql`, options)
+    const response: Response = await window.fetch(`${process.env.NEXT_PUBLIC_BRIDGET_API_HOST}/api/graphql`, options)
     return await response.json()
   } catch (err) {
     return { errors: [{ message: 'Please check your network connection and try again.' }] }
   }
 }
 
-// TODO .... Figure out the best way to organize all this stuff
+/* ============ */
+/*   Requests   */
+/* ============ */
 
 export interface IsEmailAvailableResponse extends GraphQLError {
   data?: {
