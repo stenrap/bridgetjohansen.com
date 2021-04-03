@@ -56,7 +56,7 @@ export const isEmailAvailable = (email: string): AppThunk => async (dispatch: Ap
 
   console.log('response.data?.isEmailAvailable is:', response.data?.isEmailAvailable)
 
-  dispatch(setCheckingIsEmailAvailable(true))
+  dispatch(setCheckingIsEmailAvailable(false))
 }
 
 // Selectors
