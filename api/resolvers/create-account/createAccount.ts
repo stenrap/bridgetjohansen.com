@@ -12,5 +12,8 @@ export const isEmailAvailable = async (
   { email }: { email: string }
 ): Promise<boolean> => {
   validateEmail(email)
+
+  // TODO: If the user already exists, put them into the password reset flow (this is what Facebook does).
+
   return (await selectUser({ email })) === undefined
 }

@@ -61,9 +61,11 @@ export const checkEmail = (email: string): AppThunk => async (dispatch: AppThunk
   const response: requests.IsEmailAvailableResponse = await requests.isEmailAvailable(email)
 
   if (response.errors) {
+    const error: string = response.errors[0].message
     console.log('Error checking whether email is available:', response.errors[0].message)
     return batch((): void => {
       dispatch(setEmailAvailable(false))
+      dispatch(setEmailError(error))
       dispatch(setCheckingEmail(false))
     })
   }

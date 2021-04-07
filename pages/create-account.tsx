@@ -63,9 +63,9 @@ const CreateAccount = (): JSX.Element => {
 
   /*
     TODO and WYLO ....
-      1. Update the Input component to show a tooltip on error, then pass `emailError` into the email input
-      2. Put the below form into its own component (maybe CreateAccountStart)
-      3. Implement a CreateAccountVerify component that accepts the 6-digit code for email verification
+      1. Update the Input component to show a tooltip on error
+      2. Don't show the invalid email error on blur. Only show it when the user clicks 'Next'.
+      3. Don't check for email availability in this form. If an existing user tries to sign up again, just move them into the reset password flow.
       4. Wire everything up and create the user!
    */
 
@@ -79,7 +79,7 @@ const CreateAccount = (): JSX.Element => {
         <h1 className='pageHeader'>Create your account</h1>
         <Input onChange={(event): void => setFirstName(event.target.value)} placeholder='First name' type='text' value={firstName} />
         <Input onChange={(event): void => setLastName(event.target.value)} placeholder='Last name' type='text' value={lastName} />
-        <Input onBlur={onBlurEmail} onChange={onChangeEmail} placeholder='Email' type='email' value={email} />
+        <Input error={emailError} onBlur={onBlurEmail} onChange={onChangeEmail} placeholder='Email' type='email' value={email} />
         <Input onChange={(event): void => setPassword(event.target.value)} placeholder='Password' type='password' value={password} />
       </div>
     </>

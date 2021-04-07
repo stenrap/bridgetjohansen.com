@@ -1,6 +1,7 @@
 import { ChangeEvent, FocusEvent } from 'react'
 
 export default interface InputProps {
+  error?: string
   onBlur?: (event: FocusEvent<HTMLInputElement>) => void
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   placeholder: string

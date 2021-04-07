@@ -1,6 +1,7 @@
 .inputBox {
   margin-bottom: 16px;
   position: relative;
+  width: 280px;
 }
 
 @mixin labelPlaceholder {
@@ -50,4 +51,10 @@
   transition: 0.1s;
   top: 11px;
   z-index: 0;
+}
+
+.inputErrorIcon {
+  bottom: 5px;
+  position: absolute;
+  right: 10px;
 }
