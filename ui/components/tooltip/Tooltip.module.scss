@@ -1,0 +1,53 @@
+.tooltip {
+  background-color: #ffffff;
+  border: solid 1px #cccccc;
+  border-radius: 4px;
+  box-shadow: 0 0 2px #aaaaaa;
+  padding: 4px 7px 5px 8px;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltipText {
+  color: #555555;
+  font-size: 12px;
+  position: relative;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.tooltipArrow {
+  border-right: 14px solid transparent;
+  border-top: 14px solid #ffffff;
+  box-shadow: -2px -2px 1px -1px #cccccc;
+  height: 0;
+  position: absolute;
+  right: 10px;
+  width: 0;
+  z-index: 1;
+}
+
+.tooltipArrowDown,
+.tooltipArrowUp {
+  left: 0;
+  margin: auto;
+  right: 0;
+  top: 15px;
+  transform: rotate(225deg);
+}
+
+.tooltipArrowDown {
+  top: 22px;
+}
+
+.tooltipArrowUp {
+  top: -6px;
+  transform: rotate(45deg);
+}
+
+.tooltipArrowLeft {
+  left: -4px;
+  top: 5px;
+  transform: rotate(-45deg);
+}
+

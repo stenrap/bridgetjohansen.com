@@ -63,7 +63,6 @@ const CreateAccount = (): JSX.Element => {
 
   /*
     TODO and WYLO ....
-      1. Update the Input component to show a tooltip on error
       2. Don't show the invalid email error on blur. Only show it when the user clicks 'Next'.
       3. Don't check for email availability in this form. If an existing user tries to sign up again, just move them into the reset password flow.
       4. Wire everything up and create the user!

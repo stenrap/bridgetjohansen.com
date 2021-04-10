@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import InputProps from './InputProps'
 import styles from './Input.module.scss'
+import ToolTip from '../tooltip/Tooltip'
 
 const Input = (props: InputProps): JSX.Element => {
   return (
@@ -13,6 +14,7 @@ const Input = (props: InputProps): JSX.Element => {
           <div className={styles.inputErrorIcon}>
             <Image alt='error' src={`${process.env.NEXT_PUBLIC_IMAGES}/error.svg`} height={24} width={24} />
           </div>
+          <ToolTip arrow='down' arrowClassName={styles.inputTooltipArrow} className={styles.inputTooltip} text={props.error} />
         </>
       )}
     </div>
