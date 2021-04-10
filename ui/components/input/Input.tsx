@@ -14,7 +14,7 @@ const Input = (props: InputProps): JSX.Element => {
           <div className={styles.inputErrorIcon}>
             <Image alt='error' src={`${process.env.NEXT_PUBLIC_IMAGES}/error.svg`} height={24} width={24} />
           </div>
-          <ToolTip arrow='down' arrowClassName={styles.inputTooltipArrow} className={styles.inputTooltip} text={props.error} />
+          <ToolTip arrow='bottomRight' className={styles.inputTooltip} text={props.error} />
         </>
       )}
     </div>

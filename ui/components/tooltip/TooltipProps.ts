@@ -1,6 +1,5 @@
 export default interface TooltipProps {
-  arrow: 'down' | 'left' | 'right' | 'up'
-  arrowClassName?: string
+  arrow: 'left' | 'topLeft' | 'topCenter' | 'topRight' | 'right' | 'bottomLeft' | 'bottomCenter' | 'bottomRight'
   className?: string
   text: string
 }

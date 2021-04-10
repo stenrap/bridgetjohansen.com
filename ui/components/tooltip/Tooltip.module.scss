@@ -22,32 +22,12 @@
   box-shadow: -2px -2px 1px -1px #cccccc;
   height: 0;
   position: absolute;
-  right: 10px;
   width: 0;
   z-index: 1;
 }
 
-.tooltipArrowDown,
-.tooltipArrowUp {
-  left: 0;
-  margin: auto;
-  right: 0;
-  top: 15px;
+.tooltipArrowBottomRight {
+  right: 10px;
+  top: 22px;
   transform: rotate(225deg);
 }
-
-.tooltipArrowDown {
-  top: 22px;
-}
-
-.tooltipArrowUp {
-  top: -6px;
-  transform: rotate(45deg);
-}
-
-.tooltipArrowLeft {
-  left: -4px;
-  top: 5px;
-  transform: rotate(-45deg);
-}
-

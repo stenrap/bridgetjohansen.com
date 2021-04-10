@@ -2,18 +2,18 @@ import styles from './Tooltip.module.scss'
 import TooltipProps from './TooltipProps'
 
 const Tooltip = (props: TooltipProps): JSX.Element => {
-  let arrowDirectionClass = styles.tooltipArrowDown
+  // Why are you defaulting to bottom right, then checking `props.arrow` for `bottomRight`?!
+  // Because at first you only needed the bottom right, but the stage is set for adding more.
+  let arrowClass = styles.tooltipArrowBottomRight
 
-  if (props.arrow === 'left') {
-    arrowDirectionClass = styles.tooltipArrowLeft
-  } else if (props.arrow === 'up') {
-    arrowDirectionClass = styles.tooltipArrowUp
+  if (props.arrow === 'bottomRight') {
+    arrowClass = styles.tooltipArrowBottomRight
   }
 
   return (
     <div className={`${styles.tooltip}${props.className ? ` ${props.className}` : ''}`}>
       <span className={styles.tooltipText}>{props.text}</span>
-      <div className={`${styles.tooltipArrow} ${arrowDirectionClass}${props.arrowClassName ? ` ${props.arrowClassName}` : ''}`} />
+      <div className={`${styles.tooltipArrow} ${arrowClass}`} />
     </div>
   )
 }
