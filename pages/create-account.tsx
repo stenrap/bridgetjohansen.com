@@ -10,6 +10,7 @@ import {
   setEmailAvailable,
   setEmailError
 } from '../store/userSlice'
+import Button from '../ui/components/button/Button'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { validateEmail } from '../shared/validations/user/user'
 import Input from '../ui/components/input/Input'
@@ -80,6 +81,9 @@ const CreateAccount = (): JSX.Element => {
         <Input onChange={(event): void => setLastName(event.target.value)} placeholder='Last name' type='text' value={lastName} />
         <Input error={emailError} onBlur={onBlurEmail} onChange={onChangeEmail} placeholder='Email' type='email' value={email} />
         <Input onChange={(event): void => setPassword(event.target.value)} placeholder='Password' type='password' value={password} />
+        <Button kind='primary' onClick={(): void => console.log('hey')}>
+          Next
+        </Button>
       </div>
     </>
   )
