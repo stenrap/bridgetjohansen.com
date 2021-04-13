@@ -81,7 +81,14 @@ const CreateAccount = (): JSX.Element => {
   }
 
   /*
-    TODO and WYLO .... Wire everything up and create a 6-digit code for the user!
+    TODO and WYLO ....
+      1. Flesh out the flow for the api that creates a 6-digit code during account creation:
+        a) The api checks to see if the user already exists (and if so, puts the user into the password reset flow...eventually)
+        b) The api generates a 6-digit code and a nonce
+        c) The api sets a key-value pair in redis (expiring in 10 minutes), where key is nonce and value is 6-digit code
+        d) The api returns an object that includes the nonce, and some property that helps the client understand which flow the user is in (account creation or password reset)
+        e) ...
+      2. Implement the above api and create a 6-digit code for the user!
    */
 
   return (
