@@ -15,3 +15,4 @@ client.on('error', (err: Error): void => {
 })
 
 export const set = promisify(client.set).bind(client)
+export const setex = promisify(client.setex).bind(client)
