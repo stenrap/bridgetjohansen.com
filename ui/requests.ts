@@ -1,3 +1,5 @@
+import Nonce from '../shared/types/Nonce'
+
 export interface GraphQLQuery {
   query: string
   variables?: {
@@ -40,6 +42,24 @@ export const isEmailAvailable = (email: string): Promise<IsEmailAvailableRespons
   return query({
     query: `query IsEmailAvailable($email: String!) {
       isEmailAvailable(email: $email)
+    }`,
+    variables: { email }
+  })
+}
+
+export interface NonceResponse extends GraphQLError {
+  data?: {
+    sendAccountCode: Nonce
+  }
+}
+
+export const sendAccountCode = (email: string): Promise<NonceResponse> => {
+  return query({
+    query: `query sendAccountCode($email: String!) {
+      sendAccountCode(email: $email) {
+        nonce
+        type
+      }
     }`,
     variables: { email }
   })

@@ -13,6 +13,7 @@ export interface UserState {
   firstName: string
   id: number
   lastName: string
+  sendingAccountCode: boolean
   studio: boolean
   token: string
 }
@@ -26,6 +27,7 @@ const initialState: UserState = {
   firstName: '',
   id: 0,
   lastName: '',
+  sendingAccountCode: false,
   studio: false,
   token: ''
 }
@@ -43,6 +45,9 @@ export const slice = createSlice({
     setEmailError: (state: UserState, action: PayloadAction<string>): void => {
       state.emailError = action.payload
     },
+    setSendingAccountCode: (state: UserState, action: PayloadAction<boolean>): void => {
+      state.sendingAccountCode = action.payload
+    },
     setUser: (state: UserState, action: PayloadAction<UserState>): void => {
       state.admin = action.payload.admin
       state.email = action.payload.email
@@ -52,7 +57,7 @@ export const slice = createSlice({
 })
 
 // Actions
-export const { setCheckingEmail, setEmailAvailable, setEmailError, setUser } = slice.actions
+export const { setCheckingEmail, setEmailAvailable, setEmailError, setSendingAccountCode, setUser } = slice.actions
 
 // Thunks
 export const checkEmail = (email: string): AppThunk => async (dispatch: AppThunkDispatch): Promise<void> => {
@@ -77,11 +82,30 @@ export const checkEmail = (email: string): AppThunk => async (dispatch: AppThunk
   })
 }
 
+export const sendAccountCode = (email: string): AppThunk => async (dispatch: AppThunkDispatch): Promise<void> => {
+  dispatch(setSendingAccountCode(true))
+
+  const response: requests.NonceResponse = await requests.sendAccountCode(email)
+
+  if (response.errors) {
+    console.log('Error sending account code:', response.errors[0].message)
+    return batch((): void => {
+      dispatch(setSendingAccountCode(false))
+    })
+  }
+
+  batch((): void => {
+    console.log('response.data?.sendAccountCode is:', response.data?.sendAccountCode)
+    dispatch(setSendingAccountCode(false))
+  })
+}
+
 // Selectors
 export const getEmailError = (state: RootState): string => state.user.emailError
 export const isAdmin = (state: RootState): boolean => state.user.admin
 export const isCheckingEmail = (state: RootState): boolean => state.user.checkingEmail
 export const isEmailAvailable = (state: RootState): boolean => state.user.emailAvailable
+export const isSendingAccountCode = (state: RootState): boolean => state.user.sendingAccountCode
 
 // Reducer
 export default slice.reducer

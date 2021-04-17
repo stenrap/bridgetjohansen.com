@@ -1,24 +1,26 @@
 import { ChangeEvent, useState } from 'react'
 import Head from 'next/head'
 
-// import { AppDispatch } from '../store/store'
-// import {
+import { AppDispatch } from '../store/store'
+import {
+  isSendingAccountCode,
+  sendAccountCode
 //   checkEmail,
 //   getEmailError,
 //   isCheckingEmail,
 //   isEmailAvailable,
 //   setEmailAvailable,
 //   setEmailError
-// } from '../store/userSlice'
+} from '../store/userSlice'
 import Button from '../ui/components/button/Button'
-// import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { validateEmail, validateFirstName, validateLastName, validatePassword } from '../shared/validations/user/user'
 import Input from '../ui/components/input/Input'
 import Nav from '../ui/components/nav/Nav'
 import styles from '../ui/styles/pages/CreateAccount.module.scss'
 
 const CreateAccount = (): JSX.Element => {
-  // const dispatch: AppDispatch = useAppDispatch()
+  const dispatch: AppDispatch = useAppDispatch()
 
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
@@ -33,6 +35,8 @@ const CreateAccount = (): JSX.Element => {
 
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
+
+  const sendingAccountCode: boolean = useAppSelector(isSendingAccountCode)
 
   const onChangeEmail = (event: ChangeEvent<HTMLInputElement>): void => {
     setEmail(event.target.value)
@@ -78,11 +82,15 @@ const CreateAccount = (): JSX.Element => {
     } catch (err) {
       return setPasswordError(err.message)
     }
+
+    dispatch(sendAccountCode(email))
   }
 
   /*
-    TODO and WYLO .... Wire up the `sendAccountCode` api and create a 6-digit code for the user!
+    TODO and WYLO .... Show a loader in the `Next` button while the `sendAccountCode` api is being called.
    */
+
+  console.log('sendingAccountCode is:', sendingAccountCode)
 
   return (
     <>
