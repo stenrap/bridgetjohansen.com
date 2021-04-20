@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { validateEmail, validateFirstName, validateLastName, validatePassword } from '../shared/validations/user/user'
 import Input from '../ui/components/input/Input'
 import Nav from '../ui/components/nav/Nav'
+import Spinner from '../ui/components/spinner/Spinner'
 import styles from '../ui/styles/pages/CreateAccount.module.scss'
 
 const CreateAccount = (): JSX.Element => {
@@ -87,10 +88,10 @@ const CreateAccount = (): JSX.Element => {
   }
 
   /*
-    TODO and WYLO .... Show a loader in the `Next` button while the `sendAccountCode` api is being called.
+    TODO and WYLO ....
+      1. After clicking 'Next', you've got the nonce and type (in the userSlice). Now what?
+      2. Get rid of all the client- and server-side checkEmail logic.
    */
-
-  console.log('sendingAccountCode is:', sendingAccountCode)
 
   return (
     <>
@@ -104,8 +105,10 @@ const CreateAccount = (): JSX.Element => {
         <Input error={lastNameError} onChange={onChangeLastName} placeholder='Last name' type='text' value={lastName} />
         <Input error={emailError} onChange={onChangeEmail} placeholder='Email' type='email' value={email} />
         <Input error={passwordError} onChange={onChangePassword} placeholder='Password' type='password' value={password} />
-        <Button kind='primary' onClick={onClickNext}>
-          Next
+        <Button disabled={sendingAccountCode} kind='primary' onClick={onClickNext}>
+          {sendingAccountCode
+            ? <Spinner />
+            : 'Next'}
         </Button>
       </div>
     </>
