@@ -7,21 +7,6 @@ import Nonce, { NonceType } from '../../../shared/types/Nonce'
 import User from '../../../data/models/user/User'
 
 /**
- * Checks whether an email is available (i.e. not associated with an existing user)
- *
- * @param _ Root value passed to GraphQL executor
- * @param email Email to check
- */
-export const isEmailAvailable = async (
-  _: undefined,
-  { email }: { email: string }
-): Promise<boolean> => {
-  validateEmail(email)
-
-  return (await selectUser({ email })) === undefined
-}
-
-/**
  * Emails a 6-digit verification code as part of account creation
  *
  * @param _ Root value passed to GraphQL executor

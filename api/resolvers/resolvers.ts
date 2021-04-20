@@ -1,8 +1,7 @@
-import { isEmailAvailable, sendAccountCode } from './create-account/createAccount'
+import { sendAccountCode } from './create-account/createAccount'
 
 const resolvers = {
   Query: {
-    isEmailAvailable,
     sendAccountCode
   }
 }

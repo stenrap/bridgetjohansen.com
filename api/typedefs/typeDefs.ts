@@ -8,7 +8,6 @@ import {
 
 const root: DocumentNode = gql`
   type Query {
-    isEmailAvailable(email: String!): Boolean!
     sendAccountCode(email: String!): Nonce!
   }
 `

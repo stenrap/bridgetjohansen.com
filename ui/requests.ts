@@ -32,21 +32,6 @@ const query = async <T> (query: GraphQLQuery): Promise<T | GraphQLError> => {
 /*   Requests   */
 /* ============ */
 
-export interface IsEmailAvailableResponse extends GraphQLError {
-  data?: {
-    isEmailAvailable: boolean
-  }
-}
-
-export const isEmailAvailable = (email: string): Promise<IsEmailAvailableResponse> => {
-  return query({
-    query: `query IsEmailAvailable($email: String!) {
-      isEmailAvailable(email: $email)
-    }`,
-    variables: { email }
-  })
-}
-
 export interface NonceResponse extends GraphQLError {
   data?: {
     sendAccountCode: Nonce

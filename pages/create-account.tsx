@@ -5,12 +5,6 @@ import { AppDispatch } from '../store/store'
 import {
   isSendingAccountCode,
   sendAccountCode
-//   checkEmail,
-//   getEmailError,
-//   isCheckingEmail,
-//   isEmailAvailable,
-//   setEmailAvailable,
-//   setEmailError
 } from '../store/userSlice'
 import Button from '../ui/components/button/Button'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
@@ -89,8 +83,7 @@ const CreateAccount = (): JSX.Element => {
 
   /*
     TODO and WYLO ....
-      1. After clicking 'Next', you've got the nonce and type (in the userSlice). Now what?
-      2. Get rid of all the client- and server-side checkEmail logic.
+      1. After clicking 'Next', you've got the nonce and type (in the userSlice). Then what?
    */
 
   return (
