@@ -7,7 +7,7 @@ import ToolTip from '../tooltip/Tooltip'
 const Input = (props: InputProps): JSX.Element => {
   return (
     <div className={styles.inputBox}>
-      <input className={styles.input} onBlur={props.onBlur} onChange={props.onChange} placeholder=' ' type={props.type} value={props.value} />
+      <input autoFocus={props.autoFocus} className={styles.input} onBlur={props.onBlur} onChange={props.onChange} placeholder=' ' type={props.type} value={props.value} />
       <div className={styles.placeholder}>{props.placeholder}</div>
       {props.error && (
         <>
