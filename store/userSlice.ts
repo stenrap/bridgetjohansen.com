@@ -33,7 +33,7 @@ export const slice = createSlice({
   initialState,
   name: 'user',
   reducers: {
-    setNonce: (state: UserState, action: PayloadAction<Nonce>): void => {
+    setNonce: (state: UserState, action: PayloadAction<Nonce | undefined>): void => {
       state.nonce = action.payload
     },
     setSendingAccountCode: (state: UserState, action: PayloadAction<boolean>): void => {

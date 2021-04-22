@@ -34,3 +34,5 @@ export const sendAccountCode = async (
     type: NonceType.NEW
   }
 }
+
+// TODO and WYLO .... Implement the API for creating an account!

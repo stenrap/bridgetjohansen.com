@@ -5,10 +5,12 @@ import { AppDispatch } from '../store/store'
 import {
   getNonce,
   isSendingAccountCode,
-  sendAccountCode
+  sendAccountCode,
+  setNonce
 } from '../store/userSlice'
 import Button from '../ui/components/button/Button'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { validateCode } from '../shared/validations/code/code'
 import { validateEmail, validateFirstName, validateLastName, validatePassword } from '../shared/validations/user/user'
 import Input from '../ui/components/input/Input'
 import Nav from '../ui/components/nav/Nav'
@@ -89,17 +91,31 @@ const CreateAccount = (): JSX.Element => {
     dispatch(sendAccountCode(email))
   }
 
-  const onSubmitCreateAccount = (event: FormEvent<HTMLFormElement>): void => {
+  const onSubmitCreateAccountForm = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     onClickNext()
   }
 
+  const onClickBack = (): void => {
+    setCode('')
+    dispatch(setNonce())
+  }
+
+  const onClickSubmit = (): void => {
+    try {
+      validateCode(code)
+    } catch (err) {
+      return setCodeError(err.message)
+    }
+  }
+
+  const onSubmitEnterCodeForm = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault()
+    onClickSubmit()
+  }
+
   /*
-    TODO and WYLO ....
-      1. Add some way to change the email (in case they fat-fingered it).
-      2. Add a 'Submit' button.
-      3. Add validation of the 6-digit code.
-      4. ...
+    TODO and WYLO .... Wire up the API for submitting the code and creating an account.
    */
 
   return (
@@ -118,12 +134,22 @@ const CreateAccount = (): JSX.Element => {
         )}
         {nonce
           ? (
-            <form>
-              <Input autoFocus={true} error={codeError} key='code' onChange={onChangeCode} placeholder='6-digit code' type='text' value={code} />
-            </form>
+            <>
+              <form onSubmit={onSubmitEnterCodeForm}>
+                <Input autoFocus={true} error={codeError} key='code' onChange={onChangeCode} placeholder='6-digit code' type='text' value={code} />
+              </form>
+              <div className={styles.codeButtons}>
+                <Button kind='secondary' onClick={onClickBack}>
+                  Back
+                </Button>
+                <Button kind='primary' onClick={onClickSubmit}>
+                  Submit
+                </Button>
+              </div>
+            </>
           )
           : (
-            <form onSubmit={onSubmitCreateAccount}>
+            <form onSubmit={onSubmitCreateAccountForm}>
               <Input error={firstNameError} onChange={onChangeFirstName} placeholder='First name' type='text' value={firstName} />
               <Input error={lastNameError} onChange={onChangeLastName} placeholder='Last name' type='text' value={lastName} />
               <Input error={emailError} onChange={onChangeEmail} placeholder='Email' type='email' value={email} />
