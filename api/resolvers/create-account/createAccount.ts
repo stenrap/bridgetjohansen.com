@@ -1,4 +1,7 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import { createCode } from '../../../lib/code/code'
+import { hashPassword } from '../../../lib/password/password'
 import { insertUser, selectUser } from '../../../data/api/user/user'
 import { setCode } from '../../../cache/user'
 import { validateCode } from '../../../shared/validations/code/code'
@@ -33,22 +36,19 @@ export const createAccount = async (
   validateNonce(nonce)
   validatePassword(password)
 
-  /*
-    TODO and WYLO ....
-      1. Encode the password via bcrypt.
-      2. Create a token (it's an empty string below).
-      3. Cache the user.
-   */
-
   const user: InsertedUser = await insertUser({
     admin: false,
     email,
     firstName,
     lastName,
-    password,
+    password: await hashPassword(password),
     studio: false,
-    token: ''
+    token: uuidv4().replace(/-/g, '')
   })
+
+  // TODO and WYLO .... Cache the user.
+
+  // TODO and WYLO .... Set the token cookie.
 
   return user.id
 }
