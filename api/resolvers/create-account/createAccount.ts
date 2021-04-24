@@ -1,10 +1,57 @@
 import { createCode } from '../../../lib/code/code'
-import { selectUser } from '../../../data/api/user/user'
+import { insertUser, selectUser } from '../../../data/api/user/user'
 import { setCode } from '../../../cache/user'
-import { validateEmail } from '../../../shared/validations/user/user'
+import { validateCode } from '../../../shared/validations/code/code'
+import {
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validatePassword
+} from '../../../shared/validations/user/user'
+import { validateNonce } from '../../../shared/validations/nonce/nonce'
 import CodeType from '../../../cache/CodeType'
+import CreateAccountInput from '../../../shared/types/CreateAccountInput'
 import Nonce, { NonceType } from '../../../shared/types/Nonce'
-import User from '../../../data/models/user/User'
+import User, { InsertedUser } from '../../../data/models/user/User'
+
+/**
+ * Creates a non-admin, non-studio account
+ *
+ * @param _ Root value passed to GraphQL executor
+ * @param account CreateAccountInput with all properties needed to create an account
+ */
+export const createAccount = async (
+  _: undefined,
+  { account }: { account: CreateAccountInput }
+): Promise<number> => {
+  const { code, email, firstName, lastName, nonce, password } = account
+
+  validateCode(code)
+  validateEmail(email)
+  validateFirstName(firstName)
+  validateLastName(lastName)
+  validateNonce(nonce)
+  validatePassword(password)
+
+  /*
+    TODO and WYLO ....
+      1. Encode the password via bcrypt.
+      2. Create a token (it's an empty string below).
+      3. Cache the user.
+   */
+
+  const user: InsertedUser = await insertUser({
+    admin: false,
+    email,
+    firstName,
+    lastName,
+    password,
+    studio: false,
+    token: ''
+  })
+
+  return user.id
+}
 
 /**
  * Emails a 6-digit verification code as part of account creation
@@ -34,5 +81,3 @@ export const sendAccountCode = async (
     type: NonceType.NEW
   }
 }
-
-// TODO and WYLO .... Implement the API for creating an account!

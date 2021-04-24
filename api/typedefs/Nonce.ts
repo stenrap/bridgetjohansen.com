@@ -1,3 +1,4 @@
+import { DocumentNode } from 'graphql'
 import { gql } from 'apollo-server-micro'
 
 /*
@@ -5,14 +6,14 @@ import { gql } from 'apollo-server-micro'
   their counterparts in the /shared/types directory.
 */
 
-export const gqlNonceType = gql`
+export const gqlNonceType: DocumentNode = gql`
   enum NonceType {
     NEW
     RESET
   }
 `
 
-export const gqlNonce = gql`
+export const gqlNonce: DocumentNode = gql`
   type Nonce {
     nonce: String!
     type: NonceType!
