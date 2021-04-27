@@ -15,7 +15,7 @@ const root: DocumentNode = gql`
   }
   
   type Query {
-    sendAccountCode(email: String!): Nonce!
+    getAccountCode(email: String!): Nonce!
   }
 `
 

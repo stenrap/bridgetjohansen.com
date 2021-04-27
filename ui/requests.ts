@@ -34,14 +34,14 @@ const query = async <T> (query: GraphQLQuery): Promise<T | GraphQLError> => {
 
 export interface NonceResponse extends GraphQLError {
   data?: {
-    sendAccountCode: Nonce
+    getAccountCode: Nonce
   }
 }
 
-export const sendAccountCode = (email: string): Promise<NonceResponse> => {
+export const getAccountCode = (email: string): Promise<NonceResponse> => {
   return query({
-    query: `query sendAccountCode($email: String!) {
-      sendAccountCode(email: $email) {
+    query: `query GetAccountCode($email: String!) {
+      getAccountCode(email: $email) {
         nonce
         type
       }

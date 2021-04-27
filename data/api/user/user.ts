@@ -36,7 +36,7 @@ export const insertUser = async (user: User, password: string, client?: PoolClie
  */
 export const selectUser = async (identifier: UserIdentifier, client?: PoolClient): Promise<User | undefined> => {
   let sql = `
-    SELECT admin, created, email, firstName, id, lastLogin, lastName, studio, token
+    SELECT admin, created, email, first_name, id, last_login, last_name, studio, token
     FROM users
     WHERE
   `

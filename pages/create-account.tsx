@@ -3,9 +3,9 @@ import Head from 'next/head'
 
 import { AppDispatch } from '../store/store'
 import {
+  getAccountCode,
   getNonce,
-  isSendingAccountCode,
-  sendAccountCode,
+  isGettingAccountCode,
   setNonce
 } from '../store/userSlice'
 import Button from '../ui/components/button/Button'
@@ -36,7 +36,7 @@ const CreateAccount = (): JSX.Element => {
   const [passwordError, setPasswordError] = useState('')
 
   const nonce: Nonce | undefined = useAppSelector(getNonce)
-  const sendingAccountCode: boolean = useAppSelector(isSendingAccountCode)
+  const gettingAccountCode: boolean = useAppSelector(isGettingAccountCode)
 
   const onChangeCode = (event: ChangeEvent<HTMLInputElement>): void => {
     setCode(event.target.value)
@@ -88,7 +88,7 @@ const CreateAccount = (): JSX.Element => {
       return setPasswordError(err.message)
     }
 
-    dispatch(sendAccountCode(email))
+    dispatch(getAccountCode(email))
   }
 
   const onSubmitCreateAccountForm = (event: FormEvent<HTMLFormElement>): void => {
@@ -154,8 +154,8 @@ const CreateAccount = (): JSX.Element => {
               <Input error={lastNameError} onChange={onChangeLastName} placeholder='Last name' type='text' value={lastName} />
               <Input error={emailError} onChange={onChangeEmail} placeholder='Email' type='email' value={email} />
               <Input error={passwordError} onChange={onChangePassword} placeholder='Password' type='password' value={password} />
-              <Button className={styles.nextButton} disabled={sendingAccountCode} kind='primary' onClick={onClickNext}>
-                {sendingAccountCode
+              <Button className={styles.nextButton} disabled={gettingAccountCode} kind='primary' onClick={onClickNext}>
+                {gettingAccountCode
                   ? <Spinner />
                   : 'Next'}
               </Button>

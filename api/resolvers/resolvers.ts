@@ -1,11 +1,11 @@
-import { createAccount, sendAccountCode } from './create-account/createAccount'
+import { createAccount, getAccountCode } from './create-account/createAccount'
 
 const resolvers = {
   Mutation: {
     createAccount
   },
   Query: {
-    sendAccountCode
+    getAccountCode
   }
 }
 

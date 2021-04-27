@@ -65,7 +65,7 @@ export const createAccount = async (
  * @param _ Root value passed to GraphQL executor
  * @param email Email to which 6-digit code should be sent
  */
-export const sendAccountCode = async (
+export const getAccountCode = async (
   _: undefined,
   { email }: { email: string }
 ): Promise<Nonce> => {
