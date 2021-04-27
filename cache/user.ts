@@ -1,10 +1,25 @@
 import crypto from 'crypto'
 
 import { cache } from './cache'
+import { TOKEN_EXPIRATION } from '../constants'
 import CodeType from './CodeType'
 import logger from '../logger'
+import User from '../data/models/user/User'
 
 const CODE_EXPIRATION = 60 * 10 // 10 minutes (in seconds)
+
+export const cacheUser = (user: User): Promise<void> => {
+  return new Promise<void>((resolve: (value: void) => void): void => {
+    cache.set(`user:${user.token}`, JSON.stringify(user), 'PX', TOKEN_EXPIRATION, (err: Error | null): void => {
+      if (err) {
+        logger.error(`Error adding user ${user.email} to cache`)
+        logger.error(err.message)
+      }
+
+      resolve()
+    })
+  })
+}
 
 export const setCode = (type: CodeType, code: string, email: string): Promise<string> => {
   return new Promise<string>((resolve: (value: string) => void, reject: (err: Error) => void): void => {

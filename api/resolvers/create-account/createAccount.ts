@@ -1,9 +1,11 @@
 import { v4 as uuidv4 } from 'uuid'
 
+import { cacheUser, setCode } from '../../../cache/user'
+import { Context } from '../../context/context'
 import { createCode } from '../../../lib/code/code'
 import { hashPassword } from '../../../lib/password/password'
 import { insertUser, selectUser } from '../../../data/api/user/user'
-import { setCode } from '../../../cache/user'
+import { setTokenCookie } from '../../../lib/cookie/cookie'
 import { validateCode } from '../../../shared/validations/code/code'
 import {
   validateEmail,
@@ -15,17 +17,19 @@ import { validateNonce } from '../../../shared/validations/nonce/nonce'
 import CodeType from '../../../cache/CodeType'
 import CreateAccountInput from '../../../shared/types/CreateAccountInput'
 import Nonce, { NonceType } from '../../../shared/types/Nonce'
-import User, { InsertedUser } from '../../../data/models/user/User'
+import User from '../../../data/models/user/User'
 
 /**
  * Creates a non-admin, non-studio account
  *
  * @param _ Root value passed to GraphQL executor
  * @param account CreateAccountInput with all properties needed to create an account
+ * @param res ServerResponse instance obtained from context
  */
 export const createAccount = async (
   _: undefined,
-  { account }: { account: CreateAccountInput }
+  { account }: { account: CreateAccountInput },
+  { res }: Context
 ): Promise<number> => {
   const { code, email, firstName, lastName, nonce, password } = account
 
@@ -36,20 +40,22 @@ export const createAccount = async (
   validateNonce(nonce)
   validatePassword(password)
 
-  const user: InsertedUser = await insertUser({
+  const token: string = uuidv4().replace(/-/g, '')
+
+  const user: User = await insertUser({
     admin: false,
+    created: new Date(),
     email,
     firstName,
+    id: 0,
+    lastLogin: new Date(),
     lastName,
-    password: await hashPassword(password),
     studio: false,
-    token: uuidv4().replace(/-/g, '')
-  })
+    token
+  }, await hashPassword(password))
 
-  // TODO and WYLO .... Cache the user.
-
-  // TODO and WYLO .... Set the token cookie.
-
+  await cacheUser(user)
+  setTokenCookie(res, token)
   return user.id
 }
 

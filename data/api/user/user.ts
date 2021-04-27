@@ -1,16 +1,17 @@
 import { PoolClient, QueryResult } from 'pg'
 
 import { query } from '../../db'
-import User, { InsertedUser, NewUser, UserIdentifier } from '../../models/user/User'
+import User, { UserIdentifier } from '../../models/user/User'
 
 /**
- * Inserts a NewUser and returns an InsertedUser
+ * Inserts and returns a User
  *
- * @param user NewUser instance to be inserted
+ * @param user User instance to be inserted
+ * @param password Password for the user
  * @param client Optional database pool client
  */
-export const insertUser = async (user: NewUser, client?: PoolClient): Promise<InsertedUser> => {
-  const { admin, email, firstName, lastName, password, studio, token } = user
+export const insertUser = async (user: User, password: string, client?: PoolClient): Promise<User> => {
+  const { admin, email, firstName, lastName, studio, token } = user
 
   const sql = `
     INSERT INTO users (admin, email, first_name, last_name, password, studio, token)
@@ -23,7 +24,8 @@ export const insertUser = async (user: NewUser, client?: PoolClient): Promise<In
     ? await client.query(sql, params)
     : await query(sql, params)
 
-  return { admin, email, firstName, id: result.rows[0].id, lastName, studio, token }
+  user.id = result.rows[0].id
+  return user
 }
 
 /**
