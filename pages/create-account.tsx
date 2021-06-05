@@ -3,15 +3,17 @@ import Head from 'next/head'
 
 import { AppDispatch } from '../store/store'
 import {
+  createAccount,
   getAccountCode,
   getNonce,
+  isCreatingAccount,
   isGettingAccountCode,
   setNonce
 } from '../store/userSlice'
-import Button from '../ui/components/button/Button'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { validateCode } from '../shared/validations/code/code'
 import { validateEmail, validateFirstName, validateLastName, validatePassword } from '../shared/validations/user/user'
+import Button from '../ui/components/button/Button'
 import Input from '../ui/components/input/Input'
 import Nav from '../ui/components/nav/Nav'
 import Nonce from '../shared/types/Nonce'
@@ -21,6 +23,10 @@ import styles from '../ui/styles/pages/CreateAccount.module.scss'
 const CreateAccount = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch()
 
+  const creatingAccount: boolean = useAppSelector(isCreatingAccount)
+  const gettingAccountCode: boolean = useAppSelector(isGettingAccountCode)
+  const nonce: Nonce | undefined = useAppSelector(getNonce)
+
   const [code, setCode] = useState('')
   const [codeError, setCodeError] = useState('')
   const [email, setEmail] = useState('')
@@ -29,14 +35,8 @@ const CreateAccount = (): JSX.Element => {
   const [firstNameError, setFirstNameError] = useState('')
   const [lastName, setLastName] = useState('')
   const [lastNameError, setLastNameError] = useState('')
-
-  // const [page, setPage] = useState(1)
-
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
-
-  const nonce: Nonce | undefined = useAppSelector(getNonce)
-  const gettingAccountCode: boolean = useAppSelector(isGettingAccountCode)
 
   const onChangeCode = (event: ChangeEvent<HTMLInputElement>): void => {
     setCode(event.target.value)
@@ -107,16 +107,16 @@ const CreateAccount = (): JSX.Element => {
     } catch (err) {
       return setCodeError(err.message)
     }
+
+    // The form and submit button can't even be visible if the nonce is undefined, so we disable the non-null assertion warning.
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    dispatch(createAccount({code, email, firstName, lastName, nonce: nonce!.nonce, password}))
   }
 
   const onSubmitEnterCodeForm = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     onClickSubmit()
   }
-
-  /*
-    TODO and WYLO .... Wire up the API for submitting the code and creating an account.
-   */
 
   return (
     <>
@@ -142,8 +142,10 @@ const CreateAccount = (): JSX.Element => {
                 <Button kind='secondary' onClick={onClickBack}>
                   Back
                 </Button>
-                <Button kind='primary' onClick={onClickSubmit}>
-                  Submit
+                <Button disabled={creatingAccount} kind='primary' onClick={onClickSubmit}>
+                  {creatingAccount
+                    ? <Spinner />
+                    : 'Submit'}
                 </Button>
               </div>
             </>

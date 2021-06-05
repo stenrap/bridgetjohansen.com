@@ -1,3 +1,4 @@
+import CreateAccountInput from '../shared/types/CreateAccountInput'
 import Nonce from '../shared/types/Nonce'
 
 export interface GraphQLQuery {
@@ -31,6 +32,21 @@ const query = async <T> (query: GraphQLQuery): Promise<T | GraphQLError> => {
 /* ============ */
 /*   Requests   */
 /* ============ */
+
+export interface CreateAccountResponse extends GraphQLError {
+  data?: {
+    createAccount: number
+  }
+}
+
+export const createAccount = (account: CreateAccountInput): Promise<CreateAccountResponse> => {
+  return query({
+    query: `mutation CreateAccount($account: CreateAccountInput!) {
+      createAccount(account: $account)
+    }`,
+    variables: { account }
+  })
+}
 
 export interface NonceResponse extends GraphQLError {
   data?: {

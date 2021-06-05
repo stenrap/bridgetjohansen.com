@@ -11,7 +11,7 @@ import {
 
 const root: DocumentNode = gql`
   type Mutation {
-    createAccount(account: CreateAccountInput!): ID!
+    createAccount(account: CreateAccountInput!): Int!
   }
   
   type Query {
