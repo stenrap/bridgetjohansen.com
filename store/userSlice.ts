@@ -8,6 +8,7 @@ import Nonce from '../shared/types/Nonce'
 import User from '../data/models/user/User'
 
 export interface UserState {
+  accountCreated: boolean
   admin: boolean
   creatingAccount: boolean
   email: string
@@ -20,6 +21,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
+  accountCreated: false,
   admin: false,
   creatingAccount: false,
   email: '',
@@ -35,6 +37,9 @@ export const slice = createSlice({
   initialState,
   name: 'user',
   reducers: {
+    setAccountCreated: (state: UserState, action: PayloadAction<boolean>): void => {
+      state.accountCreated = action.payload
+    },
     setCreatingAccount: (state: UserState, action: PayloadAction<boolean>): void => {
       state.creatingAccount = action.payload
     },
@@ -56,7 +61,7 @@ export const slice = createSlice({
 })
 
 // Actions
-export const { setCreatingAccount, setGettingAccountCode, setNonce, setUser } = slice.actions
+export const { setAccountCreated, setCreatingAccount, setGettingAccountCode, setNonce, setUser } = slice.actions
 
 // Thunks
 export const createAccount = (account: CreateAccountInput): AppThunk => async (dispatch: AppThunkDispatch): Promise<void> => {
@@ -75,12 +80,13 @@ export const createAccount = (account: CreateAccountInput): AppThunk => async (d
         lastName: account.lastName,
         studio: false
       }))
-      // TODO .... Redirect to / without losing context
+      dispatch(setAccountCreated(true))
     })
   }
 
   batch((): void => {
     const error: string = errors ? errors[0].message : 'Please check your network connection and try again.'
+    // TODO .... Show this error in a modal:
     console.log('error is:', error)
     dispatch(setCreatingAccount(false))
   })
@@ -100,6 +106,7 @@ export const getAccountCode = (email: string): AppThunk => async (dispatch: AppT
 
   batch((): void => {
     const error: string = errors ? errors[0].message : 'Please check your network connection and try again.'
+    // TODO .... Show this error in a modal:
     console.log('error is:', error)
     dispatch(setGettingAccountCode(false))
   })
@@ -107,6 +114,7 @@ export const getAccountCode = (email: string): AppThunk => async (dispatch: AppT
 
 // Selectors
 export const getNonce = (state: RootState): Nonce | undefined => state.user.nonce
+export const isAccountCreated = (state: RootState): boolean => state.user.accountCreated
 export const isAdmin = (state: RootState): boolean => state.user.admin
 export const isCreatingAccount = (state: RootState): boolean => state.user.creatingAccount
 export const isGettingAccountCode = (state: RootState): boolean => state.user.gettingAccountCode

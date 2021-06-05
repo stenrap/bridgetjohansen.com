@@ -1,4 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { NextRouter, useRouter } from 'next/router'
 import Head from 'next/head'
 
 import { AppDispatch } from '../store/store'
@@ -6,6 +7,7 @@ import {
   createAccount,
   getAccountCode,
   getNonce,
+  isAccountCreated,
   isCreatingAccount,
   isGettingAccountCode,
   setNonce
@@ -22,10 +24,16 @@ import styles from '../ui/styles/pages/CreateAccount.module.scss'
 
 const CreateAccount = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch()
+  const router: NextRouter = useRouter()
 
+  const accountCreated: boolean = useAppSelector(isAccountCreated)
   const creatingAccount: boolean = useAppSelector(isCreatingAccount)
   const gettingAccountCode: boolean = useAppSelector(isGettingAccountCode)
   const nonce: Nonce | undefined = useAppSelector(getNonce)
+
+  useEffect((): void => {
+    if (accountCreated) router.replace('/')
+  }, [accountCreated, router])
 
   const [code, setCode] = useState('')
   const [codeError, setCodeError] = useState('')

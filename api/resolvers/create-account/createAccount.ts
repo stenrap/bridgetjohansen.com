@@ -1,8 +1,10 @@
+import { PoolClient } from 'pg'
 import { v4 as uuidv4 } from 'uuid'
 
 import { cacheUser, setCode } from '../../../cache/user'
 import { Context } from '../../context/context'
 import { createCode } from '../../../lib/code/code'
+import { endTxn, startTxn } from '../../../data/db'
 import { hashPassword } from '../../../lib/password/password'
 import { insertUser, selectUser } from '../../../data/api/user/user'
 import { setTokenCookie } from '../../../lib/cookie/cookie'
@@ -40,23 +42,35 @@ export const createAccount = async (
   validateNonce(nonce)
   validatePassword(password)
 
-  const token: string = uuidv4().replace(/-/g, '')
+  const client: PoolClient = await startTxn()
 
-  const user: User = await insertUser({
-    admin: false,
-    created: new Date(),
-    email,
-    firstName,
-    id: 0,
-    lastLogin: new Date(),
-    lastName,
-    studio: false,
-    token
-  }, await hashPassword(password))
+  try {
+    let user: User | undefined = await selectUser({ email }, client)
+    if (user) throw new Error('Error creating account.')
 
-  await cacheUser(user)
-  setTokenCookie(res, token)
-  return user.id
+    const token: string = uuidv4().replace(/-/g, '')
+
+    user = await insertUser(
+      {
+        admin: false,
+        created: new Date(),
+        email,
+        firstName,
+        id: 0,
+        lastLogin: new Date(),
+        lastName,
+        studio: false,
+        token
+      }, await hashPassword(password), client)
+    await endTxn(client)
+
+    await cacheUser(user)
+    setTokenCookie(res, token)
+    return user.id
+  } catch (err) {
+    await endTxn(client, { commit: false })
+    throw err
+  }
 }
 
 /**

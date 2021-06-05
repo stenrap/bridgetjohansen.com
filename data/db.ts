@@ -34,7 +34,7 @@ export const endPool = async (): Promise<void> => {
   }
 }
 
-export const endTxn = async (client: PoolClient, { commit }: PoolTxnOptions): Promise<void> => {
+export const endTxn = async (client: PoolClient, { commit }: PoolTxnOptions = { commit: true }): Promise<void> => {
   try {
     commit
       ? await client.query('COMMIT')
