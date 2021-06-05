@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 
 import styles from './Nav.module.scss'
@@ -10,13 +10,13 @@ const Nav = (): JSX.Element => {
   const navClasses = `${styles.nav}${open ? ` ${styles.open}` : ''}`
   const navListClasses = `${styles.navList}${open ? ` ${styles.open}` : ''}`
 
-  const onButtonClick = useCallback((): void => {
+  const onButtonClick = (): void => {
     setOpen(!open)
-  }, [open])
+  }
 
-  const onLinkClick = useCallback((): void => {
+  const onLinkClick = (): void => {
     if (open) setOpen(false)
-  }, [open])
+  }
 
   /*
     TODO:
