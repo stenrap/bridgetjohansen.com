@@ -10,6 +10,8 @@ import {
   isAccountCreated,
   isCreatingAccount,
   isGettingAccountCode,
+  isRequestError,
+  setRequestError,
   setNonce
 } from '../store/userSlice'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
@@ -17,6 +19,7 @@ import { validateCode } from '../shared/validations/code/code'
 import { validateEmail, validateFirstName, validateLastName, validatePassword } from '../shared/validations/user/user'
 import Button from '../ui/components/button/Button'
 import Input from '../ui/components/input/Input'
+import Modal from '../ui/modals/Modal'
 import Nav from '../ui/components/nav/Nav'
 import Nonce from '../shared/types/Nonce'
 import Spinner from '../ui/components/spinner/Spinner'
@@ -30,6 +33,7 @@ const CreateAccount = (): JSX.Element => {
   const creatingAccount: boolean = useAppSelector(isCreatingAccount)
   const gettingAccountCode: boolean = useAppSelector(isGettingAccountCode)
   const nonce: Nonce | undefined = useAppSelector(getNonce)
+  const requestError: string = useAppSelector(isRequestError)
 
   useEffect((): void => {
     if (accountCreated) router.replace('/')
@@ -126,6 +130,10 @@ const CreateAccount = (): JSX.Element => {
     onClickSubmit()
   }
 
+  const onRequestErrorOk = (): void => {
+    dispatch(setRequestError(''))
+  }
+
   return (
     <>
       <Head>
@@ -173,6 +181,10 @@ const CreateAccount = (): JSX.Element => {
           )
         }
       </div>
+      {requestError
+        ? <Modal onOk={onRequestErrorOk} title='Error'>{requestError}</Modal>
+        : null
+      }
     </>
   )
 }

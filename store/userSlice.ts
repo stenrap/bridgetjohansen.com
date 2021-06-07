@@ -17,6 +17,7 @@ export interface UserState {
   id: number
   lastName: string
   nonce?: Nonce
+  requestError: string
   studio: boolean
 }
 
@@ -30,6 +31,7 @@ const initialState: UserState = {
   id: 0,
   lastName: '',
   nonce: undefined,
+  requestError: '',
   studio: false,
 }
 
@@ -49,6 +51,9 @@ export const slice = createSlice({
     setNonce: (state: UserState, action: PayloadAction<Nonce | undefined>): void => {
       state.nonce = action.payload
     },
+    setRequestError: (state: UserState, action: PayloadAction<string>): void => {
+      state.requestError = action.payload
+    },
     setUser: (state: UserState, action: PayloadAction<Omit<User, 'created' | 'lastLogin' | 'token'>>): void => {
       state.admin = action.payload.admin
       state.email = action.payload.email
@@ -61,7 +66,7 @@ export const slice = createSlice({
 })
 
 // Actions
-export const { setAccountCreated, setCreatingAccount, setGettingAccountCode, setNonce, setUser } = slice.actions
+export const { setAccountCreated, setCreatingAccount, setGettingAccountCode, setNonce, setRequestError, setUser } = slice.actions
 
 // Thunks
 export const createAccount = (account: CreateAccountInput): AppThunk => async (dispatch: AppThunkDispatch): Promise<void> => {
@@ -86,9 +91,8 @@ export const createAccount = (account: CreateAccountInput): AppThunk => async (d
 
   batch((): void => {
     const error: string = errors ? errors[0].message : 'Please check your network connection and try again.'
-    // TODO .... Show this error in a modal:
-    console.log('error is:', error)
     dispatch(setCreatingAccount(false))
+    dispatch(setRequestError(error))
   })
 }
 
@@ -106,9 +110,8 @@ export const getAccountCode = (email: string): AppThunk => async (dispatch: AppT
 
   batch((): void => {
     const error: string = errors ? errors[0].message : 'Please check your network connection and try again.'
-    // TODO .... Show this error in a modal:
-    console.log('error is:', error)
     dispatch(setGettingAccountCode(false))
+    dispatch(setRequestError(error))
   })
 }
 
@@ -116,6 +119,7 @@ export const getAccountCode = (email: string): AppThunk => async (dispatch: AppT
 export const getNonce = (state: RootState): Nonce | undefined => state.user.nonce
 export const isAccountCreated = (state: RootState): boolean => state.user.accountCreated
 export const isAdmin = (state: RootState): boolean => state.user.admin
+export const isRequestError = (state: RootState): string => state.user.requestError
 export const isCreatingAccount = (state: RootState): boolean => state.user.creatingAccount
 export const isGettingAccountCode = (state: RootState): boolean => state.user.gettingAccountCode
 
