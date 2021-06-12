@@ -35,8 +35,9 @@ const CreateAccount = (): JSX.Element => {
   const nonce: Nonce | undefined = useAppSelector(getNonce)
   const requestError: string = useAppSelector(isRequestError)
 
+  // TODO: Make this work like it does on the sign-in page (i.e. show nothing if the user is logged in, then redirect to '/')
   useEffect((): void => {
-    if (accountCreated) router.replace('/')
+    if (accountCreated) router.replace('/', undefined, { shallow: true })
   }, [accountCreated, router])
 
   const [code, setCode] = useState('')

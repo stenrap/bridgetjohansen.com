@@ -18,5 +18,7 @@ export interface MicroContext {
 
 export const context = async ({ req, res }: MicroContext): Promise<Context> => {
   const token: string | undefined = getTokenFromCookie(req)
-  return { req, res, user: token ? await selectUser({ token }) : undefined }
+  const user: User | undefined = token ? await selectUser({ token }) : undefined
+  if (user) delete user.password
+  return { req, res, user }
 }

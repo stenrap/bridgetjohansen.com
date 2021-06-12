@@ -1,5 +1,7 @@
 import CreateAccountInput from '../shared/types/CreateAccountInput'
 import Nonce from '../shared/types/Nonce'
+import SignInInput from '../shared/types/SignInInput'
+import User from '../data/models/user/User'
 
 export interface GraphQLQuery {
   query: string
@@ -63,5 +65,29 @@ export const getAccountCode = (email: string): Promise<NonceResponse> => {
       }
     }`,
     variables: { email }
+  })
+}
+
+export interface SignInResponse extends GraphQLError {
+  data?: {
+    signIn: Omit<User, 'password' | 'token'>
+  }
+}
+
+export const signIn = (credentials: SignInInput): Promise<SignInResponse> => {
+  return query({
+    query: `mutation SignIn($credentials: SignInInput!) {
+      signIn(credentials: $credentials) {
+        admin
+        created
+        email
+        firstName
+        id
+        lastLogin
+        lastName
+        studio
+      }
+    }`,
+    variables: { credentials }
   })
 }

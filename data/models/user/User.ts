@@ -6,6 +6,7 @@ export default interface User {
   id: number
   lastLogin: Date
   lastName: string
+  password?: string
   studio: boolean
   token: string
 }

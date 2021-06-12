@@ -36,7 +36,7 @@ export const insertUser = async (user: User, password: string, client?: PoolClie
  */
 export const selectUser = async (identifier: UserIdentifier, client?: PoolClient): Promise<User | undefined> => {
   let sql = `
-    SELECT admin, created, email, first_name, id, last_login, last_name, studio, token
+    SELECT admin, created, email, first_name, id, last_login, last_name, password, studio, token
     FROM users
     WHERE
   `
@@ -54,7 +54,7 @@ export const selectUser = async (identifier: UserIdentifier, client?: PoolClient
     sql += ' token = $1'
   }
 
-  if (params.length === 0) throw new Error('Cannot select user without identifier')
+  if (params.length === 0) throw new Error('Cannot select user without identifier.')
 
   const result: QueryResult<User> = client
     ? await client.query(sql, params)

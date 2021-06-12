@@ -119,6 +119,7 @@ export const getAccountCode = (email: string): AppThunk => async (dispatch: AppT
 export const getNonce = (state: RootState): Nonce | undefined => state.user.nonce
 export const isAccountCreated = (state: RootState): boolean => state.user.accountCreated
 export const isAdmin = (state: RootState): boolean => state.user.admin
+export const isLoggedIn = (state: RootState): boolean => state.user.id !== 0
 export const isRequestError = (state: RootState): string => state.user.requestError
 export const isCreatingAccount = (state: RootState): boolean => state.user.creatingAccount
 export const isGettingAccountCode = (state: RootState): boolean => state.user.gettingAccountCode

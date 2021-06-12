@@ -1,21 +1,16 @@
 import { DocumentNode } from 'graphql'
 import { gql } from 'apollo-server-micro'
 
-/*
-  If these types are changed, don't forget to change
-  their counterparts in the /shared/types directory.
-*/
+import { getFields } from '../../lib/graphql/graphql'
+import Nonce from '../../shared/types/Nonce'
 
-export const gqlNonceType: DocumentNode = gql`
-  enum NonceType {
-    NEW
-    RESET
-  }
-`
+const gqlTypeMap: Record<keyof Nonce, string> = {
+  nonce: 'String!',
+  type: 'NonceType!'
+}
 
 export const gqlNonce: DocumentNode = gql`
   type Nonce {
-    nonce: String!
-    type: NonceType!
+    ${getFields(gqlTypeMap)}
   }
 `

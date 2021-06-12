@@ -18,7 +18,8 @@ import {
 import { validateNonce } from '../../../shared/validations/nonce/nonce'
 import CodeType from '../../../cache/CodeType'
 import CreateAccountInput from '../../../shared/types/CreateAccountInput'
-import Nonce, { NonceType } from '../../../shared/types/Nonce'
+import Nonce from '../../../shared/types/Nonce'
+import NonceType from '../../../shared/types/NonceType'
 import User from '../../../data/models/user/User'
 
 /**

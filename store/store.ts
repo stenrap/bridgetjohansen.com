@@ -1,10 +1,12 @@
 import { Action, configureStore, ThunkDispatch } from '@reduxjs/toolkit'
 import { ThunkAction } from 'redux-thunk'
 
+import signInReducer from './signInSlice'
 import userReducer from './userSlice'
 
 const store = configureStore({
   reducer: {
+    signIn: signInReducer,
     user: userReducer
   }
 })

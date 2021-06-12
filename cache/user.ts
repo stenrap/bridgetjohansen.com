@@ -21,6 +21,19 @@ export const cacheUser = (user: User): Promise<void> => {
   })
 }
 
+export const deleteUser = (token: string): Promise<void> => {
+  return new Promise<void>((resolve: (value: void) => void): void => {
+    cache.del(`user:${token}`, (err: Error | null): void => {
+      if (err) {
+        logger.error(`Error deleting user with token ${token} from cache`)
+        logger.error(err.message)
+      }
+
+      resolve()
+    })
+  })
+}
+
 export const setCode = (type: CodeType, code: string, email: string): Promise<string> => {
   return new Promise<string>((resolve: (value: string) => void, reject: (err: Error) => void): void => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

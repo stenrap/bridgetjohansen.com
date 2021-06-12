@@ -1,3 +1,5 @@
+@use '../styles/variables' as v;
+
 .modalBackground {
   background-color: rgba(0, 0, 0, 0.5);
   height: 100%;
@@ -13,10 +15,17 @@
   border-radius: 10px;
   box-sizing: border-box;
   left: 50%;
+  max-width: calc(100% - 40px);
+  min-width: calc(100% - 40px);
   padding: 24px;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (min-width: v.$horizontalNav) {
+    max-width: 500px;
+    min-width: auto;
+  }
 }
 
 .modalTitle {
