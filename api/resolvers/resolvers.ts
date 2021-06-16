@@ -1,10 +1,12 @@
 import { createAccount, getAccountCode } from './create-account/createAccount'
 import { signIn } from './sign-in/signIn'
+import { signOut } from './sign-out/signOut'
 
 const resolvers = {
   Mutation: {
     createAccount,
-    signIn
+    signIn,
+    signOut
   },
   Query: {
     getAccountCode

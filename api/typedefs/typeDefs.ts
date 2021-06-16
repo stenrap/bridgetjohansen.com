@@ -11,6 +11,7 @@ const root: DocumentNode = gql`
   type Mutation {
     createAccount(account: CreateAccountInput!): Int!
     signIn(credentials: SignInInput!): User!
+    signOut: Boolean!
   }
   
   type Query {

@@ -1,12 +1,19 @@
+import { NextRouter, useRouter } from 'next/router'
 import { useState } from 'react'
 import Link from 'next/link'
 
+import { AppDispatch } from '../../../store/store'
+import { isRequestError, setRequestError, signOut } from '../../../store/navSlice'
 import { isSignedIn } from '../../../store/userSlice'
-import { useAppSelector } from '../../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import MenuButton from './MenuButton'
+import Modal from '../../modals/Modal'
 import styles from './Nav.module.scss'
 
 const Nav = (): JSX.Element => {
+  const dispatch: AppDispatch = useAppDispatch()
+  const requestError: string = useAppSelector(isRequestError)
+  const router: NextRouter = useRouter()
   const signedIn: boolean = useAppSelector(isSignedIn)
 
   const [open, setOpen] = useState(false)
@@ -24,7 +31,12 @@ const Nav = (): JSX.Element => {
 
   const onSignOutClick = (): void => {
     if (open) setOpen(false)
-    console.log('Signing out...')
+    dispatch(signOut())
+    router.push('/sign-in', undefined, { shallow: true })
+  }
+
+  const onRequestErrorOk = (): void => {
+    dispatch(setRequestError(''))
   }
 
   // TODO: Distinguish the link of the current page from the other links.
@@ -54,6 +66,10 @@ const Nav = (): JSX.Element => {
           }
         </li>
       </ul>
+      {requestError
+        ? <Modal onOk={onRequestErrorOk} title='Error'>{requestError}</Modal>
+        : null
+      }
     </div>
   )
 }

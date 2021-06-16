@@ -91,3 +91,17 @@ export const signIn = (credentials: SignInInput): Promise<SignInResponse> => {
     variables: { credentials }
   })
 }
+
+export interface SignOutResponse extends GraphQLError {
+  data?: {
+    signOut: boolean
+  }
+}
+
+export const signOut = (): Promise<SignOutResponse> => {
+  return query({
+    query: `mutation SignOut {
+      signOut
+    }`
+  })
+}
