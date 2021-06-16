@@ -7,10 +7,10 @@ import {
   createAccount,
   getAccountCode,
   getNonce,
-  isAccountCreated,
   isCreatingAccount,
   isGettingAccountCode,
   isRequestError,
+  isSignedIn,
   setRequestError,
   setNonce
 } from '../store/userSlice'
@@ -29,16 +29,11 @@ const CreateAccount = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch()
   const router: NextRouter = useRouter()
 
-  const accountCreated: boolean = useAppSelector(isAccountCreated)
   const creatingAccount: boolean = useAppSelector(isCreatingAccount)
   const gettingAccountCode: boolean = useAppSelector(isGettingAccountCode)
   const nonce: Nonce | undefined = useAppSelector(getNonce)
   const requestError: string = useAppSelector(isRequestError)
-
-  // TODO: Make this work like it does on the sign-in page (i.e. show nothing if the user is logged in, then redirect to '/')
-  useEffect((): void => {
-    if (accountCreated) router.replace('/', undefined, { shallow: true })
-  }, [accountCreated, router])
+  const signedIn: boolean = useAppSelector(isSignedIn)
 
   const [code, setCode] = useState('')
   const [codeError, setCodeError] = useState('')
@@ -48,8 +43,19 @@ const CreateAccount = (): JSX.Element => {
   const [firstNameError, setFirstNameError] = useState('')
   const [lastName, setLastName] = useState('')
   const [lastNameError, setLastNameError] = useState('')
+  const [loaded, setLoaded] = useState(false)
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
+
+  useEffect((): void => {
+    if (signedIn) {
+      router.replace('/', undefined, { shallow: true })
+    } else {
+      setLoaded(true)
+    }
+  }, [signedIn, router, setLoaded])
+
+  if (!loaded) return <></>
 
   const onChangeCode = (event: ChangeEvent<HTMLInputElement>): void => {
     setCode(event.target.value)

@@ -3,8 +3,8 @@ import { NextRouter, useRouter } from 'next/router'
 import Head from 'next/head'
 
 import { AppDispatch } from '../store/store'
-import { isLoggedIn } from '../store/userSlice'
 import { isRequestError, isSigningIn, setRequestError, signIn } from '../store/signInSlice'
+import { isSignedIn } from '../store/userSlice'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { validateEmail, validatePassword } from '../shared/validations/user/user'
 import Button from '../ui/components/button/Button'
@@ -18,8 +18,8 @@ const SignIn = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch()
   const router: NextRouter = useRouter()
 
-  const loggedIn: boolean = useAppSelector(isLoggedIn)
   const requestError: string = useAppSelector(isRequestError)
+  const signedIn: boolean = useAppSelector(isSignedIn)
   const signingIn: boolean = useAppSelector(isSigningIn)
 
   const [email, setEmail] = useState('')
@@ -29,12 +29,12 @@ const SignIn = (): JSX.Element => {
   const [passwordError, setPasswordError] = useState('')
 
   useEffect((): void => {
-    if (loggedIn) {
+    if (signedIn) {
       router.replace('/', undefined, { shallow: true })
     } else {
       setLoaded(true)
     }
-  }, [loggedIn, router, setLoaded])
+  }, [signedIn, router, setLoaded])
 
   if (!loaded) return <></>
 

@@ -1,16 +1,20 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
+import { isSignedIn } from '../../../store/userSlice'
+import { useAppSelector } from '../../../store/hooks'
+import MenuButton from './MenuButton'
 import styles from './Nav.module.scss'
 
 const Nav = (): JSX.Element => {
+  const signedIn: boolean = useAppSelector(isSignedIn)
+
   const [open, setOpen] = useState(false)
 
-  const menuButtonClasses = `${styles.menu}${open ? ` ${styles.open}` : ''}`
   const navClasses = `${styles.nav}${open ? ` ${styles.open}` : ''}`
   const navListClasses = `${styles.navList}${open ? ` ${styles.open}` : ''}`
 
-  const onButtonClick = (): void => {
+  const onMenuButtonClick = (): void => {
     setOpen(!open)
   }
 
@@ -18,30 +22,36 @@ const Nav = (): JSX.Element => {
     if (open) setOpen(false)
   }
 
-  /*
-    TODO:
-      1. Distinguish the link of the current page from the other links.
-      2. Move the menu button and styles into their own files (and make it a <button> instead of a <div>).
-   */
+  const onSignOutClick = (): void => {
+    if (open) setOpen(false)
+    console.log('Signing out...')
+  }
+
+  // TODO: Distinguish the link of the current page from the other links.
 
   return (
     <div className={navClasses}>
-      <div
-        className={menuButtonClasses}
-        onClick={onButtonClick}
-      >
-        <span />
-        <span />
-        <span />
-      </div>
+      <MenuButton onClick={onMenuButtonClick} open={open} />
       <ul className={navListClasses}>
         <li>
           <Link href='/about'>
             <a onClick={onLinkClick}>About</a>
           </Link>
-          <Link href='/sign-in'>
-            <a onClick={onLinkClick}>Sign In</a>
-          </Link>
+          {signedIn
+            ? (
+              <span
+                className={styles.signOut}
+                onClick={onSignOutClick}
+              >
+                Sign Out
+              </span>
+            )
+            : (
+              <Link href='/sign-in'>
+                <a onClick={onLinkClick}>Sign In</a>
+              </Link>
+            )
+          }
         </li>
       </ul>
     </div>
