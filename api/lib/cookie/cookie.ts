@@ -2,7 +2,7 @@ import { CookieSerializeOptions, parse, serialize } from 'cookie'
 import { MicroRequest } from 'apollo-server-micro/dist/types'
 import { ServerResponse } from 'http'
 
-import { TOKEN_COOKIE_NAME, TOKEN_EXPIRATION } from '../../constants'
+import { TOKEN_COOKIE_NAME, TOKEN_EXPIRATION } from '../../../constants'
 
 export const clearTokenCookie = (res: ServerResponse): void => {
   setTokenCookie(res, '', new Date(1))

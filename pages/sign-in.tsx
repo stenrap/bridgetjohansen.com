@@ -1,42 +1,31 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import { NextRouter, useRouter } from 'next/router'
-import Head from 'next/head'
+import { unstable_batchedUpdates } from 'react-dom'
 
-import { AppDispatch } from '../store/store'
-import { isRequestError, isSigningIn, setRequestError, signIn } from '../store/signInSlice'
-import { isSignedIn } from '../store/userSlice'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
+import * as requests from '../ui/requests'
 import { validateEmail, validatePassword } from '../shared/validations/user/user'
 import Button from '../ui/components/button/Button'
 import Input from '../ui/components/input/Input'
-import Nav from '../ui/components/nav/Nav'
+import Layout from '../ui/components/layout/Layout'
 import Spinner from '../ui/components/spinner/Spinner'
 import Modal from '../ui/modals/Modal'
 import styles from '../ui/styles/pages/SignIn.module.scss'
 
 const SignIn = (): JSX.Element => {
-  const dispatch: AppDispatch = useAppDispatch()
+  const mounted = useRef(false)
   const router: NextRouter = useRouter()
-
-  const requestError: string = useAppSelector(isRequestError)
-  const signedIn: boolean = useAppSelector(isSignedIn)
-  const signingIn: boolean = useAppSelector(isSigningIn)
 
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
-  const [loaded, setLoaded] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const [requestError, setRequestError] = useState('')
 
-  useEffect((): void => {
-    if (signedIn) {
-      router.replace('/', undefined, { shallow: true })
-    } else {
-      setLoaded(true)
-    }
-  }, [signedIn, router, setLoaded])
-
-  if (!loaded) return <></>
+  useEffect((): () => void => {
+    mounted.current = true
+    return (): void => { mounted.current = false }
+  }, [])
 
   const onChangeEmail = (event: ChangeEvent<HTMLInputElement>): void => {
     setEmail(event.target.value.toLowerCase())
@@ -48,7 +37,7 @@ const SignIn = (): JSX.Element => {
     setPasswordError('')
   }
 
-  const onClickSignIn = (): void => {
+  const onClickSignIn = async (): Promise<void> => {
     try {
       validateEmail(email)
     } catch (err) {
@@ -61,7 +50,18 @@ const SignIn = (): JSX.Element => {
       return setPasswordError(err.message)
     }
 
-    dispatch(signIn({ email, password }))
+    setLoading(true)
+    const { data, errors }: requests.SignInResponse = await requests.signIn({ email, password })
+    if (!mounted.current) return
+
+    if (data) {
+      router.push('/')
+    } else {
+      unstable_batchedUpdates((): void => {
+        setLoading(false)
+        setRequestError(errors ? errors[0].message : 'Please check your network connection and try again.')
+      })
+    }
   }
 
   const onSubmitSignInForm = (event: FormEvent<HTMLFormElement>): void => {
@@ -70,22 +70,18 @@ const SignIn = (): JSX.Element => {
   }
 
   const onRequestErrorOk = (): void => {
-    dispatch(setRequestError(''))
+    setRequestError('')
   }
 
   return (
-    <>
-      <Head>
-        <title>Sign In</title>
-      </Head>
-      <Nav />
+    <Layout signedIn={false} title='Sign In'>
       <div className={styles.signIn}>
         <h1 className='pageHeader'>Sign In</h1>
         <form onSubmit={onSubmitSignInForm}>
           <Input error={emailError} onChange={onChangeEmail} placeholder='Email' type='email' value={email} />
           <Input error={passwordError} onChange={onChangePassword} placeholder='Password' type='password' value={password} />
-          <Button disabled={signingIn} kind='primary' onClick={onClickSignIn}>
-            {signingIn
+          <Button disabled={loading} kind='primary' onClick={onClickSignIn}>
+            {loading
               ? <Spinner />
               : 'Sign In'}
           </Button>
@@ -95,7 +91,7 @@ const SignIn = (): JSX.Element => {
         ? <Modal onOk={onRequestErrorOk} title='Error'>{requestError}</Modal>
         : null
       }
-    </>
+    </Layout>
   )
 }
 

@@ -1,6 +1,6 @@
 import { AuthenticationError } from 'apollo-server-micro'
 
-import { clearTokenCookie } from '../../../lib/cookie/cookie'
+import { clearTokenCookie } from '../../lib/cookie/cookie'
 import { Context } from '../../context/context'
 import { deleteUser } from '../../../cache/user'
 import { signOut as dbSignOut } from '../../../data/api/sign-out/signOut'
