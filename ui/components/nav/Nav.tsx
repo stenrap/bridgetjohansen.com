@@ -2,21 +2,17 @@ import { NextRouter, useRouter } from 'next/router'
 import { useState } from 'react'
 import Link from 'next/link'
 
-import { AppDispatch } from '../../../store/store'
-import { isRequestError, setRequestError, signOut } from '../../../store/navSlice'
-import { isSignedIn } from '../../../store/userSlice'
-import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import * as requests from '../../requests'
 import MenuButton from './MenuButton'
 import Modal from '../../modals/Modal'
+import NavProps from './NavProps'
 import styles from './Nav.module.scss'
 
-const Nav = (): JSX.Element => {
-  const dispatch: AppDispatch = useAppDispatch()
-  const requestError: string = useAppSelector(isRequestError)
+const Nav = (props: NavProps): JSX.Element => {
   const router: NextRouter = useRouter()
-  const signedIn: boolean = useAppSelector(isSignedIn)
 
   const [open, setOpen] = useState(false)
+  const [requestError, setRequestError] = useState('')
 
   const navClasses = `${styles.nav}${open ? ` ${styles.open}` : ''}`
   const navListClasses = `${styles.navList}${open ? ` ${styles.open}` : ''}`
@@ -29,14 +25,14 @@ const Nav = (): JSX.Element => {
     if (open) setOpen(false)
   }
 
-  const onSignOutClick = (): void => {
+  const onSignOutClick = async (): Promise<void> => {
     if (open) setOpen(false)
-    dispatch(signOut())
-    router.push('/sign-in', undefined, { shallow: true })
+    router.push('/sign-in')
+    await requests.signOut()
   }
 
   const onRequestErrorOk = (): void => {
-    dispatch(setRequestError(''))
+    setRequestError('')
   }
 
   // TODO: Distinguish the link of the current page from the other links.
@@ -49,7 +45,7 @@ const Nav = (): JSX.Element => {
           <Link href='/about'>
             <a onClick={onLinkClick}>About</a>
           </Link>
-          {signedIn
+          {props.signedIn
             ? (
               <span
                 className={styles.signOut}

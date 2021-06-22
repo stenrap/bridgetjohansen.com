@@ -9,7 +9,7 @@ import User from '../data/models/user/User'
 const CODE_EXPIRATION = 60 * 10 // 10 minutes (in seconds)
 
 export const cacheUser = (user: User): Promise<void> => {
-  return new Promise<void>((resolve: (value: void) => void): void => {
+  return new Promise<void>((resolve: (_: void) => void): void => {
     cache.set(`user:${user.token}`, JSON.stringify(user), 'PX', TOKEN_EXPIRATION, (err: Error | null): void => {
       if (err) {
         logger.error(`Error adding user ${user.email} to cache`)
@@ -22,7 +22,7 @@ export const cacheUser = (user: User): Promise<void> => {
 }
 
 export const deleteUser = (token: string): Promise<void> => {
-  return new Promise<void>((resolve: (value: void) => void): void => {
+  return new Promise<void>((resolve: (_: void) => void): void => {
     cache.del(`user:${token}`, (err: Error | null): void => {
       if (err) {
         logger.error(`Error deleting user with token ${token} from cache`)
@@ -34,8 +34,21 @@ export const deleteUser = (token: string): Promise<void> => {
   })
 }
 
+export const getUser = (token: string): Promise<User | undefined> => {
+  return new Promise<User | undefined>((resolve: (user: User | undefined) => void): void => {
+    cache.get(`user:${token}`, (err: Error | null, user: string | null): void => {
+      if (err) {
+        logger.error(`Error getting user with token ${token} from cache`)
+        logger.error(err.message)
+      }
+
+      resolve(user ? JSON.parse(user) : undefined)
+    })
+  })
+}
+
 export const setCode = (type: CodeType, code: string, email: string): Promise<string> => {
-  return new Promise<string>((resolve: (value: string) => void, reject: (err: Error) => void): void => {
+  return new Promise<string>((resolve: (nonce: string) => void, reject: (err: Error) => void): void => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const nonce: string = crypto.createHmac(process.env.BRIDGET_HMAC_ALGORITHM!, process.env.BRIDGET_HMAC_SECRET!)
       .update(email)

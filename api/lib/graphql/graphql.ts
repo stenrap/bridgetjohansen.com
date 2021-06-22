@@ -1,7 +1,7 @@
 import { FieldNode, GraphQLResolveInfo, SelectionNode, SelectionSetNode } from 'graphql'
 import { ValidationError } from 'apollo-server-micro'
 
-import { GRAPHQL_TYPENAME_META_FIELD } from '../../constants'
+import { GRAPHQL_TYPENAME_META_FIELD } from '../../../constants'
 
 /**
  * Gets the fields of a GraphQL enum from a TypeScript enum

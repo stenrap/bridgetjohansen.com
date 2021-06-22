@@ -1,8 +1,8 @@
 import { MicroRequest } from 'apollo-server-micro/dist/types'
 import { ServerResponse } from 'http'
 
-import { getTokenFromCookie } from '../../lib/cookie/cookie'
-import { selectUser } from '../../data/api/user/user'
+import { getTokenFromCookie } from '../lib/cookie/cookie'
+import { getUser } from '../lib/user/user'
 import User from '../../data/models/user/User'
 
 export interface Context {
@@ -17,8 +17,7 @@ export interface MicroContext {
 }
 
 export const context = async ({ req, res }: MicroContext): Promise<Context> => {
-  const token: string | undefined = getTokenFromCookie(req)
-  const user: User | undefined = token ? await selectUser({ token }) : undefined
+  const user: User | undefined = await getUser(getTokenFromCookie(req))
   if (user) delete user.password
   return { req, res, user }
 }

@@ -1,39 +1,21 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import { NextRouter, useRouter } from 'next/router'
-import Head from 'next/head'
+import { unstable_batchedUpdates } from 'react-dom'
 
-import { AppDispatch } from '../store/store'
-import {
-  createAccount,
-  getAccountCode,
-  getNonce,
-  isCreatingAccount,
-  isGettingAccountCode,
-  isRequestError,
-  isSignedIn,
-  setRequestError,
-  setNonce
-} from '../store/userSlice'
-import { useAppDispatch, useAppSelector } from '../store/hooks'
+import * as requests from '../ui/requests'
 import { validateCode } from '../shared/validations/code/code'
 import { validateEmail, validateFirstName, validateLastName, validatePassword } from '../shared/validations/user/user'
 import Button from '../ui/components/button/Button'
 import Input from '../ui/components/input/Input'
+import Layout from '../ui/components/layout/Layout'
 import Modal from '../ui/modals/Modal'
-import Nav from '../ui/components/nav/Nav'
 import Nonce from '../shared/types/Nonce'
 import Spinner from '../ui/components/spinner/Spinner'
 import styles from '../ui/styles/pages/CreateAccount.module.scss'
 
 const CreateAccount = (): JSX.Element => {
-  const dispatch: AppDispatch = useAppDispatch()
+  const mounted = useRef(false)
   const router: NextRouter = useRouter()
-
-  const creatingAccount: boolean = useAppSelector(isCreatingAccount)
-  const gettingAccountCode: boolean = useAppSelector(isGettingAccountCode)
-  const nonce: Nonce | undefined = useAppSelector(getNonce)
-  const requestError: string = useAppSelector(isRequestError)
-  const signedIn: boolean = useAppSelector(isSignedIn)
 
   const [code, setCode] = useState('')
   const [codeError, setCodeError] = useState('')
@@ -43,19 +25,16 @@ const CreateAccount = (): JSX.Element => {
   const [firstNameError, setFirstNameError] = useState('')
   const [lastName, setLastName] = useState('')
   const [lastNameError, setLastNameError] = useState('')
-  const [loaded, setLoaded] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [nonce, setNonce] = useState<Nonce | undefined>(undefined)
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const [requestError, setRequestError] = useState('')
 
-  useEffect((): void => {
-    if (signedIn) {
-      router.replace('/', undefined, { shallow: true })
-    } else {
-      setLoaded(true)
-    }
-  }, [signedIn, router, setLoaded])
-
-  if (!loaded) return <></>
+  useEffect((): () => void => {
+    mounted.current = true
+    return (): void => { mounted.current = false }
+  }, [])
 
   const onChangeCode = (event: ChangeEvent<HTMLInputElement>): void => {
     setCode(event.target.value)
@@ -82,7 +61,7 @@ const CreateAccount = (): JSX.Element => {
     setPasswordError('')
   }
 
-  const onClickNext = (): void => {
+  const onClickNext = async (): Promise<void> => {
     try {
       validateFirstName(firstName)
     } catch (err) {
@@ -107,7 +86,21 @@ const CreateAccount = (): JSX.Element => {
       return setPasswordError(err.message)
     }
 
-    dispatch(getAccountCode(email))
+    setLoading(true)
+    const { data, errors }: requests.NonceResponse = await requests.getAccountCode(email)
+    if (!mounted.current) return
+
+    if (data) {
+      unstable_batchedUpdates((): void => {
+        setLoading(false)
+        setNonce(data.getAccountCode)
+      })
+    } else {
+      unstable_batchedUpdates((): void => {
+        setLoading(false)
+        setRequestError(errors ? errors[0].message : 'Please check your network connection and try again.')
+      })
+    }
   }
 
   const onSubmitCreateAccountForm = (event: FormEvent<HTMLFormElement>): void => {
@@ -117,19 +110,37 @@ const CreateAccount = (): JSX.Element => {
 
   const onClickBack = (): void => {
     setCode('')
-    dispatch(setNonce())
+    setNonce(undefined)
   }
 
-  const onClickSubmit = (): void => {
+  const onClickSubmit = async (): Promise<void> => {
     try {
       validateCode(code)
     } catch (err) {
       return setCodeError(err.message)
     }
 
-    // The form and submit button can't even be visible if the nonce is undefined, so we disable the non-null assertion warning.
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    dispatch(createAccount({code, email, firstName, lastName, nonce: nonce!.nonce, password}))
+    setLoading(true)
+    const { data, errors }: requests.CreateAccountResponse = await requests.createAccount({
+      code,
+      email,
+      firstName,
+      lastName,
+      // The form and submit button can't even be visible if the nonce is undefined, so we disable the non-null assertion warning.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      nonce: nonce!.nonce,
+      password
+    })
+    if (!mounted.current) return
+
+    if (data) {
+      router.replace('/')
+    } else {
+      unstable_batchedUpdates((): void => {
+        setLoading(false)
+        setRequestError(errors ? errors[0].message : 'Please check your network connection and try again.')
+      })
+    }
   }
 
   const onSubmitEnterCodeForm = (event: FormEvent<HTMLFormElement>): void => {
@@ -138,15 +149,11 @@ const CreateAccount = (): JSX.Element => {
   }
 
   const onRequestErrorOk = (): void => {
-    dispatch(setRequestError(''))
+    setRequestError('')
   }
 
   return (
-    <>
-      <Head>
-        <title>Create Account</title>
-      </Head>
-      <Nav />
+    <Layout signedIn={false} title='Create Account'>
       <div className={styles.createAccount}>
         <h1 className='pageHeader'>{nonce ? 'Enter your code' : 'Create your account'}</h1>
         {nonce && (
@@ -165,8 +172,8 @@ const CreateAccount = (): JSX.Element => {
                 <Button kind='secondary' onClick={onClickBack}>
                   Back
                 </Button>
-                <Button disabled={creatingAccount} kind='primary' onClick={onClickSubmit}>
-                  {creatingAccount
+                <Button disabled={loading} kind='primary' onClick={onClickSubmit}>
+                  {loading
                     ? <Spinner />
                     : 'Submit'}
                 </Button>
@@ -179,8 +186,8 @@ const CreateAccount = (): JSX.Element => {
               <Input error={lastNameError} onChange={onChangeLastName} placeholder='Last name' type='text' value={lastName} />
               <Input error={emailError} onChange={onChangeEmail} placeholder='Email' type='email' value={email} />
               <Input error={passwordError} onChange={onChangePassword} placeholder='Password' type='password' value={password} />
-              <Button className={styles.nextButton} disabled={gettingAccountCode} kind='primary' onClick={onClickNext}>
-                {gettingAccountCode
+              <Button className={styles.nextButton} disabled={loading} kind='primary' onClick={onClickNext}>
+                {loading
                   ? <Spinner />
                   : 'Next'}
               </Button>
@@ -192,7 +199,7 @@ const CreateAccount = (): JSX.Element => {
         ? <Modal onOk={onRequestErrorOk} title='Error'>{requestError}</Modal>
         : null
       }
-    </>
+    </Layout>
   )
 }
 

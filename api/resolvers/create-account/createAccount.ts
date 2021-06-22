@@ -3,11 +3,11 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { cacheUser, setCode } from '../../../cache/user'
 import { Context } from '../../context/context'
-import { createCode } from '../../../lib/code/code'
+import { createCode } from '../../lib/code/code'
 import { endTxn, startTxn } from '../../../data/db'
-import { hashPassword } from '../../../lib/password/password'
+import { hashPassword } from '../../lib/password/password'
 import { insertUser, selectUser } from '../../../data/api/user/user'
-import { setTokenCookie } from '../../../lib/cookie/cookie'
+import { setTokenCookie } from '../../lib/cookie/cookie'
 import { validateCode } from '../../../shared/validations/code/code'
 import {
   validateEmail,
