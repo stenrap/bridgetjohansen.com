@@ -45,10 +45,36 @@ const Nav = (props: NavProps): JSX.Element => {
           <Link href='/about'>
             <a onClick={onLinkClick}>About</a>
           </Link>
+        </li>
+        <li className={styles.studioNavListItem}>
+          <div
+            className={styles.studioNavLink}
+          >
+            Studio
+          </div>
+          <ul className={styles.navMenu}>
+            <li>
+              <Link href='/studio/schedule'>
+                <a onClick={onLinkClick}>Schedule</a>
+              </Link>
+            </li>
+            <li>
+              <Link href='/studio/policies'>
+                <a onClick={onLinkClick}>Policies</a>
+              </Link>
+            </li>
+            <li>
+              <Link href='/studio/events'>
+                <a onClick={onLinkClick}>Events</a>
+              </Link>
+            </li>
+          </ul>
+        </li>
+        <li>
           {props.signedIn
             ? (
               <span
-                className={styles.signOut}
+                className={styles.navLink}
                 onClick={onSignOutClick}
               >
                 Sign Out

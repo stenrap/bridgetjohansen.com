@@ -32,14 +32,14 @@
     margin: 0 20px;
   }
 
-  a, .signOut {
+  a, .navLink, .studioNavLink {
     display: block;
     font-size: 18px;
     padding: 20px;
 
     @media (hover: hover) {
       &:hover {
-        opacity: 0.75;
+        color: rgba(255, 255, 255, 0.5625);
       }
     }
 
@@ -48,23 +48,71 @@
     }
   }
 
+  .studioNavListItem {
+    position: relative;
+  }
+
+  .navMenu {
+    background-color: #000;
+    list-style-type: none;
+    margin-block-start: 0;
+    padding-inline-start: 0;
+    position: absolute;
+  }
+
   @media screen and (min-width: v.$horizontalNav) {
     align-items: center;
     border-top: none;
     display: flex;
     height: v.$headerHeight;
     justify-content: flex-end;
+    text-align: center;
     top: 0;
 
     li {
       border-bottom: none;
       display: inline-block;
-      min-width: 120px;
+      margin: 0;
+      min-width: 100px;
     }
 
-    a, .signOut {
+    a, .navLink {
       cursor: pointer;
       display: inline-block;
+      padding: 5px;
+    }
+
+    .studioNavListItem {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      justify-content: center;
+
+      &:hover {
+        .navMenu {
+          display: block;
+        }
+      }
+    }
+
+    .studioNavLink {
+      cursor: default;
+      display: inline-block;
+      padding: 5px;
+
+      &:active {
+        opacity: 1;
+      }
+    }
+
+    .navMenu {
+      display: none;
+      top: 73px;
+
+      li {
+        height: 50px;
+        width: 130px;
+      }
     }
   }
 }

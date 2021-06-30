@@ -1,9 +1,9 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next'
 
-import { getTokenFromCookie } from '../api/lib/cookie/cookie'
-import { getUser } from '../api/lib/user/user'
-import Layout from '../ui/components/layout/Layout'
-import User from '../data/models/user/User'
+import { getTokenFromCookie } from '../../api/lib/cookie/cookie'
+import { getUser } from '../../api/lib/user/user'
+import Layout from '../../ui/components/layout/Layout'
+import User from '../../data/models/user/User'
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
@@ -17,12 +17,12 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 }
 
-const About = (props: { signedIn: boolean }): JSX.Element => {
+const Policies = (props: { signedIn: boolean }): JSX.Element => {
   return (
-    <Layout signedIn={props.signedIn} title='About Bridget'>
-      <div>About</div>
+    <Layout signedIn={props.signedIn} title='Studio Policies'>
+      <div>Policies</div>
     </Layout>
   )
 }
 
-export default About
+export default Policies
